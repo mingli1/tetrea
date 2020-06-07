@@ -350,14 +350,14 @@ class Tetris(
         holdPiece?.let { piece ->
             piece.squares.forEach {
                 batch.draw(res.getSquare(piece.pieceType),
-                    (screenX - 128) + (it.x * SQUARE_SIZE),
+                    (screenX - 36) + (it.x * SQUARE_SIZE),
                     (screenY + ((config.height - 4) * SQUARE_SIZE)) + (it.y * SQUARE_SIZE))
             }
         }
         for (i in 0 until config.numPreviews) {
             val piece = bag[i]
-            val x = screenX + (config.width * SQUARE_SIZE) + 64
-            val y = screenY + ((config.height - 4) * SQUARE_SIZE) - (i * 108)
+            val x = screenX + (config.width * SQUARE_SIZE) + 24
+            val y = screenY + ((config.height - 4) * SQUARE_SIZE) - (i * 42)
             piece.previewSquares.forEach {
                 batch.draw(res.getSquare(piece.pieceType),
                     x + it.x * SQUARE_SIZE,
