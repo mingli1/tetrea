@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.TetreaGame
 
-class GameScreen(game: TetreaGame) : BaseScreen(game) {
+class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
     override fun update(dt: Float) {
 

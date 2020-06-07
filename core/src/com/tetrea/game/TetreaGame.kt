@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BaseScreen
-import com.tetrea.game.screen.GameScreen
+import com.tetrea.game.screen.BattleScreen
 import kotlin.math.min
 
 class TetreaGame : Game() {
@@ -17,7 +17,7 @@ class TetreaGame : Game() {
 
     lateinit var fpsLabel: Label
 
-    val gameScreen: GameScreen by lazy { GameScreen(this) }
+    val battleScreen: BattleScreen by lazy { BattleScreen(this) }
     private lateinit var currentScreen: BaseScreen
 
     override fun create() {
@@ -28,7 +28,7 @@ class TetreaGame : Game() {
             fpsLabel = res.getDefaultLabel().apply { setPosition(5f, 5f) }
         }
 
-        updateScreen(gameScreen)
+        updateScreen(battleScreen)
     }
 
     fun updateScreen(screen: BaseScreen) {
