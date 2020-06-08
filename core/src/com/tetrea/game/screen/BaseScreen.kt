@@ -20,7 +20,7 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
     }
 
     init {
-        viewport = ExtendViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat(), OrthographicCamera())
+        viewport = ExtendViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat(), cam)
         stage = Stage(viewport, game.batch)
     }
 
