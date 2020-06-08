@@ -1,28 +1,22 @@
 package com.tetrea.game.input
 
 import com.tetrea.game.tetris.Tetris
+import com.tetrea.game.util.Timer
 
 class InputTuning(
     private val tetris: Tetris,
     private val right: Boolean,
-    private val das: Float,
+    das: Float,
     private val arr: Float
 ) {
 
     var inProgress = false
-    private var dasTimer = 0f
+    private val dasTimer = Timer(das, { startArr = true })
     private var arrTimer = 0f
-    private var startDas = false
     private var startArr = false
 
     fun update(dt: Float) {
-        if (startDas) {
-            dasTimer += dt
-            if (dasTimer >= das) {
-                startArr = true
-                startDas = false
-            }
-        }
+        dasTimer.update(dt)
         if (startArr) {
             arrTimer += dt
             if (arr == 0f) {
@@ -36,7 +30,7 @@ class InputTuning(
     }
 
     fun start() {
-        startDas = true
+        dasTimer.start()
         inProgress = true
     }
 
@@ -46,8 +40,7 @@ class InputTuning(
     }
 
     fun reset() {
-        startDas = false
-        dasTimer = 0f
+        dasTimer.reset()
         startArr = false
         arrTimer = 0f
     }

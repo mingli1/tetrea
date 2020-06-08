@@ -8,6 +8,7 @@ import com.tetrea.game.tetris.model.Piece
 import com.tetrea.game.tetris.model.Square
 import com.tetrea.game.tetris.model.Unit
 import com.tetrea.game.tetris.util.PieceType
+import com.tetrea.game.util.Timer
 
 class Tetris(
     private val screenX: Float,
@@ -61,18 +62,17 @@ class Tetris(
     private var attack = 0
 
     private var clockTimer = 0f
-    private var gravityTimer = 0f
+    private var gravityTimer = Timer(config.gravity, { currPiece.move(0, -1) }, true)
 
     private var lockDelay1Timer = 0f
     private var lockDelay2Timer = 0f
     private var startLockDelay2 = false
-    private var lockDelay3Timer = 0f
+    private var lockDelay3Timer = Timer(config.lockDelay3, { hardDrop() }, true)
 
     private var startRotationTimer = false
     private var rotationTimer = 0f
     private var longRotationTimer = 0f
-    private var startGarbageTimer = false
-    private var garbageTimer = 0f
+    private var garbageTimer = Timer(config.garbageDelay, { receiveGarbage() })
 
     private var solidGarbageRow = 0
 
@@ -88,11 +88,7 @@ class Tetris(
         stats.apm = totalAttack / clockTimer * 60
         stats.linesSent = linesSent
 
-        gravityTimer += dt
-        if (gravityTimer >= config.gravity) {
-            currPiece.move(0, -1)
-            gravityTimer = 0f
-        }
+        gravityTimer.update(dt)
 
         if (!currPiece.canMove(0, -1) && !startLockDelay2) {
             if (startRotationTimer) {
@@ -126,17 +122,8 @@ class Tetris(
             }
         }
 
-        lockDelay3Timer += dt
-        if (lockDelay3Timer >= config.lockDelay3) hardDrop()
-
-        if (startGarbageTimer) {
-            garbageTimer += dt
-            if (garbageTimer >= config.garbageDelay) {
-                receiveGarbage()
-                garbageTimer = 0f
-                startGarbageTimer = false
-            }
-        }
+        lockDelay3Timer.update(dt)
+        garbageTimer.update(dt)
     }
 
     fun isWithinBounds(x: Int, y: Int): Boolean {
@@ -228,9 +215,7 @@ class Tetris(
 
         if (numLinesToClear == 0) {
             combo = 0
-            if (garbage.isNotEmpty()) {
-                startGarbageTimer = true
-            }
+            if (garbage.isNotEmpty()) garbageTimer.start()
             return
         } else {
             combo++
@@ -307,8 +292,7 @@ class Tetris(
 
         solidGarbageRow = 0
         startLockDelay2 = false
-        startGarbageTimer = false
-        garbageTimer = 0f
+        garbageTimer.reset()
 
         stats.reset()
     }
@@ -482,11 +466,11 @@ class Tetris(
     }
 
     private fun resetTimers() {
-        gravityTimer = 0f
+        gravityTimer.reset()
 
         lockDelay1Timer = 0f
         lockDelay2Timer = 0f
-        lockDelay3Timer = 0f
+        lockDelay3Timer.reset()
 
         rotationTimer = 0f
         longRotationTimer = 0f

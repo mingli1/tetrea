@@ -5,7 +5,7 @@ import com.badlogic.gdx.Gdx
 
 const val V_WIDTH = 480
 const val V_HEIGHT = 300
-const val V_SCALE = 2
+const val V_SCALE = 3
 const val S_WIDTH = V_WIDTH * V_SCALE
 const val S_HEIGHT = V_HEIGHT * V_SCALE
 

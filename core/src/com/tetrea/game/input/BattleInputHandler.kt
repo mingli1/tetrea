@@ -5,8 +5,8 @@ import com.tetrea.game.tetris.util.Rotation
 
 class BattleInputHandler(
     private val tetris: Tetris,
-    private val das: Float,
-    private val arr: Float,
+    das: Float,
+    arr: Float,
     private val sds: Float
 ) {
 
