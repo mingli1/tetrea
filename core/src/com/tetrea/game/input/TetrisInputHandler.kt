@@ -3,7 +3,7 @@ package com.tetrea.game.input
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.util.Rotation
 
-class BattleInputHandler(
+class TetrisInputHandler(
     private val tetris: Tetris,
     das: Float,
     arr: Float,

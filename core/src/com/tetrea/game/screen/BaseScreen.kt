@@ -34,7 +34,7 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
         update(dt)
     }
 
-    override fun resize(width: Int, height: Int) = viewport.update(width, height)
+    override fun resize(width: Int, height: Int) = viewport.update(width, height, true)
 
     override fun pause() {}
 

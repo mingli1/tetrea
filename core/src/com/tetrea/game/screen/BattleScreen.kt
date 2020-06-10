@@ -1,27 +1,38 @@
 package com.tetrea.game.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.TetreaGame
-import com.tetrea.game.input.BattleInputHandler
-import com.tetrea.game.input.BattleKeyInput
+import com.tetrea.game.input.TetrisAndroidInput
+import com.tetrea.game.input.TetrisInputHandler
+import com.tetrea.game.input.TetrisKeyInput
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
 
 class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
     private lateinit var tetris: Tetris
-    private lateinit var inputHandler: BattleInputHandler
-    private lateinit var battleKeyInput: BattleKeyInput
+
+    private val multiplexer = InputMultiplexer()
+    private lateinit var inputHandler: TetrisInputHandler
+    private lateinit var tetrisKeyInput: TetrisKeyInput
+    private var androidInput: TetrisAndroidInput? = null
 
     override fun show() {
         super.show()
 
-        tetris = Tetris(64f, 10f, TetrisConfig(), game.res)
-        inputHandler = BattleInputHandler(tetris, 0.117f, 0f, 0f)
-        battleKeyInput = BattleKeyInput(inputHandler)
+        tetris = Tetris(80f, 16f, TetrisConfig(), game.res)
+        inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
+        tetrisKeyInput = TetrisKeyInput(inputHandler)
 
-        Gdx.input.inputProcessor = battleKeyInput
+        androidInput = TetrisAndroidInput(stage, inputHandler, game.res)
+
+        multiplexer.clear()
+        multiplexer.addProcessor(stage)
+        multiplexer.addProcessor(tetrisKeyInput)
+
+        Gdx.input.inputProcessor = multiplexer
     }
 
     override fun update(dt: Float) {

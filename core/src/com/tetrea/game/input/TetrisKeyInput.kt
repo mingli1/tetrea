@@ -3,7 +3,7 @@ package com.tetrea.game.input
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
 
-class BattleKeyInput(private val inputHandler: BattleInputHandler) : InputProcessor {
+class TetrisKeyInput(private val inputHandler: TetrisInputHandler) : InputProcessor {
 
     override fun keyUp(keycode: Int): Boolean {
         when (keycode) {
