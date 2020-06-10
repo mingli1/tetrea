@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.TetreaGame
+import com.tetrea.game.V_HEIGHT
+import com.tetrea.game.V_WIDTH
 import com.tetrea.game.input.TetrisAndroidInput
 import com.tetrea.game.input.TetrisInputHandler
 import com.tetrea.game.input.TetrisKeyInput
@@ -22,7 +24,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     override fun show() {
         super.show()
 
-        tetris = Tetris(80f, 16f, TetrisConfig(), game.res)
+        tetris = Tetris(V_WIDTH / 2 - (10 * 12) / 2f, V_HEIGHT / 2 - (10 * 20) / 2f, TetrisConfig(), game.res)
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
 
