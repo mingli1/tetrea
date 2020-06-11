@@ -76,7 +76,10 @@ class Tetris(
 
     private var solidGarbageRow = 0
 
-    init { reset() }
+    init {
+        reset()
+        queueGarbage(4)
+    }
 
     fun update(dt: Float) {
         clockTimer += dt
@@ -308,6 +311,7 @@ class Tetris(
     }
 
     fun render(batch: Batch) {
+        batch.draw(res.getTexture("tetris_board_bg"), screenX - 66, screenY - 1)
         for (y in 0 until config.height * 2) {
             for (x in 0 until config.width) {
                 if (y < config.height) {
@@ -334,21 +338,30 @@ class Tetris(
         holdPiece?.let { piece ->
             piece.squares.forEach {
                 batch.draw(res.getSquare(piece.pieceType),
-                    (screenX - 36) + (it.x * SQUARE_SIZE),
-                    (screenY + ((config.height - 4) * SQUARE_SIZE)) + (it.y * SQUARE_SIZE))
+                    when (piece.pieceType) {
+                        PieceType.I, PieceType.O -> (screenX - 47) + (it.x * SQUARE_SIZE)
+                        else -> (screenX - 41) + (it.x * SQUARE_SIZE)
+                    },
+                    when (piece.pieceType) {
+                        PieceType.I -> ((screenY + 9) + ((config.height - 4) * SQUARE_SIZE)) + (it.y * SQUARE_SIZE)
+                        else -> ((screenY + 3) + ((config.height - 4) * SQUARE_SIZE)) + (it.y * SQUARE_SIZE)
+                    })
             }
         }
         for (i in 0 until config.numPreviews) {
             val piece = bag[i]
-            val x = screenX + (config.width * SQUARE_SIZE) + 24
-            val y = screenY + ((config.height - 4) * SQUARE_SIZE) - (i * 42)
+            val x = when (piece.pieceType) {
+                PieceType.I, PieceType.O -> screenX + (config.width * SQUARE_SIZE) + 18
+                else -> screenX + (config.width * SQUARE_SIZE) + 25
+            }
+            val y = screenY + ((config.height - 4) * SQUARE_SIZE) - (i * 38)
             piece.previewSquares.forEach {
                 batch.draw(res.getSquare(piece.pieceType),
                     x + it.x * SQUARE_SIZE,
                     y + it.y * SQUARE_SIZE)
             }
         }
-        batch.draw(res.getTexture("red"), screenX - 10, screenY, 10f, getGarbageBarHeight())
+        batch.draw(res.getTexture("red"), screenX - 5, screenY, 4f, getGarbageBarHeight())
     }
 
     private fun receiveGarbage() {

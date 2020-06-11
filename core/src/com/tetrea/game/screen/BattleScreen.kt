@@ -23,7 +23,12 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     override fun show() {
         super.show()
 
-        tetris = Tetris(stage.width / 2 - (10 * 12) / 2f, stage.height / 2 - (10 * 20) / 2f, TetrisConfig(), game.res)
+        tetris = Tetris(
+            stage.width / 2 - (10 * 12) / 2f + 3,
+            (stage.height / 2 - (10 * 20) / 2f) - if (isAndroid()) 0f else 56f,
+            TetrisConfig(),
+            game.res
+        )
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
 
