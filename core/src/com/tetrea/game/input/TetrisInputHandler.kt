@@ -36,7 +36,6 @@ class TetrisInputHandler(
     }
 
     fun onRight(down: Boolean) {
-        if (!tetris.started) return
         if (down) {
             tetris.rightHeld = true
 
@@ -54,7 +53,6 @@ class TetrisInputHandler(
     }
 
     fun onLeft(down: Boolean) {
-        if (!tetris.started) return
         if (down) {
             tetris.leftHeld = true
 
@@ -72,7 +70,6 @@ class TetrisInputHandler(
     }
 
     fun softDrop(down: Boolean) {
-        if (!tetris.started) return
         startSoftDrop = down
     }
 

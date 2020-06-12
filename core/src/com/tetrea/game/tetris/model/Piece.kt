@@ -30,7 +30,7 @@ class Piece(
     }
 
     fun move(x: Int, y: Int): Boolean {
-        if (!canMove(x, y)) return false
+        if (!canMove(x, y) || !tetris.started) return false
         squares.forEach { it.move(x, y) }
         return true
     }
