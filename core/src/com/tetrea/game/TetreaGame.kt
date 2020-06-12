@@ -25,7 +25,7 @@ class TetreaGame : Game() {
         res = Resources()
 
         if (IS_DEBUG) {
-            fpsLabel = res.getDefaultLabel().apply { setPosition(5f, 5f) }
+            fpsLabel = res.getLabel().apply { setPosition(5f, 5f) }
         }
 
         updateScreen(battleScreen)

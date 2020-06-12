@@ -57,8 +57,15 @@ class Resources : Disposable {
 
     fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
 
-    fun getDefaultLabel(text: String = "", color: Color = Color.WHITE) = Label(text, getLabelStyle(color)).apply {
-        setFontScale(0.75f)
+    fun getLabel(
+        text: String = "",
+        color: Color = Color.WHITE,
+        x: Float = 0f,
+        y: Float = 0f,
+        fontScale: Float = 0.7f
+    ) = Label(text, getLabelStyle(color)).apply {
+        setPosition(x, y)
+        setFontScale(fontScale)
     }
 
     fun getSquare(pieceType: PieceType) = tetrisSheet[0][pieceType.index]

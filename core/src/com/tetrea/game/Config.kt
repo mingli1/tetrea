@@ -12,7 +12,7 @@ const val S_HEIGHT = V_HEIGHT * V_SCALE
 const val TITLE = "Tetrea"
 
 const val V_SYNC_ENABLED = false
-const val RESIZABLE = true
+const val RESIZABLE = false
 const val BG_FPS = 10
 const val FG_FPS = 60
 const val DELTA_TIME_BOUND = 1 / 30f
