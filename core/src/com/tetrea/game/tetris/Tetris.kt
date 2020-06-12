@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.extension.default
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
+import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.model.Piece
 import com.tetrea.game.tetris.model.Square
 import com.tetrea.game.tetris.model.Unit
@@ -15,11 +16,11 @@ class Tetris(
     private val screenX: Float,
     private val screenY: Float,
     private val config: TetrisConfig,
-    private val res: Resources,
-    private val startCountdown: () -> kotlin.Unit
+    private val res: Resources
 ) {
 
     var started = false
+    lateinit var scene: BattleScene
 
     private val PIECES_POOL = mutableListOf(
         Piece(this, PieceType.L),
@@ -274,6 +275,16 @@ class Tetris(
         totalAttack += attack
         cancelGarbage()
         linesSent += attack
+
+        if (attack > 0) {
+            currPiece?.let {
+                scene.spawnNumberParticle(
+                    attack,
+                    screenX + it.squares[0].x * SQUARE_SIZE,
+                    screenY + it.squares[0].y * SQUARE_SIZE
+                )
+            }
+        }
     }
 
     fun generateQueue() {
@@ -312,7 +323,7 @@ class Tetris(
 
         if (countdown) {
             currPiece = null
-            startCountdown()
+            scene.startCountdown()
         }
     }
 

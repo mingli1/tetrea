@@ -8,6 +8,7 @@ import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.Color
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
+import com.tetrea.game.scene.effect.NumberParticleSpawner
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
 
@@ -32,6 +33,7 @@ class BattleScene(
     private val timeLabel: Label
     private val apmLabel: Label
     private val ppsLabel: Label
+    private val numberParticleSpawner: NumberParticleSpawner
 
     init {
         stage.addActor(countdownLabel)
@@ -84,6 +86,8 @@ class BattleScene(
         stage.addActor(ppsLabel)
 
         startCountdown()
+
+        numberParticleSpawner = NumberParticleSpawner(res, stage)
     }
 
     fun update(dt: Float) {
@@ -109,6 +113,7 @@ class BattleScene(
                 countdownTimer = 0f
             }
         }
+        numberParticleSpawner.update(dt)
     }
 
     fun startCountdown() {
@@ -119,5 +124,17 @@ class BattleScene(
         countdownLabel.setText(countdown)
         countdownTimer = 0f
         startCountdown = true
+    }
+
+    fun spawnNumberParticle(lines: Int, x: Float, y: Float) {
+        numberParticleSpawner.spawn(
+            lines,
+            when (lines) {
+                1, 2, 3 -> com.badlogic.gdx.graphics.Color.WHITE
+                4, 5, 6, 7 -> Color.GAME_YELLOW
+                else -> Color.GAME_LIGHT_BLUE
+            },
+            x, y
+        )
     }
 }
