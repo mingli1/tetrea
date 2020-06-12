@@ -3,6 +3,7 @@ package com.tetrea.game.tetris
 data class TetrisConfig(
     val width: Int = 10,
     val height: Int = 20,
+    val startDelay: Int = 3,
     val bagSize: Int = 7,
     val numPreviews: Int = 5,
     val gravity: Float = 1f,

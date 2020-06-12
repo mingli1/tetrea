@@ -1,5 +1,6 @@
 package com.tetrea.game.input
 
+import com.tetrea.game.extension.default
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.util.Rotation
 
@@ -17,29 +18,32 @@ class TetrisInputHandler(
     private var startSoftDrop = false
 
     fun update(dt: Float) {
-        leftTuning.update(dt)
-        rightTuning.update(dt)
+        if (tetris.started) {
+            leftTuning.update(dt)
+            rightTuning.update(dt)
 
-        if (startSoftDrop) {
-            if (sds == 0f) tetris.instantSoftDrop()
-            else {
-                sdTimer += dt
-                if (sdTimer >= sds) {
-                    tetris.currPiece.move(0, -1)
-                    sdTimer = 0f
+            if (startSoftDrop) {
+                if (sds == 0f) tetris.instantSoftDrop()
+                else {
+                    sdTimer += dt
+                    if (sdTimer >= sds) {
+                        tetris.currPiece?.move(0, -1)
+                        sdTimer = 0f
+                    }
                 }
             }
         }
     }
 
     fun onRight(down: Boolean) {
+        if (!tetris.started) return
         if (down) {
             tetris.rightHeld = true
 
             if (leftTuning.inProgress) leftTuning.reset()
             rightTuning.start()
-            tetris.currPiece.move(1, 0)
-            if (tetris.currPiece.canMove(1, 0)) tetris.toggleLockDelay2(true)
+            tetris.currPiece?.move(1, 0)
+            if (tetris.currPiece?.canMove(1, 0).default(false)) tetris.toggleLockDelay2(true)
         } else {
             tetris.rightHeld = false
 
@@ -50,13 +54,14 @@ class TetrisInputHandler(
     }
 
     fun onLeft(down: Boolean) {
+        if (!tetris.started) return
         if (down) {
             tetris.leftHeld = true
 
             if (rightTuning.inProgress) rightTuning.reset()
             leftTuning.start()
-            tetris.currPiece.move(-1, 0)
-            if (tetris.currPiece.canMove(-1, 0)) tetris.toggleLockDelay2(true)
+            tetris.currPiece?.move(-1, 0)
+            if (tetris.currPiece?.canMove(-1, 0).default(false)) tetris.toggleLockDelay2(true)
         } else {
             tetris.leftHeld = false
 
@@ -67,33 +72,40 @@ class TetrisInputHandler(
     }
 
     fun softDrop(down: Boolean) {
+        if (!tetris.started) return
         startSoftDrop = down
     }
 
     fun hardDrop() {
+        if (!tetris.started) return
         tetris.hardDrop()
     }
 
     fun rotateClockwise() {
+        if (!tetris.started) return
         tetris.onRotate()
-        tetris.currPiece.rotate(Rotation.Clockwise)
+        tetris.currPiece?.rotate(Rotation.Clockwise)
     }
 
     fun rotateCounterClockwise() {
+        if (!tetris.started) return
         tetris.onRotate()
-        tetris.currPiece.rotate(Rotation.Counterclockwise)
+        tetris.currPiece?.rotate(Rotation.Counterclockwise)
     }
 
     fun rotate180() {
+        if (!tetris.started) return
         tetris.onRotate()
-        tetris.currPiece.rotate(Rotation.OneEighty)
+        tetris.currPiece?.rotate(Rotation.OneEighty)
     }
 
     fun onHold() {
+        if (!tetris.started) return
         tetris.holdCurrPiece()
     }
 
     fun onRestart() {
+        if (!tetris.started) return
         tetris.reset()
     }
 }

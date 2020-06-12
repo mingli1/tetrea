@@ -47,8 +47,8 @@ class InputTuning(
 
     private fun movePiece() {
         when (right) {
-            false -> tetris.currPiece.move(-1, 0)
-            true -> tetris.currPiece.move(1, 0)
+            false -> tetris.currPiece?.move(-1, 0)
+            true -> tetris.currPiece?.move(1, 0)
         }
     }
 }

@@ -2,6 +2,7 @@ package com.tetrea.game.tetris
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.MathUtils
+import com.tetrea.game.extension.default
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.tetris.model.Piece
@@ -14,8 +15,11 @@ class Tetris(
     private val screenX: Float,
     private val screenY: Float,
     private val config: TetrisConfig,
-    private val res: Resources
+    private val res: Resources,
+    private val startCountdown: () -> kotlin.Unit
 ) {
+
+    var started = false
 
     private val PIECES_POOL = mutableListOf(
         Piece(this, PieceType.L),
@@ -36,7 +40,7 @@ class Tetris(
         Piece(this, PieceType.O)
     )
 
-    lateinit var currPiece: Piece
+    var currPiece: Piece? = null
     val stats = TetrisStats()
 
     var canHold = true
@@ -62,7 +66,7 @@ class Tetris(
     private var attack = 0
 
     private var clockTimer = 0f
-    private var gravityTimer = Timer(config.gravity, { currPiece.move(0, -1) }, true)
+    private var gravityTimer = Timer(config.gravity, { currPiece?.move(0, -1) }, true)
 
     private var lockDelay1Timer = 0f
     private var lockDelay2Timer = 0f
@@ -76,9 +80,12 @@ class Tetris(
 
     private var solidGarbageRow = 0
 
-    init {
-        reset()
-        queueGarbage(4)
+    init { reset(countdown = false) }
+
+    fun start() {
+        reset(countdown = false)
+        currPiece = getNextPiece()
+        started = true
     }
 
     fun update(dt: Float) {
@@ -93,7 +100,7 @@ class Tetris(
 
         gravityTimer.update(dt)
 
-        if (!currPiece.canMove(0, -1) && !startLockDelay2) {
+        if (!currPiece?.canMove(0, -1).default(true) && !startLockDelay2) {
             if (startRotationTimer) {
                 longRotationTimer += dt
                 rotationTimer += dt
@@ -114,7 +121,7 @@ class Tetris(
         }
 
         if (startLockDelay2) {
-            if ((leftHeld && !currPiece.canMove(-1, 0)) || (rightHeld && !currPiece.canMove(1, 0))) {
+            if ((leftHeld && !currPiece?.canMove(-1, 0).default(true)) || (rightHeld && !currPiece?.canMove(1, 0).default(true))) {
                 startLockDelay2 = false
             } else {
                 lockDelay2Timer += dt
@@ -164,7 +171,7 @@ class Tetris(
         }
         // top out
         if (numLines >= config.height) reset()
-        if (!currPiece.canMove(0, -1)) reset()
+        if (!currPiece?.canMove(0, -1).default(true)) reset()
     }
 
     fun isWithinHeight(y: Int) = y < config.height * 2
@@ -173,27 +180,27 @@ class Tetris(
 
     fun hardDrop() {
         instantSoftDrop()
-        currPiece.lock()
-        if (currPiece.isToppedOut()) reset()
+        currPiece?.lock()
+        if (currPiece?.isToppedOut().default(false)) reset()
         else currPiece = getNextPiece()
     }
 
     fun instantDas(right: Boolean) {
         for (i in 0 until config.width) {
-            if (!currPiece.move(if (right) 1 else -1, 0)) break
+            if (!currPiece?.move(if (right) 1 else -1, 0).default(true)) break
         }
     }
 
     fun instantSoftDrop() {
         for (i in 0 until config.height + 1) {
-            if (!currPiece.move(0, -1)) break
+            if (!currPiece?.move(0, -1).default(true)) break
         }
     }
 
     fun holdCurrPiece() {
         if (canHold) {
             val piece = holdPiece
-            holdPiece = HOLD_POOL.find { it.pieceType == currPiece.pieceType }?.apply { init(0, 0) }
+            holdPiece = HOLD_POOL.find { it.pieceType == currPiece?.pieceType }?.apply { init(0, 0) }
             currPiece = piece?.pieceType?.let { hold ->
                 PIECES_POOL.find { it.pieceType == hold }?.apply { init(4, config.height + 1) }
             } ?: getNextPiece()
@@ -228,7 +235,7 @@ class Tetris(
 
         val applyB2bBonus = b2b > 0
 
-        if (currPiece.pieceType == PieceType.T && currPiece.isTwist()) {
+        if (currPiece?.pieceType == PieceType.T && currPiece?.isTwist().default(false)) {
             applyTSpin(numLinesToClear, applyB2bBonus)
             b2b++
             totalB2b++
@@ -269,7 +276,14 @@ class Tetris(
         linesSent += attack
     }
 
-    fun reset() {
+    fun generateQueue() {
+        bag.clear()
+        repeat(2) { addToBag() }
+    }
+
+    fun reset(countdown: Boolean = true) {
+        started = false
+
         for (y in 0 until config.height * 2) {
             for (x in 0 until config.width) {
                 content[y][x].let {
@@ -278,9 +292,6 @@ class Tetris(
                 }
             }
         }
-        bag.clear()
-        repeat(2) { addToBag() }
-        currPiece = getNextPiece()
         holdPiece = null
         canHold = true
         piecesPlaced = 0
@@ -298,6 +309,11 @@ class Tetris(
         garbageTimer.reset()
 
         stats.reset()
+
+        if (countdown) {
+            currPiece = null
+            startCountdown()
+        }
     }
 
     fun toggleLockDelay2(start: Boolean) {
@@ -327,14 +343,17 @@ class Tetris(
                 }
             }
         }
-        currPiece.squares.forEach {
-            batch.draw(res.getSquare(currPiece.pieceType),
-                screenX + it.x * SQUARE_SIZE,
-                screenY + it.y * SQUARE_SIZE)
-            batch.draw(res.getGhost(currPiece.pieceType),
-                screenX + it.x * SQUARE_SIZE,
-                screenY + getGhostPieceY(it) * SQUARE_SIZE)
+        currPiece?.let { currPiece ->
+            currPiece.squares.forEach {
+                batch.draw(res.getSquare(currPiece.pieceType),
+                    screenX + it.x * SQUARE_SIZE,
+                    screenY + it.y * SQUARE_SIZE)
+                batch.draw(res.getGhost(currPiece.pieceType),
+                    screenX + it.x * SQUARE_SIZE,
+                    screenY + getGhostPieceY(it) * SQUARE_SIZE)
+            }
         }
+
         holdPiece?.let { piece ->
             piece.squares.forEach {
                 batch.draw(res.getSquare(piece.pieceType),
@@ -389,7 +408,7 @@ class Tetris(
         }
         // top out
         if (lines >= config.height) reset()
-        if (!currPiece.canMove(0, -1)) reset()
+        if (!currPiece?.canMove(0, -1).default(true)) reset()
 
         garbage.clear()
     }
@@ -431,7 +450,7 @@ class Tetris(
         var y = square.y
         var offset = -1
         for (i in 0 until config.height + 1) {
-            if (!currPiece.canMove(0, offset)) break
+            if (!currPiece?.canMove(0, offset).default(true)) break
             y--
             offset--
         }
