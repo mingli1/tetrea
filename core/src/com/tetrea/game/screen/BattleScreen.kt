@@ -3,6 +3,7 @@ package com.tetrea.game.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.tetrea.game.TetreaGame
 import com.tetrea.game.extension.formatMMSS
@@ -28,6 +29,8 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     private var boardY = 0f
 
     private lateinit var timeLabel: Label
+    private lateinit var apmLabel: Label
+    private lateinit var ppsLabel: Label
 
     override fun show() {
         super.show()
@@ -47,7 +50,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         Gdx.input.inputProcessor = multiplexer
 
-        addLabels()
+        addStatActors()
     }
 
     override fun update(dt: Float) {
@@ -55,6 +58,8 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         inputHandler.update(dt)
 
         timeLabel.setText(tetris.stats.time.formatMMSS())
+        apmLabel.setText(String.format("%.1f", tetris.stats.apm + 245.6))
+        ppsLabel.setText(String.format("%.2f", tetris.stats.pps))
     }
 
     override fun render(dt: Float) {
@@ -74,18 +79,52 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         stage.draw()
     }
 
-    private fun addLabels() {
+    private fun addStatActors() {
         stage.addActor(game.res.getLabel(
             "TIME",
             x = boardX + (config.width * SQUARE_SIZE) + 8f,
-            y = boardY + 12f
+            y = boardY + 12f,
+            fontScale = 0.5f
         ))
         timeLabel = game.res.getLabel(
-            "",
             x = boardX + (config.width * SQUARE_SIZE) + 8f,
-            y = boardY + 6f,
+            y = boardY + 8f,
             fontScale = 1f
         )
         stage.addActor(timeLabel)
+
+        stage.addActor(Image(game.res.getTexture("apm_icon")).apply {
+            x = boardX - 6f
+            y = boardY - 26f
+        })
+        stage.addActor(game.res.getLabel(
+            "APM",
+            x = boardX + 16f,
+            y = boardY - 18f,
+            fontScale = 0.5f
+        ))
+        apmLabel = game.res.getLabel(
+            x = boardX + 16f,
+            y = boardY - 22f,
+            fontScale = 1f
+        )
+        stage.addActor(apmLabel)
+
+        stage.addActor(Image(game.res.getTexture("pps_icon")).apply {
+            x = boardX + 72f
+            y = boardY - 26f
+        })
+        stage.addActor(game.res.getLabel(
+            "PPS",
+            x = boardX + 90f,
+            y = boardY - 18f,
+            fontScale = 0.5f
+        ))
+        ppsLabel = game.res.getLabel(
+            x = boardX + 90f,
+            y = boardY - 22f,
+            fontScale = 1f
+        )
+        stage.addActor(ppsLabel)
     }
 }
