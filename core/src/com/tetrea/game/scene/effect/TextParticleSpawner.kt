@@ -4,9 +4,9 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Pool
 import com.tetrea.game.res.Resources
-import java.util.*
+import java.util.Random
 
-class NumberParticleSpawner(res: Resources, stage: Stage) {
+class TextParticleSpawner(res: Resources, stage: Stage) {
 
     private val particles = mutableListOf<NumberParticle>()
     private val pool: Pool<NumberParticle>
@@ -18,10 +18,26 @@ class NumberParticleSpawner(res: Resources, stage: Stage) {
         }
     }
 
-    fun spawn(number: Int, color: Color, x: Float, y: Float) {
+    fun spawn(
+        text: String,
+        color: Color,
+        x: Float,
+        y: Float,
+        lifetime: Float = DEFAULT_LIFETIME,
+        fontScale: Float = DEFAULT_FONT_SCALE,
+        zi: Float = DEFAULT_INITIAL_Z,
+        vxScale: Float = DEFAULT_VX_SCALING,
+        vyScale: Float = DEFAULT_VY_SCALING,
+        vzScale: Float = DEFAULT_VZ_SCALING,
+        zNegVxScale: Float = DEFAULT_Z_NEG_VX_SCALING,
+        zNegVyScale: Float = DEFAULT_Z_NEG_VY_SCALING,
+        zNegVzScale: Float = DEFAULT_Z_NEG_VZ_SCALING,
+        zPosVzScale: Float = DEFAULT_Z_POS_VZ_SCALING,
+        useGaussian: Boolean = true
+    ) {
         val particle = pool.obtain().apply {
-            create(number, color)
-            initVectors(x, y)
+            create(text, color, fontScale, lifetime)
+            initVectors(x, y, zi, vxScale, vyScale, vzScale, zNegVxScale, zNegVyScale, zNegVzScale, zPosVzScale, useGaussian)
         }
         particles.add(particle)
     }
@@ -36,10 +52,5 @@ class NumberParticleSpawner(res: Resources, stage: Stage) {
                 }
             }
         }
-    }
-
-    fun reset() {
-        particles.clear()
-        pool.clear()
     }
 }

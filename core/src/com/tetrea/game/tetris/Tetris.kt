@@ -9,6 +9,7 @@ import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.model.Piece
 import com.tetrea.game.tetris.model.Square
 import com.tetrea.game.tetris.model.Unit
+import com.tetrea.game.tetris.util.LineClearType
 import com.tetrea.game.tetris.util.PieceType
 import com.tetrea.game.util.Timer
 
@@ -234,12 +235,15 @@ class Tetris(
 
         attack += config.comboTable(combo)
 
+        if (combo > 1) scene.spawnComboParticle(combo)
+
         val applyB2bBonus = b2b > 0
 
         if (currPiece?.pieceType == PieceType.T && currPiece?.isTwist().default(false)) {
             applyTSpin(numLinesToClear, applyB2bBonus)
             b2b++
             totalB2b++
+            if (b2b > 1) scene.spawnB2BParticle(b2b)
             return
         }
         applyLineClears(numLinesToClear, applyB2bBonus)
@@ -249,6 +253,8 @@ class Tetris(
             b2b++
             totalB2b++
         }
+
+        if (b2b > 1) scene.spawnB2BParticle(b2b)
     }
 
     fun clearLines() {
@@ -271,6 +277,7 @@ class Tetris(
         if (content.all { row -> row.all { !it.filled } }) {
             stats.numPC++
             attack += config.attackPC
+            scene.spawnPerfectClearParticle()
         }
         totalAttack += attack
         cancelGarbage()
@@ -535,14 +542,17 @@ class Tetris(
             2 -> {
                 stats.numDouble++
                 attack += config.attackDouble
+                scene.spawnLineClearParticle(LineClearType.Double)
             }
             3 -> {
                 stats.numTriple++
                 attack += config.attackTriple
+                scene.spawnLineClearParticle(LineClearType.Triple)
             }
             4 -> {
                 stats.numQuad++
                 attack += config.attackQuad + (if (b2b) config.b2bBonus else 0)
+                scene.spawnLineClearParticle(LineClearType.Quad)
             }
         }
     }
@@ -552,14 +562,17 @@ class Tetris(
             1 -> {
                 stats.numTSS++
                 attack += config.attackTSS + (if (b2b) config.b2bBonus else 0)
+                scene.spawnLineClearParticle(LineClearType.TSS)
             }
             2 -> {
                 stats.numTSD++
                 attack += config.attackTSD + (if (b2b) config.b2bBonus else 0)
+                scene.spawnLineClearParticle(LineClearType.TSD)
             }
             3 -> {
                 stats.numTST++
                 attack += config.attackTST + (if (b2b) config.b2bBonus else 0)
+                scene.spawnLineClearParticle(LineClearType.TST)
             }
         }
     }

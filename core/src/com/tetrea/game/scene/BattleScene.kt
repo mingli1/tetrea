@@ -8,9 +8,10 @@ import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.Color
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
-import com.tetrea.game.scene.effect.NumberParticleSpawner
+import com.tetrea.game.scene.effect.TextParticleSpawner
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
+import com.tetrea.game.tetris.util.LineClearType
 
 class BattleScene(
     private val boardX: Float,
@@ -33,7 +34,7 @@ class BattleScene(
     private val timeLabel: Label
     private val apmLabel: Label
     private val ppsLabel: Label
-    private val numberParticleSpawner: NumberParticleSpawner
+    private val textParticleSpawner: TextParticleSpawner
 
     init {
         stage.addActor(countdownLabel)
@@ -87,7 +88,7 @@ class BattleScene(
 
         startCountdown()
 
-        numberParticleSpawner = NumberParticleSpawner(res, stage)
+        textParticleSpawner = TextParticleSpawner(res, stage)
     }
 
     fun update(dt: Float) {
@@ -113,7 +114,7 @@ class BattleScene(
                 countdownTimer = 0f
             }
         }
-        numberParticleSpawner.update(dt)
+        textParticleSpawner.update(dt)
     }
 
     fun startCountdown() {
@@ -127,14 +128,90 @@ class BattleScene(
     }
 
     fun spawnNumberParticle(lines: Int, x: Float, y: Float) {
-        numberParticleSpawner.spawn(
-            lines,
+        textParticleSpawner.spawn(
+            lines.toString(),
             when (lines) {
-                1, 2, 3 -> com.badlogic.gdx.graphics.Color.WHITE
+                1, 2, 3 -> Color.GAME_WHITE
                 4, 5, 6, 7 -> Color.GAME_YELLOW
                 else -> Color.GAME_LIGHT_BLUE
             },
             x, y
+        )
+    }
+
+    fun spawnLineClearParticle(type: LineClearType) {
+        textParticleSpawner.spawn(
+            type.desc,
+            type.color,
+            boardX + (config.width / 2) * SQUARE_SIZE,
+            boardY + (config.height + 3) * SQUARE_SIZE,
+            zi = 0f,
+            vxScale = 0f,
+            vyScale = 0.7f,
+            vzScale = 0f,
+            zNegVxScale = 0f,
+            zNegVyScale = 0f,
+            zNegVzScale = 0f,
+            zPosVzScale = 0f,
+            useGaussian = false
+        )
+    }
+
+    fun spawnPerfectClearParticle() {
+        textParticleSpawner.spawn(
+            LineClearType.PerfectClear.desc,
+            LineClearType.PerfectClear.color,
+            boardX + (config.width / 2) * SQUARE_SIZE,
+            boardY + (config.height / 2) * SQUARE_SIZE,
+            zi = 0f,
+            vxScale = 0f,
+            vyScale = 0.7f,
+            vzScale = 0f,
+            zNegVxScale = 0f,
+            zNegVyScale = 0f,
+            zNegVzScale = 0f,
+            zPosVzScale = 0f,
+            useGaussian = false
+        )
+    }
+
+    fun spawnComboParticle(combo: Int) {
+        textParticleSpawner.spawn(
+            "COMBO X${combo - 1}",
+            Color.GAME_WHITE,
+            boardX - 38f,
+            boardY + config.height * SQUARE_SIZE + 4f,
+            zi = 0f,
+            lifetime = 1.5f,
+            vxScale = 0f,
+            vyScale = 0.5f,
+            vzScale = 0f,
+            zNegVxScale = 0f,
+            zNegVyScale = 0f,
+            zNegVzScale = 0f,
+            zPosVzScale = 0f,
+            useGaussian = false,
+            fontScale = 0.75f
+        )
+    }
+
+    fun spawnB2BParticle(b2b: Int) {
+        textParticleSpawner.spawn(
+            "B2B X${b2b - 1}",
+            Color.GAME_ORANGE,
+            boardX + config.width * SQUARE_SIZE + 24f,
+            boardY + config.height * SQUARE_SIZE + 4f,
+            lifetime = 1.5f,
+            zi = 0f,
+            vxScale = 0f,
+            vyScale = 0.5f,
+            vzScale = 0f,
+            zNegVxScale = 0f,
+            zNegVyScale = 0f,
+            zNegVzScale = 0f,
+            zPosVzScale = 0f,
+            useGaussian = false,
+            fontScale = 0.75f
         )
     }
 }

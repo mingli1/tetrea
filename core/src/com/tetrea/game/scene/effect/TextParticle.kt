@@ -4,11 +4,13 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Pool
 import com.tetrea.game.res.Resources
 import java.util.*
 
 const val DEFAULT_LIFETIME = 1f
+const val DEFAULT_FONT_SCALE = 1.5f
 
 const val DEFAULT_INITIAL_Z = 4f
 const val DEFAULT_VX_SCALING = 0.1f
@@ -25,7 +27,7 @@ class NumberParticle(
     private val stage: Stage
 ) : Pool.Poolable {
 
-    val position = Vector3()
+    private val position = Vector3()
     private val velocity = Vector3()
 
     private var zNegVxScale = 0f
@@ -33,15 +35,16 @@ class NumberParticle(
     private var zNegVzScale = 0f
     private var zPosVzScale = 0f
 
-    private var label = res.getLabel(fontScale = 1.5f)
+    private var label = res.getLabel().apply { setAlignment(Align.bottom) }
 
     var shouldRemove = false
     private var stateTime = 0f
     private var lifetime = 0f
 
-    fun create(number: Int, color: Color, lifetime: Float = DEFAULT_LIFETIME) {
-        label.setText(number)
+    fun create(text: String, color: Color, fontScale: Float = DEFAULT_FONT_SCALE, lifetime: Float = DEFAULT_LIFETIME) {
+        label.setText(text)
         label.color = color
+        label.setFontScale(fontScale)
         label.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(lifetime)))
         this.lifetime = lifetime
         stage.addActor(label)
@@ -57,13 +60,14 @@ class NumberParticle(
         zNegVxScale: Float = DEFAULT_Z_NEG_VX_SCALING,
         zNegVyScale: Float = DEFAULT_Z_NEG_VY_SCALING,
         zNegVzScale: Float = DEFAULT_Z_NEG_VZ_SCALING,
-        zPosVzScale: Float = DEFAULT_Z_POS_VZ_SCALING
+        zPosVzScale: Float = DEFAULT_Z_POS_VZ_SCALING,
+        useGaussian: Boolean = true
     ) {
         position.set(originX, originY, zi)
 
-        val vx = rand.nextGaussian().toFloat() * vxScale
-        val vy = rand.nextGaussian().toFloat() * vyScale
-        val vz = rand.nextFloat() * vzScale + zi
+        val vx = if (useGaussian) rand.nextGaussian().toFloat() * vxScale else vxScale
+        val vy = if (useGaussian) rand.nextGaussian().toFloat() * vyScale else vyScale
+        val vz = if (useGaussian) rand.nextFloat() * vzScale + zi else vzScale + zi
         velocity.set(vx, vy, vz)
 
         this.zNegVxScale = zNegVxScale
