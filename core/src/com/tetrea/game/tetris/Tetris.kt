@@ -528,14 +528,17 @@ class Tetris(
 
     private fun applyLineClears(lines: Int, b2b: Boolean) {
         when (lines) {
-            1 -> stats.numSingle++
+            1 -> {
+                stats.numSingle++
+                attack += config.attackSingle
+            }
             2 -> {
                 stats.numDouble++
-                attack += config.attackSingle
+                attack += config.attackDouble
             }
             3 -> {
                 stats.numTriple++
-                attack += config.attackDouble
+                attack += config.attackTriple
             }
             4 -> {
                 stats.numQuad++
