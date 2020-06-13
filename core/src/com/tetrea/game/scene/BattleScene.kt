@@ -132,7 +132,7 @@ class BattleScene(
             lines.toString(),
             when (lines) {
                 1, 2, 3 -> Color.GAME_WHITE
-                4, 5, 6, 7 -> Color.GAME_YELLOW
+                4, 5, 6 -> Color.GAME_YELLOW
                 else -> Color.GAME_LIGHT_BLUE
             },
             x, y
