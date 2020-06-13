@@ -48,6 +48,7 @@ class Resources : Disposable {
         loadTexture("red")
         loadTexture("tetris_buttons")
         loadTexture("tetris_board_bg")
+        loadTexture("item_slots_bg")
         loadTexture("apm_icon")
         loadTexture("pps_icon")
         loadTexture("battle_bg_sky")

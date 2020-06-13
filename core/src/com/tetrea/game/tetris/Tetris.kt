@@ -345,7 +345,6 @@ class Tetris(
     }
 
     fun render(batch: Batch) {
-        batch.draw(res.getTexture("tetris_board_bg"), screenX - 66, screenY - 1)
         for (y in 0 until config.height * 2) {
             for (x in 0 until config.width) {
                 if (y < config.height) {

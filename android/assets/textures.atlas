@@ -6,7 +6,7 @@ filter: Nearest,Nearest
 repeat: none
 apm_icon
   rotate: false
-  xy: 268, 805
+  xy: 590, 887
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
@@ -23,6 +23,13 @@ font
   xy: 268, 905
   size: 512, 29
   orig: 512, 29
+  offset: 0, 0
+  index: -1
+item_slots_bg
+  rotate: false
+  xy: 268, 646
+  size: 60, 175
+  orig: 60, 175
   offset: 0, 0
   index: -1
 pps_icon

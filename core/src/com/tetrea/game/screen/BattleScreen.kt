@@ -61,6 +61,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         game.batch.begin()
 
         game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
+        scene.render(game.batch)
         tetris.render(game.batch)
 
         game.batch.end()

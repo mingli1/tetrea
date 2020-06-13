@@ -1,5 +1,6 @@
 package com.tetrea.game.scene
 
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -19,7 +20,7 @@ class BattleScene(
     private val tetris: Tetris,
     private val config: TetrisConfig,
     stage: Stage,
-    res: Resources
+    private val res: Resources
 ) {
 
     private val countdownLabel: Label = res.getLabel(color = Color.GAME_YELLOW, fontScale = 2f).apply {
@@ -115,6 +116,11 @@ class BattleScene(
             }
         }
         textParticleSpawner.update(dt)
+    }
+
+    fun render(batch: Batch) {
+        batch.draw(res.getTexture("tetris_board_bg"), boardX - 66, boardY - 1)
+        batch.draw(res.getTexture("item_slots_bg"), boardX - 66, boardY - 1)
     }
 
     fun startCountdown() {
