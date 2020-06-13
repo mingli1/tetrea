@@ -50,6 +50,7 @@ class Resources : Disposable {
         loadTexture("tetris_board_bg")
         loadTexture("apm_icon")
         loadTexture("pps_icon")
+        loadTexture("battle_bg_sky")
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)

@@ -54,12 +54,13 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     override fun render(dt: Float) {
         super.render(dt)
 
-        Gdx.gl.glClearColor(40 / 255f, 40 / 255f, 40 / 255f, 1f)
+        Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
 
         game.batch.projectionMatrix = cam.combined
         game.batch.begin()
 
+        game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
         tetris.render(game.batch)
 
         game.batch.end()
