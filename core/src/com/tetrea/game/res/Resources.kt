@@ -52,6 +52,7 @@ class Resources : Disposable {
         loadTexture("apm_icon")
         loadTexture("pps_icon")
         loadTexture("battle_bg_sky")
+        loadTexture("score_header")
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)
@@ -66,7 +67,7 @@ class Resources : Disposable {
         color: Color = Color.WHITE,
         x: Float = 0f,
         y: Float = 0f,
-        fontScale: Float = 0.7f
+        fontScale: Float = 0.75f
     ) = Label(text, getLabelStyle(color)).apply {
         setPosition(x, y)
         setFontScale(fontScale)

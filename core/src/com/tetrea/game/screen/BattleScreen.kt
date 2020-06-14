@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.TetreaGame
+import com.tetrea.game.battle.BattleConfig
+import com.tetrea.game.battle.BattleState
 import com.tetrea.game.input.TetrisAndroidInput
 import com.tetrea.game.input.TetrisInputHandler
 import com.tetrea.game.input.TetrisKeyInput
@@ -17,6 +19,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
     private lateinit var tetris: Tetris
     private lateinit var scene: BattleScene
+    private lateinit var state: BattleState
 
     private val multiplexer = InputMultiplexer()
     private lateinit var inputHandler: TetrisInputHandler
@@ -28,12 +31,15 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         val config = TetrisConfig()
         val boardX = stage.width / 2 - (config.width * SQUARE_SIZE) / 2f + 3
-        val boardY = (stage.height / 2 - (config.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 0f else 32f
+        val boardY = (stage.height / 2 - (config.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 16f else 32f
+
+        val battleConfig = BattleConfig(15)
 
         tetris = Tetris(boardX, boardY, TetrisConfig(), game.res)
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
-        scene = BattleScene(boardX, boardY, tetris, config, stage, game.res)
+        state = BattleState(battleConfig)
+        scene = BattleScene(boardX, boardY, tetris, state, config, stage, game.res)
         tetris.scene = scene
 
         if (isAndroid()) androidInput = TetrisAndroidInput(stage, inputHandler, game.res)
@@ -49,6 +55,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         if (tetris.started) tetris.update(dt)
         inputHandler.update(dt)
         scene.update(dt)
+        state.update(dt)
     }
 
     override fun render(dt: Float) {

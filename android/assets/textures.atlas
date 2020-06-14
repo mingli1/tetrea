@@ -27,7 +27,7 @@ font
   index: -1
 item_slots_bg
   rotate: false
-  xy: 268, 646
+  xy: 268, 626
   size: 60, 175
   orig: 60, 175
   offset: 0, 0
@@ -44,6 +44,13 @@ red
   xy: 251, 281
   size: 1, 1
   orig: 1, 1
+  offset: 0, 0
+  index: -1
+score_header
+  rotate: false
+  xy: 268, 803
+  size: 252, 18
+  orig: 252, 18
   offset: 0, 0
   index: -1
 tetris

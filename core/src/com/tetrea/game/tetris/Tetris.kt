@@ -2,6 +2,7 @@ package com.tetrea.game.tetris
 
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.MathUtils
+import com.tetrea.game.battle.BattleState
 import com.tetrea.game.extension.default
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
@@ -22,6 +23,7 @@ class Tetris(
 
     var started = false
     lateinit var scene: BattleScene
+    lateinit var state: BattleState
 
     private val PIECES_POOL = mutableListOf(
         Piece(this, PieceType.L),

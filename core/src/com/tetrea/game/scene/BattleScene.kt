@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
+import com.tetrea.game.battle.BattleState
 import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.Color
 import com.tetrea.game.res.Resources
@@ -18,12 +19,24 @@ class BattleScene(
     private val boardX: Float,
     private val boardY: Float,
     private val tetris: Tetris,
+    private val state: BattleState,
     private val config: TetrisConfig,
-    stage: Stage,
+    private val stage: Stage,
     private val res: Resources
 ) {
 
-    private val countdownLabel: Label = res.getLabel(color = Color.GAME_YELLOW, fontScale = 2f).apply {
+    private val playerHeaderLabel = res.getLabel(fontScale = 1f).apply {
+        setSize(99f, 16f)
+        setAlignment(Align.right)
+        setPosition(-3f, this@BattleScene.stage.height - 23)
+    }
+    private val enemyHeaderLabel = res.getLabel(fontScale = 1f).apply {
+        setSize(99f, 16f)
+        setAlignment(Align.left)
+        setPosition(168f, this@BattleScene.stage.height - 23)
+    }
+
+    private val countdownLabel = res.getLabel(color = Color.GAME_YELLOW, fontScale = 2f).apply {
         setSize(config.width * SQUARE_SIZE.toFloat(), config.height * SQUARE_SIZE.toFloat())
         setAlignment(Align.center)
         setPosition(boardX, boardY)
@@ -38,6 +51,18 @@ class BattleScene(
     private val textParticleSpawner: TextParticleSpawner
 
     init {
+        stage.addActor(res.getLabel(
+            state.firstToText,
+            x = 107f,
+            y = stage.height - 23f,
+            fontScale = 1f
+        ).apply {
+            setSize(50f, 16f)
+            setAlignment(Align.center)
+        })
+        stage.addActor(playerHeaderLabel)
+        stage.addActor(enemyHeaderLabel)
+
         stage.addActor(countdownLabel)
 
         stage.addActor(res.getLabel(
@@ -93,6 +118,9 @@ class BattleScene(
     }
 
     fun update(dt: Float) {
+        playerHeaderLabel.setText(state.playerText)
+        enemyHeaderLabel.setText(state.enemyText)
+
         timeLabel.setText(tetris.stats.time.formatMMSS())
         apmLabel.setText(String.format("%.1f", tetris.stats.apm))
         ppsLabel.setText(String.format("%.2f", tetris.stats.pps))
@@ -119,6 +147,7 @@ class BattleScene(
     }
 
     fun render(batch: Batch) {
+        batch.draw(res.getTexture("score_header"), 6f, stage.height - 24f)
         batch.draw(res.getTexture("tetris_board_bg"), boardX - 66, boardY - 1)
         batch.draw(res.getTexture("item_slots_bg"), boardX - 66, boardY - 1)
     }
