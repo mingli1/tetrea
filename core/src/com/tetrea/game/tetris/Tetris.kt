@@ -398,7 +398,7 @@ class Tetris(
                     y + it.y * SQUARE_SIZE)
             }
         }
-        batch.draw(res.getTexture("red"), screenX - 5, screenY, 4f, getGarbageBarHeight())
+        state.scene.garbageBar.render(batch)
     }
 
     private fun receiveGarbage() {

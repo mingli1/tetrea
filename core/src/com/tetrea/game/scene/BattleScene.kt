@@ -1,6 +1,9 @@
 package com.tetrea.game.scene
 
+import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -11,6 +14,7 @@ import com.tetrea.game.res.Color
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.scene.component.AnimatedBar
+import com.tetrea.game.scene.component.HealthBar
 import com.tetrea.game.scene.effect.TextParticleSpawner
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
@@ -51,7 +55,7 @@ class BattleScene(
     private val ppsLabel: Label
     private val textParticleSpawner: TextParticleSpawner
 
-    private val enemyHpBar = AnimatedBar(
+    private val enemyHpBar = HealthBar(
         movementDelay = 0.75f,
         x = 37f,
         y = stage.height - 44,
@@ -67,6 +71,17 @@ class BattleScene(
         setAlignment(Align.left)
         setPosition(44f, this@BattleScene.stage.height - 44)
     }
+
+    val garbageBar = AnimatedBar(
+        x = boardX - 5,
+        y = boardY,
+        speed = 0.6f,
+        vertical = true,
+        maxValue = config.height.toFloat(),
+        maxWidth = 4f,
+        maxHeight = config.height * SQUARE_SIZE.toFloat(),
+        barTexture = res.getTexture("red")
+    )
 
     init {
         stage.addActor(res.getLabel(
@@ -166,6 +181,11 @@ class BattleScene(
 
         enemyHpBar.update(dt)
         enemyHpLabel.setText("${state.enemyHp}/${state.enemyMaxHp}")
+
+        garbageBar.update(dt)
+
+        if (Gdx.input.isKeyJustPressed(Input.Keys.H)) garbageBar.applyChange(MathUtils.random(1,7).toFloat(), true)
+        else if (Gdx.input.isKeyJustPressed(Input.Keys.J)) garbageBar.applyChange(MathUtils.random(1,7).toFloat(), false)
     }
 
     fun render(batch: Batch) {

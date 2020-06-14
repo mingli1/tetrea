@@ -7,76 +7,56 @@ import kotlin.math.max
 import kotlin.math.min
 
 class AnimatedBar(
-    private val movementDelay: Float,
     private val x: Float,
     private val y: Float,
+    private val speed: Float,
+    private val vertical: Boolean,
     private val maxValue: Float,
     private val maxWidth: Float,
-    private val height: Float,
+    private val maxHeight: Float,
     private val barTexture: TextureRegion,
-    private val decayTexture: TextureRegion,
-    private val restoreTexture: TextureRegion,
     private val interpolator: Interpolation = Interpolation.linear
 ) {
 
-    private var currBarWidth = maxWidth
-    private var prevBarWidth = 0f
-    private var finalBarWidth = 0f
-    private var prevChangeWidth = 0f
-    private var currChangeBarWidth = 0f
-    private var currValue = maxValue
+    private var curr = 0f
+    private var currValue = 0f
+    private var start = 0f
+    private var end = 0f
     private var animate = false
     private var timer = 0f
     private var isDecay = false
 
     fun applyChange(value: Float, decay: Boolean) {
         if ((decay && currValue <= 0) || (!decay && currValue >= maxValue)) return
-        if (animate) finishCurrAnimation()
+        if (animate) finishAnimation()
+
+        start = getDimen(currValue)
+        currValue = if (decay) max(0f, currValue - value) else min(maxValue, currValue + value)
+        end = getDimen(currValue)
 
         isDecay = decay
-        prevChangeWidth = getWidth(if (currValue == maxValue) value else min(maxValue - currValue, value))
-        currValue = if (decay) max(0f, currValue - value) else min(maxValue, currValue + value)
-        prevBarWidth = currBarWidth
-        finalBarWidth = getWidth(currValue)
-
-        if (decay) currBarWidth = finalBarWidth
-        currChangeBarWidth = prevChangeWidth
-        if (currBarWidth < maxWidth) animate = true
+        animate = true
     }
 
     fun update(dt: Float) {
         if (animate) {
             timer += dt
-
-            if (isDecay) {
-                currChangeBarWidth = interpolator.apply(prevChangeWidth, 0f, timer / movementDelay)
-            } else {
-                currBarWidth = interpolator.apply(prevBarWidth, finalBarWidth, timer / movementDelay)
-            }
-
-            if (timer >= movementDelay) {
-                finishCurrAnimation()
+            curr = interpolator.apply(start, end, timer / speed)
+            if (timer >= speed) {
+                finishAnimation()
             }
         }
     }
 
     fun render(batch: Batch) {
-        if (animate) {
-            if (isDecay) batch.draw(decayTexture, x + currBarWidth, y, currChangeBarWidth, height)
-            else batch.draw(restoreTexture, x + prevBarWidth, y, currChangeBarWidth, height)
-        }
-        batch.draw(barTexture, x, y, currBarWidth, height)
+        batch.draw(barTexture, x, y, if (vertical) maxWidth else curr, if (vertical) curr else maxHeight)
     }
 
-    private fun getWidth(value: Float) = (value / maxValue) * maxWidth
+    private fun getDimen(value: Float) = (value / maxValue) * (if (vertical) maxHeight else maxWidth)
 
-    private fun finishCurrAnimation() {
+    private fun finishAnimation() {
         timer = 0f
         animate = false
-        if (isDecay) {
-            currChangeBarWidth = 0f
-        } else {
-            currBarWidth = finalBarWidth
-        }
+        curr = end
     }
 }
