@@ -62,6 +62,11 @@ class BattleScene(
         decayTexture = res.getTexture("bar_decay"),
         restoreTexture = res.getTexture("bar_restore")
     )
+    private val enemyHpLabel = res.getLabel().apply {
+        setSize(100f, 13f)
+        setAlignment(Align.left)
+        setPosition(44f, this@BattleScene.stage.height - 44)
+    }
 
     init {
         stage.addActor(res.getLabel(
@@ -75,6 +80,7 @@ class BattleScene(
         })
         stage.addActor(playerHeaderLabel)
         stage.addActor(enemyHeaderLabel)
+        stage.addActor(enemyHpLabel)
 
         stage.addActor(countdownLabel)
 
@@ -159,6 +165,7 @@ class BattleScene(
         textParticleSpawner.update(dt)
 
         enemyHpBar.update(dt)
+        enemyHpLabel.setText("${state.enemyHp}/${state.enemyMaxHp}")
     }
 
     fun render(batch: Batch) {
@@ -266,5 +273,9 @@ class BattleScene(
             useGaussian = false,
             fontScale = 0.75f
         )
+    }
+
+    fun attackEnemyHp(attack: Int) {
+        enemyHpBar.applyChange(attack.toFloat(), true)
     }
 }

@@ -6,7 +6,6 @@ import com.tetrea.game.battle.BattleState
 import com.tetrea.game.extension.default
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
-import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.model.Piece
 import com.tetrea.game.tetris.model.Square
 import com.tetrea.game.tetris.model.Unit
@@ -22,7 +21,6 @@ class Tetris(
 ) {
 
     var started = false
-    lateinit var scene: BattleScene
     lateinit var state: BattleState
 
     private val PIECES_POOL = mutableListOf(
@@ -237,7 +235,7 @@ class Tetris(
 
         attack += config.comboTable(combo)
 
-        if (combo > 1) scene.spawnComboParticle(combo)
+        if (combo > 1) state.scene.spawnComboParticle(combo)
 
         val applyB2bBonus = b2b > 0
 
@@ -245,7 +243,7 @@ class Tetris(
             applyTSpin(numLinesToClear, applyB2bBonus)
             b2b++
             totalB2b++
-            if (b2b > 1) scene.spawnB2BParticle(b2b)
+            if (b2b > 1) state.scene.spawnB2BParticle(b2b)
             return
         }
         applyLineClears(numLinesToClear, applyB2bBonus)
@@ -256,7 +254,7 @@ class Tetris(
             totalB2b++
         }
 
-        if (b2b > 1) scene.spawnB2BParticle(b2b)
+        if (b2b > 1) state.scene.spawnB2BParticle(b2b)
     }
 
     fun clearLines() {
@@ -279,7 +277,7 @@ class Tetris(
         if (content.all { row -> row.all { !it.filled } }) {
             stats.numPC++
             attack += config.attackPC
-            scene.spawnPerfectClearParticle()
+            state.scene.spawnPerfectClearParticle()
         }
         totalAttack += attack
         cancelGarbage()
@@ -287,12 +285,13 @@ class Tetris(
 
         if (attack > 0) {
             currPiece?.let {
-                scene.spawnNumberParticle(
+                state.scene.spawnNumberParticle(
                     attack,
                     screenX + it.squares[0].x * SQUARE_SIZE,
                     screenY + it.squares[0].y * SQUARE_SIZE
                 )
             }
+            state.attackEnemy(attack)
         }
     }
 
@@ -332,7 +331,7 @@ class Tetris(
 
         if (countdown) {
             currPiece = null
-            scene.startCountdown()
+            state.scene.startCountdown()
         }
     }
 
@@ -543,17 +542,17 @@ class Tetris(
             2 -> {
                 stats.numDouble++
                 attack += config.attackDouble
-                scene.spawnLineClearParticle(LineClearType.Double)
+                state.scene.spawnLineClearParticle(LineClearType.Double)
             }
             3 -> {
                 stats.numTriple++
                 attack += config.attackTriple
-                scene.spawnLineClearParticle(LineClearType.Triple)
+                state.scene.spawnLineClearParticle(LineClearType.Triple)
             }
             4 -> {
                 stats.numQuad++
                 attack += config.attackQuad + (if (b2b) config.b2bBonus else 0)
-                scene.spawnLineClearParticle(LineClearType.Quad)
+                state.scene.spawnLineClearParticle(LineClearType.Quad)
             }
         }
     }
@@ -563,17 +562,17 @@ class Tetris(
             1 -> {
                 stats.numTSS++
                 attack += config.attackTSS + (if (b2b) config.b2bBonus else 0)
-                scene.spawnLineClearParticle(LineClearType.TSS)
+                state.scene.spawnLineClearParticle(LineClearType.TSS)
             }
             2 -> {
                 stats.numTSD++
                 attack += config.attackTSD + (if (b2b) config.b2bBonus else 0)
-                scene.spawnLineClearParticle(LineClearType.TSD)
+                state.scene.spawnLineClearParticle(LineClearType.TSD)
             }
             3 -> {
                 stats.numTST++
                 attack += config.attackTST + (if (b2b) config.b2bBonus else 0)
-                scene.spawnLineClearParticle(LineClearType.TST)
+                state.scene.spawnLineClearParticle(LineClearType.TST)
             }
         }
     }
