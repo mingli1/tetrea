@@ -53,6 +53,9 @@ class Resources : Disposable {
         loadTexture("pps_icon")
         loadTexture("battle_bg_sky")
         loadTexture("score_header")
+        loadTexture("enemy_hp_bar")
+        loadTexture("bar_decay")
+        loadTexture("bar_restore")
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)

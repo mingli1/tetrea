@@ -10,6 +10,7 @@ import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.Color
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
+import com.tetrea.game.scene.component.AnimatedBar
 import com.tetrea.game.scene.effect.TextParticleSpawner
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
@@ -49,6 +50,18 @@ class BattleScene(
     private val apmLabel: Label
     private val ppsLabel: Label
     private val textParticleSpawner: TextParticleSpawner
+
+    private val enemyHpBar = AnimatedBar(
+        movementDelay = 0.75f,
+        x = 37f,
+        y = stage.height - 44,
+        maxValue = state.enemyMaxHp.toFloat(),
+        maxWidth = 220f,
+        height = 13f,
+        barTexture = res.getTexture("red"),
+        decayTexture = res.getTexture("bar_decay"),
+        restoreTexture = res.getTexture("bar_restore")
+    )
 
     init {
         stage.addActor(res.getLabel(
@@ -144,12 +157,17 @@ class BattleScene(
             }
         }
         textParticleSpawner.update(dt)
+
+        enemyHpBar.update(dt)
     }
 
     fun render(batch: Batch) {
         batch.draw(res.getTexture("score_header"), 6f, stage.height - 24f)
         batch.draw(res.getTexture("tetris_board_bg"), boardX - 66, boardY - 1)
         batch.draw(res.getTexture("item_slots_bg"), boardX - 66, boardY - 1)
+        batch.draw(res.getTexture("enemy_hp_bar"), 36f, stage.height - 54f)
+
+        enemyHpBar.render(batch)
     }
 
     fun startCountdown() {
@@ -182,7 +200,7 @@ class BattleScene(
             boardY + (config.height + 3) * SQUARE_SIZE,
             zi = 0f,
             vxScale = 0f,
-            vyScale = 0.7f,
+            vyScale = 0.4f,
             vzScale = 0f,
             zNegVxScale = 0f,
             zNegVyScale = 0f,

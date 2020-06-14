@@ -6,11 +6,18 @@ class BattleState(private val config: BattleConfig) {
     var playerText = ""
     var enemyText = ""
 
+    var enemyHp = config.enemy.maxHp
+    val enemyMaxHp = config.enemy.maxHp
+
     private var playerScore = 0
     private var enemyScore = 0
 
+    fun attackEnemy(attack: Int) {
+
+    }
+
     fun update(dt: Float) {
-        playerText = "${config.player} $playerScore"
-        enemyText = "$enemyScore ${config.enemy}"
+        playerText = "YOU $playerScore"
+        enemyText = "$enemyScore ${config.enemy.name}"
     }
 }

@@ -6,9 +6,23 @@ filter: Nearest,Nearest
 repeat: none
 apm_icon
   rotate: false
-  xy: 590, 887
+  xy: 1006, 900
   size: 16, 16
   orig: 16, 16
+  offset: 0, 0
+  index: -1
+bar_decay
+  rotate: false
+  xy: 251, 281
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1
+bar_restore
+  rotate: false
+  xy: 268, 623
+  size: 1, 1
+  orig: 1, 1
   offset: 0, 0
   index: -1
 battle_bg_sky
@@ -16,6 +30,13 @@ battle_bg_sky
   xy: 2, 284
   size: 264, 650
   orig: 264, 650
+  offset: 0, 0
+  index: -1
+enemy_hp_bar
+  rotate: false
+  xy: 782, 910
+  size: 222, 24
+  orig: 222, 24
   offset: 0, 0
   index: -1
 font
@@ -34,14 +55,14 @@ item_slots_bg
   index: -1
 pps_icon
   rotate: false
-  xy: 782, 918
+  xy: 1006, 918
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 red
   rotate: false
-  xy: 251, 281
+  xy: 522, 820
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
