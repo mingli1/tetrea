@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.TetreaGame
+import com.tetrea.game.battle.AttackPattern
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.battle.BattleState
 import com.tetrea.game.battle.Enemy
@@ -34,7 +35,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         val boardX = stage.width / 2 - (config.width * SQUARE_SIZE) / 2f + 3
         val boardY = (stage.height / 2 - (config.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 16f else 32f
 
-        val battleConfig = BattleConfig(15, Enemy("DOG", 40))
+        val battleConfig = BattleConfig(15, Enemy("DOG", 40), AttackPattern.Random)
 
         tetris = Tetris(boardX, boardY, TetrisConfig(), game.res)
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)

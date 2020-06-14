@@ -95,3 +95,10 @@ tetris_buttons
   orig: 320, 80
   offset: 0, 0
   index: -1
+yellow
+  rotate: false
+  xy: 330, 800
+  size: 1, 1
+  orig: 1, 1
+  offset: 0, 0
+  index: -1

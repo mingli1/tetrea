@@ -52,6 +52,16 @@ class AnimatedBar(
         batch.draw(barTexture, x, y, if (vertical) maxWidth else curr, if (vertical) curr else maxHeight)
     }
 
+    fun reset() {
+        curr = 0f
+        currValue = 0f
+        start = 0f
+        end = 0f
+        animate = false
+        timer = 0f
+        isDecay = false
+    }
+
     private fun getDimen(value: Float) = (value / maxValue) * (if (vertical) maxHeight else maxWidth)
 
     private fun finishAnimation() {

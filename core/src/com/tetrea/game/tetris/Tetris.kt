@@ -148,6 +148,7 @@ class Tetris(
 
     fun queueGarbage(numLines: Int) {
         garbage.add(numLines)
+        state.scene.addGarbage(numLines)
     }
 
     fun addSquare(x: Int, y: Int, square: Square) {
@@ -331,6 +332,7 @@ class Tetris(
 
         if (countdown) {
             currPiece = null
+            state.scene.resetGarbage()
             state.scene.startCountdown()
         }
     }
@@ -428,6 +430,7 @@ class Tetris(
         if (lines >= config.height) reset()
         if (!currPiece?.canMove(0, -1).default(true)) reset()
 
+        state.scene.cancelGarbage(lines)
         garbage.clear()
     }
 
@@ -437,6 +440,8 @@ class Tetris(
         val totalGarbage = garbage.sum()
         var newAttack = attack - totalGarbage
         if (newAttack < 0) newAttack = 0
+
+        state.scene.cancelGarbage(attack)
 
         val remainingGarbage = totalGarbage - attack
         attack = newAttack

@@ -1,8 +1,7 @@
 package com.tetrea.game.scene
 
-import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
@@ -71,6 +70,9 @@ class BattleScene(
         setAlignment(Align.left)
         setPosition(44f, this@BattleScene.stage.height - 44)
     }
+    private var enemyChargeDelay = MathUtils.random(4, 6)
+    private var enemyChargeTimer = 0f
+    private var enemyChargeBarWidth = 0f
 
     val garbageBar = AnimatedBar(
         x = boardX - 5,
@@ -184,8 +186,19 @@ class BattleScene(
 
         garbageBar.update(dt)
 
-        if (Gdx.input.isKeyJustPressed(Input.Keys.H)) garbageBar.applyChange(MathUtils.random(1,7).toFloat(), true)
-        else if (Gdx.input.isKeyJustPressed(Input.Keys.J)) garbageBar.applyChange(MathUtils.random(1,7).toFloat(), false)
+        if (tetris.started) {
+            enemyChargeTimer += dt
+            enemyChargeBarWidth = Interpolation.linear.apply(0f, 220f, enemyChargeTimer / enemyChargeDelay)
+            if (enemyChargeTimer >= enemyChargeDelay) {
+                enemyChargeBarWidth = 0f
+                enemyChargeTimer = 0f
+                enemyChargeDelay = MathUtils.random(4, 6)
+                tetris.queueGarbage(MathUtils.random(1, 6))
+            }
+        } else {
+            enemyChargeBarWidth = 0f
+            enemyChargeTimer = 0f
+        }
     }
 
     fun render(batch: Batch) {
@@ -193,6 +206,7 @@ class BattleScene(
         batch.draw(res.getTexture("tetris_board_bg"), boardX - 66, boardY - 1)
         batch.draw(res.getTexture("item_slots_bg"), boardX - 66, boardY - 1)
         batch.draw(res.getTexture("enemy_hp_bar"), 36f, stage.height - 54f)
+        batch.draw(res.getTexture("yellow"), 37f, stage.height - 53f, enemyChargeBarWidth, 4f)
 
         enemyHpBar.render(batch)
     }
@@ -295,7 +309,11 @@ class BattleScene(
         )
     }
 
-    fun attackEnemyHp(attack: Int) {
-        enemyHpBar.applyChange(attack.toFloat(), true)
-    }
+    fun attackEnemyHp(attack: Int) = enemyHpBar.applyChange(attack.toFloat(), true)
+
+    fun addGarbage(lines: Int) = garbageBar.applyChange(lines.toFloat(), false)
+
+    fun cancelGarbage(lines: Int) = garbageBar.applyChange(lines.toFloat(), true)
+
+    fun resetGarbage() = garbageBar.reset()
 }
