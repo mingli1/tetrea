@@ -403,6 +403,7 @@ class Tetris(
     }
 
     private fun receiveGarbage() {
+        if (garbage.isEmpty()) return
         val lines = garbage.sum()
         offsetStack(lines)
         var currY = solidGarbageRow
@@ -489,6 +490,7 @@ class Tetris(
     }
 
     private fun offsetStack(lines: Int) {
+        if (lines == 0) return
         var topOfStack = 0
         for (y in config.height - 1 downTo solidGarbageRow) {
             if (content[y].any { it.filled }) {
