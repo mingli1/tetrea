@@ -41,6 +41,14 @@ class Piece(
 
     fun isToppedOut() = squares.all { tetris.isToppedOut(it.y) }
 
+    fun getMaxY(): Int {
+        var max = 0
+        for (square in squares) {
+            if (square.y > max) max = square.y
+        }
+        return max
+    }
+
     fun rotate(rotation: Rotation, performOffsetTests: Boolean = true) {
         if (pieceType == PieceType.O) return
 

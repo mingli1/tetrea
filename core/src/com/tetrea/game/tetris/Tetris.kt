@@ -235,7 +235,6 @@ class Tetris(
         }
 
         attack += config.comboTable(combo)
-
         if (combo > 1) state.scene.spawnComboParticle(combo)
 
         val applyB2bBonus = b2b > 0
@@ -428,7 +427,6 @@ class Tetris(
         }
         // top out
         if (lines >= config.height) reset()
-        if (!currPiece?.canMove(0, -1).default(true)) reset()
 
         state.scene.cancelGarbage(lines)
         garbage.clear()
@@ -512,6 +510,11 @@ class Tetris(
                     square.pieceType = PieceType.None
                 }
             }
+        }
+        currPiece?.let { piece ->
+            val maxY = piece.getMaxY()
+            if (maxY + lines >= config.height + 1) piece.move(0, config.height + 2 - maxY)
+            else piece.move(0, lines)
         }
     }
 
