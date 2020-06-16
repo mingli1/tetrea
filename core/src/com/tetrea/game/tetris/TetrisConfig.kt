@@ -31,5 +31,6 @@ data class TetrisConfig(
     val attackTSD: Int = 4,
     val attackTST: Int = 6,
     val b2bBonus: Int = 1,
-    val attackPC: Int = 10
+    val attackPC: Int = 10,
+    val spikeThreshold: Int = 10
 )

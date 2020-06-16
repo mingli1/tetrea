@@ -16,6 +16,7 @@ class TetrisStats {
     var numTriple = 0
     var numQuad = 0
     var numPC = 0
+    var maxSpike = 0
 
     fun reset() {
         time = 0f
@@ -32,5 +33,6 @@ class TetrisStats {
         numTriple = 0
         numQuad = 0
         numPC = 0
+        maxSpike = 0
     }
 }

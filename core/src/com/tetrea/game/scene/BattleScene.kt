@@ -234,6 +234,7 @@ class BattleScene(
     }
 
     fun spawnLineClearParticle(type: LineClearType) {
+        if (type == LineClearType.None) return
         textParticleSpawner.spawn(
             type.desc,
             type.color,
@@ -241,7 +242,25 @@ class BattleScene(
             boardY + (config.height + 3) * SQUARE_SIZE,
             zi = 0f,
             vxScale = 0f,
-            vyScale = 0.4f,
+            vyScale = 0.3f,
+            vzScale = 0f,
+            zNegVxScale = 0f,
+            zNegVyScale = 0f,
+            zNegVzScale = 0f,
+            zPosVzScale = 0f,
+            useGaussian = false
+        )
+    }
+
+    fun spawnSpikeParticle(spike: Int) {
+        textParticleSpawner.spawn(
+            "$spike SPIKE",
+            Color.GAME_YELLOW,
+            boardX + (config.width / 2) * SQUARE_SIZE,
+            boardY + (config.height + 3) * SQUARE_SIZE,
+            zi = 0f,
+            vxScale = 0f,
+            vyScale = 0.3f,
             vzScale = 0f,
             zNegVxScale = 0f,
             zNegVyScale = 0f,

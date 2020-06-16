@@ -12,6 +12,7 @@ import com.tetrea.game.tetris.model.Unit
 import com.tetrea.game.tetris.util.LineClearType
 import com.tetrea.game.tetris.util.PieceType
 import com.tetrea.game.util.Timer
+import kotlin.math.max
 
 class Tetris(
     private val screenX: Float,
@@ -66,6 +67,8 @@ class Tetris(
     private var linesSent = 0
     private var totalAttack = 0
     private var attack = 0
+    private var spike = 0
+    private var currLineClearType = LineClearType.None
 
     private var clockTimer = 0f
     private var gravityTimer = Timer(config.gravity, { currPiece?.move(0, -1) }, true)
@@ -228,6 +231,7 @@ class Tetris(
 
         if (numLinesToClear == 0) {
             combo = 0
+            spike = 0
             if (garbage.isNotEmpty()) garbageTimer.start()
             return
         } else {
@@ -283,6 +287,17 @@ class Tetris(
         cancelGarbage()
         linesSent += attack
 
+        if (attack > 0) spike += attack
+        else spike = 0
+
+        stats.maxSpike = max(stats.maxSpike, spike)
+
+        if (spike >= config.spikeThreshold) {
+            state.scene.spawnSpikeParticle(spike)
+        } else {
+            state.scene.spawnLineClearParticle(currLineClearType)
+        }
+
         if (attack > 0) {
             currPiece?.let {
                 state.scene.spawnNumberParticle(
@@ -322,6 +337,7 @@ class Tetris(
         b2b = 0
         totalAttack = 0
         linesSent = 0
+        currLineClearType = LineClearType.None
 
         solidGarbageRow = 0
         startLockDelay2 = false
@@ -536,33 +552,27 @@ class Tetris(
         longRotationTimer = 0f
     }
 
-    private fun getGarbageBarHeight(): Float {
-        val lines = garbage.sum()
-        val totalHeight = config.height.toFloat() * SQUARE_SIZE
-        if (lines > config.height) return totalHeight
-        return (lines / config.height.toFloat()) * totalHeight
-    }
-
     private fun applyLineClears(lines: Int, b2b: Boolean) {
         when (lines) {
             1 -> {
                 stats.numSingle++
                 attack += config.attackSingle
+                currLineClearType = LineClearType.None
             }
             2 -> {
                 stats.numDouble++
                 attack += config.attackDouble
-                state.scene.spawnLineClearParticle(LineClearType.Double)
+                currLineClearType = LineClearType.Double
             }
             3 -> {
                 stats.numTriple++
                 attack += config.attackTriple
-                state.scene.spawnLineClearParticle(LineClearType.Triple)
+                currLineClearType = LineClearType.Triple
             }
             4 -> {
                 stats.numQuad++
                 attack += config.attackQuad + (if (b2b) config.b2bBonus else 0)
-                state.scene.spawnLineClearParticle(LineClearType.Quad)
+                currLineClearType = LineClearType.Quad
             }
         }
     }
@@ -572,17 +582,17 @@ class Tetris(
             1 -> {
                 stats.numTSS++
                 attack += config.attackTSS + (if (b2b) config.b2bBonus else 0)
-                state.scene.spawnLineClearParticle(LineClearType.TSS)
+                currLineClearType = LineClearType.TSS
             }
             2 -> {
                 stats.numTSD++
                 attack += config.attackTSD + (if (b2b) config.b2bBonus else 0)
-                state.scene.spawnLineClearParticle(LineClearType.TSD)
+                currLineClearType = LineClearType.TSD
             }
             3 -> {
                 stats.numTST++
                 attack += config.attackTST + (if (b2b) config.b2bBonus else 0)
-                state.scene.spawnLineClearParticle(LineClearType.TST)
+                currLineClearType = LineClearType.TST
             }
         }
     }

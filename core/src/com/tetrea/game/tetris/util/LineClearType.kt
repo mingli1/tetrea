@@ -12,5 +12,6 @@ enum class LineClearType(val desc: String, val color: Color) {
     TSS("T-SPIN SINGLE", GAME_PURPLE),
     TSD("T-SPIN DOUBLE", GAME_PURPLE),
     TST("T-SPIN TRIPLE", GAME_PURPLE),
-    PerfectClear("PERFECT CLEAR", GAME_ORANGE)
+    PerfectClear("PERFECT CLEAR", GAME_ORANGE),
+    None("", GAME_WHITE)
 }
