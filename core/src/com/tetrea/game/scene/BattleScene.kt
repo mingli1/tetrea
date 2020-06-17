@@ -1,6 +1,7 @@
 package com.tetrea.game.scene
 
 import com.badlogic.gdx.graphics.g2d.Batch
+import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
@@ -8,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.BattleState
+import com.tetrea.game.battle.MatchState
 import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.Color
 import com.tetrea.game.res.Resources
@@ -66,6 +68,7 @@ class BattleScene(
         setAlignment(Align.center)
         setPosition(boardX, boardY + 100)
     }
+    private var matchStateTag: TextureRegion? = null
     private val gameOverTimer = Timer(2f, { showPostGameResult1() })
     private val postGameResultTimer1 = Timer(2f, { showPostGameResult2() })
     private val postGameResultTimer2 = Timer(2f, { startCountdown() })
@@ -192,6 +195,7 @@ class BattleScene(
                 when (countdown) {
                     0 -> {
                         gameNumberLabel.isVisible = false
+                        matchStateTag = null
                         countdownLabel.setText("GO!")
                         tetris.start()
                     }
@@ -238,8 +242,11 @@ class BattleScene(
         batch.draw(res.getTexture("yellow"), 37f, stage.height - 53f, enemyChargeBarWidth, 4f)
 
         enemyHpBar.render(batch)
-
         renderTetris(batch)
+
+        matchStateTag?.let {
+            batch.draw(it, boardX + 10, boardY + 60)
+        }
     }
 
     fun startGameOverSequence() {
@@ -454,6 +461,12 @@ class BattleScene(
     private fun showPostGameResult2() {
         state.updateScores()
         scoreLabel.setText("${state.playerScore} - ${state.enemyScore}")
+        val matchState = state.getMatchState()
+        matchStateTag = when (matchState) {
+            MatchState.Tiebreaker -> res.getTexture("tiebreaker_tag")
+            MatchState.MatchPoint -> res.getTexture("match_point_tag")
+            else -> null
+        }
         postGameResultTimer2.start()
     }
 }
