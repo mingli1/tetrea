@@ -10,6 +10,7 @@ class Timer(
     private var timer = 0f
 
     fun start() {
+        if (start) return
         start = true
         timer = 0f
     }
