@@ -68,6 +68,15 @@ class HealthBar(
         batch.draw(barTexture, x, y, currBarWidth, height)
     }
 
+    fun reset() {
+        currBarWidth = maxWidth
+        prevBarWidth = 0f
+        finalBarWidth = 0f
+        prevChangeWidth = 0f
+        currChangeBarWidth = 0f
+        currValue = maxValue
+    }
+
     private fun getWidth(value: Float) = (value / maxValue) * maxWidth
 
     private fun finishCurrAnimation() {

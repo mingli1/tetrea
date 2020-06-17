@@ -19,6 +19,7 @@ import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.LineClearType
 import com.tetrea.game.tetris.util.PieceType
+import com.tetrea.game.util.Timer
 
 class BattleScene(
     private val boardX: Float,
@@ -50,6 +51,25 @@ class BattleScene(
     private var countdownTimer = 0f
     private var startCountdown = false
 
+    private val gameNumberLabel = res.getLabel().apply {
+        width = config.width * SQUARE_SIZE.toFloat()
+        setAlignment(Align.center)
+        setPosition(boardX, boardY + 180)
+    }
+    private val resultsLabel = res.getLabel(color = Color.GAME_YELLOW, fontScale = 1.25f).apply {
+        width = config.width * SQUARE_SIZE.toFloat()
+        setAlignment(Align.center)
+        setPosition(boardX, boardY + 130)
+    }
+    private val scoreLabel = res.getLabel(fontScale = 1.5f).apply {
+        width = config.width * SQUARE_SIZE.toFloat()
+        setAlignment(Align.center)
+        setPosition(boardX, boardY + 100)
+    }
+    private val gameOverTimer = Timer(2f, { showPostGameResult1() })
+    private val postGameResultTimer1 = Timer(2f, { showPostGameResult2() })
+    private val postGameResultTimer2 = Timer(2f, { startCountdown() })
+
     private val timeLabel: Label
     private val apmLabel: Label
     private val ppsLabel: Label
@@ -75,7 +95,7 @@ class BattleScene(
     private var enemyChargeTimer = 0f
     private var enemyChargeBarWidth = 0f
 
-    val garbageBar = AnimatedBar(
+    private val garbageBar = AnimatedBar(
         x = boardX - 5,
         y = boardY,
         speed = 0.6f,
@@ -148,6 +168,9 @@ class BattleScene(
             fontScale = 1f
         )
         stage.addActor(ppsLabel)
+        stage.addActor(gameNumberLabel)
+        stage.addActor(resultsLabel)
+        stage.addActor(scoreLabel)
 
         startCountdown()
 
@@ -168,6 +191,7 @@ class BattleScene(
                 countdown--
                 when (countdown) {
                     0 -> {
+                        gameNumberLabel.isVisible = false
                         countdownLabel.setText("GO!")
                         tetris.start()
                     }
@@ -200,6 +224,10 @@ class BattleScene(
             enemyChargeBarWidth = 0f
             enemyChargeTimer = 0f
         }
+
+        gameOverTimer.update(dt)
+        postGameResultTimer1.update(dt)
+        postGameResultTimer2.update(dt)
     }
 
     fun render(batch: Batch) {
@@ -214,14 +242,12 @@ class BattleScene(
         renderTetris(batch)
     }
 
-    fun startCountdown() {
-        tetris.generateQueue()
-
-        countdown = config.startDelay
-        countdownLabel.isVisible = true
-        countdownLabel.setText(countdown)
-        countdownTimer = 0f
-        startCountdown = true
+    fun startGameOverSequence() {
+        gameNumberLabel.isVisible = true
+        gameNumberLabel.setText("GAME ${state.gameNumber}")
+        resultsLabel.isVisible = true
+        resultsLabel.setText("FINISHED!")
+        gameOverTimer.start()
     }
 
     fun spawnNumberParticle(lines: Int, x: Float, y: Float) {
@@ -379,19 +405,55 @@ class BattleScene(
                     })
             }
         }
-        for (i in 0 until config.numPreviews) {
-            val piece = tetris.bag[i]
-            val x = when (piece.pieceType) {
-                PieceType.I, PieceType.O -> boardX + (config.width * SQUARE_SIZE) + 18
-                else -> boardX + (config.width * SQUARE_SIZE) + 25
-            }
-            val y = boardY + ((config.height - 4) * SQUARE_SIZE) - (i * 38)
-            piece.previewSquares.forEach {
-                batch.draw(res.getSquare(piece.pieceType),
-                    x + it.x * SQUARE_SIZE,
-                    y + it.y * SQUARE_SIZE)
+        if (tetris.bag.isNotEmpty()) {
+            for (i in 0 until config.numPreviews) {
+                val piece = tetris.bag[i]
+                val x = when (piece.pieceType) {
+                    PieceType.I, PieceType.O -> boardX + (config.width * SQUARE_SIZE) + 18
+                    else -> boardX + (config.width * SQUARE_SIZE) + 25
+                }
+                val y = boardY + ((config.height - 4) * SQUARE_SIZE) - (i * 38)
+                piece.previewSquares.forEach {
+                    batch.draw(res.getSquare(piece.pieceType),
+                        x + it.x * SQUARE_SIZE,
+                        y + it.y * SQUARE_SIZE)
+                }
             }
         }
         state.scene.garbageBar.render(batch)
+    }
+
+    private fun startCountdown() {
+        tetris.generateQueue()
+        state.updateGameNumber()
+        state.resetEnemyHp()
+        enemyHpBar.reset()
+
+        resultsLabel.isVisible = false
+        scoreLabel.isVisible = false
+        gameNumberLabel.setText("GAME ${state.gameNumber}")
+        gameNumberLabel.isVisible = true
+        countdown = config.startDelay
+        countdownLabel.isVisible = true
+        countdownLabel.setText(countdown)
+        countdownTimer = 0f
+        startCountdown = true
+    }
+
+    private fun showPostGameResult1() {
+        tetris.reset()
+        tetris.currPiece = null
+        tetris.bag.clear()
+
+        resultsLabel.setText(if (state.playerWonGame) "YOU WIN!" else "YOU LOST!")
+        scoreLabel.isVisible = true
+        scoreLabel.setText("${state.playerScore} - ${state.enemyScore}")
+        postGameResultTimer1.start()
+    }
+
+    private fun showPostGameResult2() {
+        state.updateScores()
+        scoreLabel.setText("${state.playerScore} - ${state.enemyScore}")
+        postGameResultTimer2.start()
     }
 }

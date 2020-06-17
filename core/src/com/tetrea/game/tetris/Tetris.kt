@@ -21,7 +21,7 @@ class Tetris(
     var started = false
     lateinit var state: BattleState
 
-    private val PIECES_POOL = mutableListOf(
+    private val piecesPool = mutableListOf(
         Piece(this, PieceType.L),
         Piece(this, PieceType.J),
         Piece(this, PieceType.S),
@@ -30,7 +30,7 @@ class Tetris(
         Piece(this, PieceType.I),
         Piece(this, PieceType.O)
     )
-    private val HOLD_POOL = listOf(
+    private val holdPool = listOf(
         Piece(this, PieceType.L),
         Piece(this, PieceType.J),
         Piece(this, PieceType.S),
@@ -82,15 +82,17 @@ class Tetris(
 
     private var solidGarbageRow = 0
 
-    init { reset(countdown = false) }
+    init { reset(resetGarbage = false) }
 
     fun start() {
-        reset(countdown = false)
+        reset()
         currPiece = getNextPiece()
         started = true
     }
 
     fun update(dt: Float) {
+        if (!started) return
+
         clockTimer += dt
 
         stats.time = clockTimer
@@ -173,8 +175,8 @@ class Tetris(
             }
         }
         // top out
-        if (numLines >= config.height) reset()
-        if (!currPiece?.canMove(0, -1).default(true)) reset()
+        if (numLines >= config.height) gameOver(false)
+        if (!currPiece?.canMove(0, -1).default(true)) gameOver(false)
     }
 
     fun isWithinHeight(y: Int) = y < config.height * 2
@@ -184,7 +186,7 @@ class Tetris(
     fun hardDrop() {
         instantSoftDrop()
         currPiece?.lock()
-        if (currPiece?.isToppedOut().default(false)) reset()
+        if (currPiece?.isToppedOut().default(false)) gameOver(false)
         else currPiece = getNextPiece()
     }
 
@@ -203,9 +205,9 @@ class Tetris(
     fun holdCurrPiece() {
         if (canHold) {
             val piece = holdPiece
-            holdPiece = HOLD_POOL.find { it.pieceType == currPiece?.pieceType }?.apply { init(0, 0) }
+            holdPiece = holdPool.find { it.pieceType == currPiece?.pieceType }?.apply { init(0, 0) }
             currPiece = piece?.pieceType?.let { hold ->
-                PIECES_POOL.find { it.pieceType == hold }?.apply { init(4, config.height + 1) }
+                piecesPool.find { it.pieceType == hold }?.apply { init(4, config.height + 1) }
             } ?: getNextPiece()
             canHold = false
         }
@@ -303,7 +305,7 @@ class Tetris(
                     screenY + it.squares[0].y * SQUARE_SIZE
                 )
             }
-            state.attackEnemy(attack)
+            if (state.attackEnemy(attack)) gameOver(true)
         }
     }
 
@@ -312,7 +314,7 @@ class Tetris(
         repeat(2) { addToBag() }
     }
 
-    fun reset(countdown: Boolean = true) {
+    fun reset(resetGarbage: Boolean = true) {
         started = false
 
         for (y in 0 until config.height * 2) {
@@ -341,12 +343,7 @@ class Tetris(
         garbageTimer.reset()
 
         stats.reset()
-
-        if (countdown) {
-            currPiece = null
-            state.scene.resetGarbage()
-            state.scene.startCountdown()
-        }
+        if (resetGarbage) state.scene.resetGarbage()
     }
 
     fun toggleLockDelay2(start: Boolean) {
@@ -368,6 +365,13 @@ class Tetris(
             offset--
         }
         return y
+    }
+
+    private fun gameOver(win: Boolean) {
+        started = false
+        currPiece = null
+        state.playerWonGame = win
+        state.scene.startGameOverSequence()
     }
 
     private fun receiveGarbage() {
@@ -395,7 +399,7 @@ class Tetris(
             if (currY >= config.height * 2) break
         }
         // top out
-        if (lines >= config.height) reset()
+        if (lines >= config.height) gameOver(false)
 
         state.scene.cancelGarbage(lines)
         garbage.clear()
@@ -478,8 +482,8 @@ class Tetris(
     }
 
     private fun addToBag() {
-        PIECES_POOL.shuffle()
-        bag.addAll(PIECES_POOL)
+        piecesPool.shuffle()
+        bag.addAll(piecesPool)
     }
 
     private fun resetTimers() {
