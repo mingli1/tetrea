@@ -1,10 +1,8 @@
 package com.tetrea.game.tetris
 
-import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.battle.BattleState
 import com.tetrea.game.extension.default
-import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.tetris.model.Piece
 import com.tetrea.game.tetris.model.Square
@@ -17,8 +15,7 @@ import kotlin.math.max
 class Tetris(
     private val screenX: Float,
     private val screenY: Float,
-    private val config: TetrisConfig,
-    private val res: Resources
+    private val config: TetrisConfig
 ) {
 
     var started = false
@@ -50,11 +47,11 @@ class Tetris(
     var rightHeld = false
     var leftHeld = false
 
-    private var holdPiece: Piece? = null
-    private val bag = mutableListOf<Piece>()
+    var holdPiece: Piece? = null
+    val bag = mutableListOf<Piece>()
     private val garbage = mutableListOf<Int>()
 
-    private val content = Array(config.height * 2) { y ->
+    val content = Array(config.height * 2) { y ->
         Array(config.width) { x ->
             Unit(Square(this, PieceType.None), x, y, false)
         }
@@ -362,60 +359,15 @@ class Tetris(
         lockDelay2Timer = 0f
     }
 
-    fun render(batch: Batch) {
-        for (y in 0 until config.height * 2) {
-            for (x in 0 until config.width) {
-                if (y < config.height) {
-                    batch.draw(res.getBoardUnit(),
-                        screenX + content[y][x].x * SQUARE_SIZE,
-                        screenY + content[y][x].y * SQUARE_SIZE)
-                }
-
-                if (content[y][x].filled) {
-                    batch.draw(res.getSquare(content[y][x].square.pieceType),
-                        screenX + content[y][x].x * SQUARE_SIZE,
-                        screenY + content[y][x].y * SQUARE_SIZE)
-                }
-            }
+    fun getGhostPieceY(square: Square): Int {
+        var y = square.y
+        var offset = -1
+        for (i in 0 until config.height + 1) {
+            if (!currPiece?.canMove(0, offset).default(true)) break
+            y--
+            offset--
         }
-        currPiece?.let { currPiece ->
-            currPiece.squares.forEach {
-                batch.draw(res.getSquare(currPiece.pieceType),
-                    screenX + it.x * SQUARE_SIZE,
-                    screenY + it.y * SQUARE_SIZE)
-                batch.draw(res.getGhost(currPiece.pieceType),
-                    screenX + it.x * SQUARE_SIZE,
-                    screenY + getGhostPieceY(it) * SQUARE_SIZE)
-            }
-        }
-
-        holdPiece?.let { piece ->
-            piece.squares.forEach {
-                batch.draw(res.getSquare(piece.pieceType),
-                    when (piece.pieceType) {
-                        PieceType.I, PieceType.O -> (screenX - 47) + (it.x * SQUARE_SIZE)
-                        else -> (screenX - 41) + (it.x * SQUARE_SIZE)
-                    },
-                    when (piece.pieceType) {
-                        PieceType.I -> ((screenY + 9) + ((config.height - 4) * SQUARE_SIZE)) + (it.y * SQUARE_SIZE)
-                        else -> ((screenY + 3) + ((config.height - 4) * SQUARE_SIZE)) + (it.y * SQUARE_SIZE)
-                    })
-            }
-        }
-        for (i in 0 until config.numPreviews) {
-            val piece = bag[i]
-            val x = when (piece.pieceType) {
-                PieceType.I, PieceType.O -> screenX + (config.width * SQUARE_SIZE) + 18
-                else -> screenX + (config.width * SQUARE_SIZE) + 25
-            }
-            val y = screenY + ((config.height - 4) * SQUARE_SIZE) - (i * 38)
-            piece.previewSquares.forEach {
-                batch.draw(res.getSquare(piece.pieceType),
-                    x + it.x * SQUARE_SIZE,
-                    y + it.y * SQUARE_SIZE)
-            }
-        }
-        state.scene.garbageBar.render(batch)
+        return y
     }
 
     private fun receiveGarbage() {
@@ -482,17 +434,6 @@ class Tetris(
         repeat(numToDrop) {
             garbage.removeAt(0)
         }
-    }
-
-    private fun getGhostPieceY(square: Square): Int {
-        var y = square.y
-        var offset = -1
-        for (i in 0 until config.height + 1) {
-            if (!currPiece?.canMove(0, offset).default(true)) break
-            y--
-            offset--
-        }
-        return y
     }
 
     private fun getNextPiece(): Piece {

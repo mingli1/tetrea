@@ -18,6 +18,7 @@ import com.tetrea.game.scene.effect.TextParticleSpawner
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.LineClearType
+import com.tetrea.game.tetris.util.PieceType
 
 class BattleScene(
     private val boardX: Float,
@@ -209,6 +210,8 @@ class BattleScene(
         batch.draw(res.getTexture("yellow"), 37f, stage.height - 53f, enemyChargeBarWidth, 4f)
 
         enemyHpBar.render(batch)
+
+        renderTetris(batch)
     }
 
     fun startCountdown() {
@@ -335,4 +338,60 @@ class BattleScene(
     fun cancelGarbage(lines: Int) = garbageBar.applyChange(lines.toFloat(), true)
 
     fun resetGarbage() = garbageBar.reset()
+
+    private fun renderTetris(batch: Batch) {
+        for (y in 0 until config.height * 2) {
+            for (x in 0 until config.width) {
+                if (y < config.height) {
+                    batch.draw(res.getBoardUnit(),
+                        boardX + tetris.content[y][x].x * SQUARE_SIZE,
+                        boardY + tetris.content[y][x].y * SQUARE_SIZE)
+                }
+
+                if (tetris.content[y][x].filled) {
+                    batch.draw(res.getSquare(tetris.content[y][x].square.pieceType),
+                        boardX + tetris.content[y][x].x * SQUARE_SIZE,
+                        boardY + tetris.content[y][x].y * SQUARE_SIZE)
+                }
+            }
+        }
+        tetris.currPiece?.let { currPiece ->
+            currPiece.squares.forEach {
+                batch.draw(res.getSquare(currPiece.pieceType),
+                    boardX + it.x * SQUARE_SIZE,
+                    boardY + it.y * SQUARE_SIZE)
+                batch.draw(res.getGhost(currPiece.pieceType),
+                    boardX + it.x * SQUARE_SIZE,
+                    boardY + tetris.getGhostPieceY(it) * SQUARE_SIZE)
+            }
+        }
+
+        tetris.holdPiece?.let { piece ->
+            piece.squares.forEach {
+                batch.draw(res.getSquare(piece.pieceType),
+                    when (piece.pieceType) {
+                        PieceType.I, PieceType.O -> (boardX - 47) + (it.x * SQUARE_SIZE)
+                        else -> (boardX - 41) + (it.x * SQUARE_SIZE)
+                    },
+                    when (piece.pieceType) {
+                        PieceType.I -> ((boardY + 9) + ((config.height - 4) * SQUARE_SIZE)) + (it.y * SQUARE_SIZE)
+                        else -> ((boardY + 3) + ((config.height - 4) * SQUARE_SIZE)) + (it.y * SQUARE_SIZE)
+                    })
+            }
+        }
+        for (i in 0 until config.numPreviews) {
+            val piece = tetris.bag[i]
+            val x = when (piece.pieceType) {
+                PieceType.I, PieceType.O -> boardX + (config.width * SQUARE_SIZE) + 18
+                else -> boardX + (config.width * SQUARE_SIZE) + 25
+            }
+            val y = boardY + ((config.height - 4) * SQUARE_SIZE) - (i * 38)
+            piece.previewSquares.forEach {
+                batch.draw(res.getSquare(piece.pieceType),
+                    x + it.x * SQUARE_SIZE,
+                    y + it.y * SQUARE_SIZE)
+            }
+        }
+        state.scene.garbageBar.render(batch)
+    }
 }

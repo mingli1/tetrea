@@ -37,7 +37,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         val battleConfig = BattleConfig(15, Enemy("DOG", 40), AttackPattern.Random)
 
-        tetris = Tetris(boardX, boardY, TetrisConfig(), game.res)
+        tetris = Tetris(boardX, boardY, TetrisConfig())
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
         state = BattleState(battleConfig)
@@ -72,7 +72,6 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
         scene.render(game.batch)
-        tetris.render(game.batch)
 
         game.batch.end()
 
