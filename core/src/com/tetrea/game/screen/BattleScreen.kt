@@ -4,10 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.TetreaGame
-import com.tetrea.game.battle.AttackPattern
-import com.tetrea.game.battle.BattleConfig
-import com.tetrea.game.battle.BattleState
-import com.tetrea.game.battle.Enemy
+import com.tetrea.game.battle.*
 import com.tetrea.game.input.TetrisAndroidInput
 import com.tetrea.game.input.TetrisInputHandler
 import com.tetrea.game.input.TetrisKeyInput
@@ -16,6 +13,9 @@ import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
+
+const val ARG_MATCH_STATE = "ARG_MATCH_STATE"
+const val ARG_TETRIS_STATS = "ARG_TETRIS_STATS"
 
 class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
@@ -41,7 +41,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
         state = BattleState(battleConfig)
-        scene = BattleScene(boardX, boardY, tetris, state, config, stage, game.res)
+        scene = BattleScene(boardX, boardY, tetris, state, config, stage, game.res, this)
         state.scene = scene
         tetris.state = state
 
@@ -77,5 +77,10 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         stage.act(dt)
         stage.draw()
+    }
+
+    fun onBattleEnd(matchState: MatchState) {
+        val arguments = mapOf(ARG_MATCH_STATE to matchState, ARG_TETRIS_STATS to tetris.stats)
+        navigateTo(RESULTS_SCREEN, arguments)
     }
 }

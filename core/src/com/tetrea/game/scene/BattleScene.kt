@@ -17,6 +17,7 @@ import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.scene.component.AnimatedBar
 import com.tetrea.game.scene.component.HealthBar
 import com.tetrea.game.scene.effect.TextParticleSpawner
+import com.tetrea.game.screen.BattleScreen
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.LineClearType
@@ -30,7 +31,8 @@ class BattleScene(
     private val state: BattleState,
     private val config: TetrisConfig,
     private val stage: Stage,
-    private val res: Resources
+    private val res: Resources,
+    private val battleScreen: BattleScreen
 ) {
 
     private val playerHeaderLabel = res.getLabel(fontScale = 1f).apply {
@@ -71,7 +73,7 @@ class BattleScene(
     private var matchStateTag: TextureRegion? = null
     private val gameOverTimer = Timer(2f, { showPostGameResult1() })
     private val postGameResultTimer1 = Timer(2f, { showPostGameResult2() })
-    private val postGameResultTimer2 = Timer(2f, { startCountdown() })
+    private val postGameResultTimer2 = Timer(2f, { handleMatchState() })
 
     private val timeLabel: Label
     private val apmLabel: Label
@@ -468,5 +470,14 @@ class BattleScene(
             else -> null
         }
         postGameResultTimer2.start()
+    }
+
+    private fun handleMatchState() {
+        val matchState = state.getMatchState()
+        if (matchState == MatchState.PlayerWin || matchState == MatchState.EnemyWin) {
+            battleScreen.onBattleEnd(matchState)
+        } else {
+            startCountdown()
+        }
     }
 }

@@ -13,8 +13,9 @@ import com.tetrea.game.V_WIDTH
 
 abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
 
+    var arguments: Map<String, Any>? = null
     protected val stage: Stage
-    protected val viewport: Viewport
+    private val viewport: Viewport
     protected val cam: OrthographicCamera = OrthographicCamera().apply {
         setToOrtho(false, V_WIDTH.toFloat(), V_HEIGHT.toFloat())
     }
@@ -22,6 +23,12 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
     init {
         viewport = ExtendViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat(), cam)
         stage = Stage(viewport, game.batch)
+    }
+
+    fun navigateTo(key: String, arguments: Map<String, Any>? = null) {
+        val screen = game.screenFactory.getScreen(key)
+        screen.arguments = arguments
+        game.updateScreen(screen)
     }
 
     override fun show() {
