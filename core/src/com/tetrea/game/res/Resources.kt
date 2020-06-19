@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
+import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
 import com.tetrea.game.tetris.util.PieceType
@@ -24,11 +27,15 @@ const val TETRIS_BUTTON_ROTATE_CCW = 5
 const val TETRIS_BUTTON_ROTATE_180 = 6
 const val TETRIS_BUTTON_HOLD = 7
 
+private const val BUTTON_UP_KEY = "_up"
+private const val BUTTON_DOWN_KEY = "_down"
+
 class Resources : Disposable {
 
     private val assetManager = AssetManager()
     private val atlas: TextureAtlas
     private val texturesCache = mutableMapOf<String, TextureRegion>()
+    private val ninePatchCache = mutableMapOf<String, NinePatch>()
     private val tetrisSheet: Array<Array<TextureRegion>>
     private val tetrisButtons: Array<Array<TextureRegion>>
 
@@ -60,11 +67,19 @@ class Resources : Disposable {
         loadTexture("match_point_tag")
         loadTexture("tiebreaker_tag")
 
+        loadTexture("black_100_opacity")
+
+        loadNinePatch("gray_blue_bg")
+        loadNinePatch("gray_blue_button_up")
+        loadNinePatch("gray_blue_button_down")
+
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)
     }
 
     fun getTexture(key: String): TextureRegion = checkNotNull(texturesCache[key])
+
+    fun getNinePatch(key: String): NinePatch = checkNotNull(ninePatchCache[key])
 
     fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
 
@@ -77,6 +92,28 @@ class Resources : Disposable {
     ) = Label(text, getLabelStyle(color)).apply {
         setPosition(x, y)
         setFontScale(fontScale)
+    }
+
+    fun getNinePatchTextButton(
+        text: String,
+        key: String,
+        colorUp: Color = Color.WHITE,
+        colorDown: Color = Color.GRAY,
+        width: Float = 0f,
+        height: Float = 0f
+    ): TextButton {
+        val style = TextButton.TextButtonStyle().apply {
+            up = NinePatchDrawable(getNinePatch(key + BUTTON_UP_KEY))
+            down = NinePatchDrawable(getNinePatch(key + BUTTON_DOWN_KEY))
+            over = NinePatchDrawable(getNinePatch(key + BUTTON_DOWN_KEY))
+            font = this@Resources.font
+            fontColor = colorUp
+            downFontColor = colorDown
+            overFontColor = colorDown
+        }
+        return TextButton(text, style).apply {
+            setSize(width, height)
+        }
     }
 
     fun getSquare(pieceType: PieceType) = tetrisSheet[0][pieceType.index]
@@ -95,6 +132,10 @@ class Resources : Disposable {
 
     private fun loadTexture(key: String) {
         texturesCache[key] = atlas.findRegion(key)
+    }
+
+    private fun loadNinePatch(key: String) {
+        ninePatchCache[key] = atlas.createPatch(key)
     }
 
     override fun dispose() {

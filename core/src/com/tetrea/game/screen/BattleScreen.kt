@@ -80,7 +80,10 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     }
 
     fun onBattleEnd(matchState: MatchState) {
-        val arguments = mapOf(ARG_MATCH_STATE to matchState, ARG_TETRIS_STATS to tetris.stats)
+        val arguments = mapOf(
+            ARG_MATCH_STATE to matchState,
+            ARG_TETRIS_STATS to tetris.stats
+        )
         navigateTo(RESULTS_SCREEN, arguments)
     }
 }

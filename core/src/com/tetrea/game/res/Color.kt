@@ -8,4 +8,5 @@ object Color {
     val GAME_LIGHT_BLUE = Color(0f, 220 / 255f, 1f, 1f)
     val GAME_PURPLE = Color(1f, 30 / 255f, 230 / 255f, 1f)
     val GAME_ORANGE = Color(1f, 135 / 255f, 50f / 255f, 1f)
+    val GAME_LIGHT_GRAY_BLUE = Color(166 / 255f, 185 / 255f, 234 / 255f, 1f)
 }
