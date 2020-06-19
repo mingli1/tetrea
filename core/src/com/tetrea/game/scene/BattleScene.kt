@@ -1,5 +1,6 @@
 package com.tetrea.game.scene
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
@@ -10,10 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.BattleState
 import com.tetrea.game.battle.MatchState
-import com.tetrea.game.extension.formatMMSS
-import com.tetrea.game.res.Color
-import com.tetrea.game.res.Resources
-import com.tetrea.game.res.SQUARE_SIZE
+import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.AnimatedBar
 import com.tetrea.game.scene.component.HealthBar
 import com.tetrea.game.scene.effect.TextParticleSpawner
@@ -46,7 +44,7 @@ class BattleScene(
         setPosition(168f, this@BattleScene.stage.height - 23)
     }
 
-    private val countdownLabel = res.getLabel(color = Color.GAME_YELLOW, fontScale = 2f).apply {
+    private val countdownLabel = res.getLabel(color = GAME_YELLOW, fontScale = 2f).apply {
         setSize(config.width * SQUARE_SIZE.toFloat(), config.height * SQUARE_SIZE.toFloat())
         setAlignment(Align.center)
         setPosition(boardX, boardY)
@@ -60,7 +58,7 @@ class BattleScene(
         setAlignment(Align.center)
         setPosition(boardX, boardY + 180)
     }
-    private val resultsLabel = res.getLabel(color = Color.GAME_YELLOW, fontScale = 1.25f).apply {
+    private val resultsLabel = res.getLabel(color = GAME_YELLOW, fontScale = 1.25f).apply {
         width = config.width * SQUARE_SIZE.toFloat()
         setAlignment(Align.center)
         setPosition(boardX, boardY + 130)
@@ -186,9 +184,9 @@ class BattleScene(
         playerHeaderLabel.setText(state.playerText)
         enemyHeaderLabel.setText(state.enemyText)
 
-        timeLabel.setText(tetris.stats.time.formatMMSS())
-        apmLabel.setText(String.format("%.1f", tetris.stats.apm))
-        ppsLabel.setText(String.format("%.2f", tetris.stats.pps))
+        timeLabel.setText(tetris.stats.formatTime())
+        apmLabel.setText(tetris.stats.formatAPM())
+        ppsLabel.setText(tetris.stats.formatPPS())
 
         if (startCountdown) {
             countdownTimer += dt
@@ -263,9 +261,9 @@ class BattleScene(
         textParticleSpawner.spawn(
             lines.toString(),
             when (lines) {
-                1, 2, 3 -> Color.GAME_WHITE
-                4, 5, 6 -> Color.GAME_YELLOW
-                else -> Color.GAME_LIGHT_BLUE
+                1, 2, 3 -> Color.WHITE
+                4, 5, 6 -> GAME_YELLOW
+                else -> GAME_LIGHT_BLUE
             },
             x, y
         )
@@ -293,7 +291,7 @@ class BattleScene(
     fun spawnSpikeParticle(spike: Int) {
         textParticleSpawner.spawn(
             "$spike SPIKE",
-            Color.GAME_YELLOW,
+            GAME_YELLOW,
             boardX + (config.width / 2) * SQUARE_SIZE,
             boardY + (config.height + 3) * SQUARE_SIZE,
             zi = 0f,
@@ -329,7 +327,7 @@ class BattleScene(
     fun spawnComboParticle(combo: Int) {
         textParticleSpawner.spawn(
             "COMBO X${combo - 1}",
-            Color.GAME_WHITE,
+            Color.WHITE,
             boardX - 38f,
             boardY + config.height * SQUARE_SIZE + 4f,
             zi = 0f,
@@ -349,7 +347,7 @@ class BattleScene(
     fun spawnB2BParticle(b2b: Int) {
         textParticleSpawner.spawn(
             "B2B X${b2b - 1}",
-            Color.GAME_ORANGE,
+            GAME_ORANGE,
             boardX + config.width * SQUARE_SIZE + 24f,
             boardY + config.height * SQUARE_SIZE + 4f,
             lifetime = 1.5f,
@@ -475,7 +473,7 @@ class BattleScene(
     private fun handleMatchState() {
         val matchState = state.getMatchState()
         if (matchState == MatchState.PlayerWin || matchState == MatchState.EnemyWin) {
-            battleScreen.onBattleEnd(matchState)
+            battleScreen.onBattleEnd(matchState, state.playerScore, state.enemyScore)
         } else {
             startCountdown()
         }

@@ -1,5 +1,7 @@
 package com.tetrea.game.tetris
 
+import com.tetrea.game.extension.formatMMSS
+
 class TetrisStats {
 
     var time = 0f
@@ -35,4 +37,16 @@ class TetrisStats {
         numPC = 0
         maxSpike = 0
     }
+
+    fun getLabeledPairs(): Map<String, String> {
+        return mapOf(
+
+        )
+    }
+
+    fun formatTime() = time.formatMMSS()
+
+    fun formatPPS() = String.format("%.2f", pps)
+
+    fun formatAPM() = String.format("%.2f", apm)
 }

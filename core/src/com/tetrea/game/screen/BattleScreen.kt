@@ -16,6 +16,9 @@ import com.tetrea.game.tetris.TetrisConfig
 
 const val ARG_MATCH_STATE = "ARG_MATCH_STATE"
 const val ARG_TETRIS_STATS = "ARG_TETRIS_STATS"
+const val ARG_PLAYER_SCORE = "ARG_PLAYER_SCORE"
+const val ARG_ENEMY_SCORE = "ARG_ENEMY_SCORE"
+const val ARG_ENEMY_NAME = "ARG_ENEMY_NAME"
 
 class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
@@ -28,14 +31,14 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var tetrisKeyInput: TetrisKeyInput
     private var androidInput: TetrisAndroidInput? = null
 
+    private val battleConfig = BattleConfig(3, Enemy("DOG", 10), AttackPattern.Random)
+
     override fun show() {
         super.show()
 
         val config = TetrisConfig()
         val boardX = stage.width / 2 - (config.width * SQUARE_SIZE) / 2f + 3
         val boardY = (stage.height / 2 - (config.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 16f else 32f
-
-        val battleConfig = BattleConfig(3, Enemy("DOG", 10), AttackPattern.Random)
 
         tetris = Tetris(boardX, boardY, TetrisConfig())
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
@@ -79,10 +82,13 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         stage.draw()
     }
 
-    fun onBattleEnd(matchState: MatchState) {
+    fun onBattleEnd(matchState: MatchState, playerScore: Int, enemyScore: Int) {
         val arguments = mapOf(
             ARG_MATCH_STATE to matchState,
-            ARG_TETRIS_STATS to tetris.stats
+            ARG_TETRIS_STATS to tetris.stats,
+            ARG_PLAYER_SCORE to playerScore,
+            ARG_ENEMY_SCORE to enemyScore,
+            ARG_ENEMY_NAME to battleConfig.enemy.name
         )
         navigateTo(RESULTS_SCREEN, arguments)
     }

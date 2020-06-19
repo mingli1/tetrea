@@ -72,6 +72,9 @@ class Resources : Disposable {
         loadNinePatch("gray_blue_bg")
         loadNinePatch("gray_blue_button_up")
         loadNinePatch("gray_blue_button_down")
+        loadNinePatch("red_bg")
+        loadNinePatch("red_button_up")
+        loadNinePatch("red_button_down")
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)
