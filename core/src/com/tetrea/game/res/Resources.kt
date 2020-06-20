@@ -66,6 +66,8 @@ class Resources : Disposable {
         loadTexture("bar_restore")
         loadTexture("match_point_tag")
         loadTexture("tiebreaker_tag")
+        loadTexture("victory_tag")
+        loadTexture("defeat_tag")
 
         loadTexture("black_100_opacity")
 

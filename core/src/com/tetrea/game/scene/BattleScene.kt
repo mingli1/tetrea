@@ -246,7 +246,7 @@ class BattleScene(
         renderTetris(batch)
 
         matchStateTag?.let {
-            batch.draw(it, boardX + 10, boardY + 60)
+            batch.draw(it, boardX + 10, boardY + 50)
         }
     }
 
@@ -466,6 +466,8 @@ class BattleScene(
         matchStateTag = when (matchState) {
             MatchState.Tiebreaker -> res.getTexture("tiebreaker_tag")
             MatchState.MatchPoint -> res.getTexture("match_point_tag")
+            MatchState.PlayerWin -> res.getTexture("victory_tag")
+            MatchState.EnemyWin -> res.getTexture("defeat_tag")
             else -> null
         }
         postGameResultTimer2.start()
