@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
-import com.tetrea.game.battle.BattleState
 import com.tetrea.game.battle.MatchState
 import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.*
@@ -17,7 +16,6 @@ import com.tetrea.game.scene.component.AnimatedBar
 import com.tetrea.game.scene.component.HealthBar
 import com.tetrea.game.scene.effect.TextParticleSpawner
 import com.tetrea.game.screen.BattleScreen
-import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.LineClearType
 import com.tetrea.game.tetris.util.PieceType
@@ -26,12 +24,10 @@ import com.tetrea.game.util.Timer
 class BattleScene(
     private val boardX: Float,
     private val boardY: Float,
-    private val tetris: Tetris,
-    private val state: BattleState,
     private val config: TetrisConfig,
     private val stage: Stage,
     private val res: Resources,
-    private val battleScreen: BattleScreen
+    private val screen: BattleScreen
 ) {
 
     private val playerHeaderLabel = res.getLabel(fontScale = 1f).apply {
@@ -83,7 +79,7 @@ class BattleScene(
         movementDelay = 0.75f,
         x = 37f,
         y = stage.height - 44,
-        maxValue = state.enemyMaxHp.toFloat(),
+        maxValue = screen.state.enemyMaxHp.toFloat(),
         maxWidth = 220f,
         height = 13f,
         barTexture = res.getTexture("red"),
@@ -112,7 +108,7 @@ class BattleScene(
 
     init {
         stage.addActor(res.getLabel(
-            state.firstToText,
+            screen.state.firstToText,
             x = 107f,
             y = stage.height - 23f,
             fontScale = 1f
@@ -182,12 +178,12 @@ class BattleScene(
     }
 
     fun update(dt: Float) {
-        playerHeaderLabel.setText(state.playerText)
-        enemyHeaderLabel.setText(state.enemyText)
+        playerHeaderLabel.setText(screen.state.playerText)
+        enemyHeaderLabel.setText(screen.state.enemyText)
 
-        timeLabel.setText(tetris.clockTimer.formatMMSS())
-        apmLabel.setText(String.format("%.2f", tetris.apm))
-        ppsLabel.setText(String.format("%.2f", tetris.pps))
+        timeLabel.setText(screen.tetris.clockTimer.formatMMSS())
+        apmLabel.setText(String.format("%.2f", screen.tetris.apm))
+        ppsLabel.setText(String.format("%.2f", screen.tetris.pps))
 
         if (startCountdown) {
             countdownTimer += dt
@@ -198,7 +194,7 @@ class BattleScene(
                         gameNumberLabel.isVisible = false
                         matchStateTag = null
                         countdownLabel.setText("GO!")
-                        tetris.start()
+                        screen.tetris.start()
                     }
                     -1 -> {
                         countdownLabel.isVisible = false
@@ -212,18 +208,18 @@ class BattleScene(
         textParticleSpawner.update(dt)
 
         enemyHpBar.update(dt)
-        enemyHpLabel.setText("${state.enemyHp}/${state.enemyMaxHp}")
+        enemyHpLabel.setText("${screen.state.enemyHp}/${screen.state.enemyMaxHp}")
 
         garbageBar.update(dt)
 
-        if (tetris.started) {
+        if (screen.tetris.started) {
             enemyChargeTimer += dt
             enemyChargeBarWidth = Interpolation.linear.apply(0f, 220f, enemyChargeTimer / enemyChargeDelay)
             if (enemyChargeTimer >= enemyChargeDelay) {
                 enemyChargeBarWidth = 0f
                 enemyChargeTimer = 0f
                 enemyChargeDelay = MathUtils.random(4, 6)
-                tetris.queueGarbage(MathUtils.random(1, 6))
+                screen.tetris.queueGarbage(MathUtils.random(1, 6))
             }
         } else {
             enemyChargeBarWidth = 0f
@@ -252,7 +248,7 @@ class BattleScene(
 
     fun startGameOverSequence() {
         gameNumberLabel.isVisible = true
-        gameNumberLabel.setText("GAME ${state.gameNumber}")
+        gameNumberLabel.setText("GAME ${screen.state.gameNumber}")
         resultsLabel.isVisible = true
         resultsLabel.setText("FINISHED!")
         gameOverTimer.start()
@@ -378,29 +374,29 @@ class BattleScene(
             for (x in 0 until config.width) {
                 if (y < config.height) {
                     batch.draw(res.getBoardUnit(),
-                        boardX + tetris.content[y][x].x * SQUARE_SIZE,
-                        boardY + tetris.content[y][x].y * SQUARE_SIZE)
+                        boardX + screen.tetris.content[y][x].x * SQUARE_SIZE,
+                        boardY + screen.tetris.content[y][x].y * SQUARE_SIZE)
                 }
 
-                if (tetris.content[y][x].filled) {
-                    batch.draw(res.getSquare(tetris.content[y][x].square.pieceType),
-                        boardX + tetris.content[y][x].x * SQUARE_SIZE,
-                        boardY + tetris.content[y][x].y * SQUARE_SIZE)
+                if (screen.tetris.content[y][x].filled) {
+                    batch.draw(res.getSquare(screen.tetris.content[y][x].square.pieceType),
+                        boardX + screen.tetris.content[y][x].x * SQUARE_SIZE,
+                        boardY + screen.tetris.content[y][x].y * SQUARE_SIZE)
                 }
             }
         }
-        tetris.currPiece?.let { currPiece ->
+        screen.tetris.currPiece?.let { currPiece ->
             currPiece.squares.forEach {
                 batch.draw(res.getSquare(currPiece.pieceType),
                     boardX + it.x * SQUARE_SIZE,
                     boardY + it.y * SQUARE_SIZE)
                 batch.draw(res.getGhost(currPiece.pieceType),
                     boardX + it.x * SQUARE_SIZE,
-                    boardY + tetris.getGhostPieceY(it) * SQUARE_SIZE)
+                    boardY + screen.tetris.getGhostPieceY(it) * SQUARE_SIZE)
             }
         }
 
-        tetris.holdPiece?.let { piece ->
+        screen.tetris.holdPiece?.let { piece ->
             piece.squares.forEach {
                 batch.draw(res.getSquare(piece.pieceType),
                     when (piece.pieceType) {
@@ -413,9 +409,9 @@ class BattleScene(
                     })
             }
         }
-        if (tetris.bag.isNotEmpty()) {
+        if (screen.tetris.bag.isNotEmpty()) {
             for (i in 0 until config.numPreviews) {
-                val piece = tetris.bag[i]
+                val piece = screen.tetris.bag[i]
                 val x = when (piece.pieceType) {
                     PieceType.I, PieceType.O -> boardX + (config.width * SQUARE_SIZE) + 18
                     else -> boardX + (config.width * SQUARE_SIZE) + 25
@@ -428,18 +424,18 @@ class BattleScene(
                 }
             }
         }
-        state.scene.garbageBar.render(batch)
+        screen.scene.garbageBar.render(batch)
     }
 
     private fun startCountdown() {
-        tetris.generateQueue()
-        state.updateGameNumber()
-        state.resetEnemyHp()
+        screen.tetris.generateQueue()
+        screen.state.updateGameNumber()
+        screen.state.resetEnemyHp()
         enemyHpBar.reset()
 
         resultsLabel.isVisible = false
         scoreLabel.isVisible = false
-        gameNumberLabel.setText("GAME ${state.gameNumber}")
+        gameNumberLabel.setText("GAME ${screen.state.gameNumber}")
         gameNumberLabel.isVisible = true
         countdown = config.startDelay
         countdownLabel.isVisible = true
@@ -449,20 +445,20 @@ class BattleScene(
     }
 
     private fun showPostGameResult1() {
-        tetris.reset()
-        tetris.currPiece = null
-        tetris.bag.clear()
+        screen.tetris.reset()
+        screen.tetris.currPiece = null
+        screen.tetris.bag.clear()
 
-        resultsLabel.setText(if (state.playerWonGame) "YOU WIN!" else "YOU LOST!")
+        resultsLabel.setText(if (screen.state.playerWonGame) "YOU WIN!" else "YOU LOST!")
         scoreLabel.isVisible = true
-        scoreLabel.setText("${state.playerScore} - ${state.enemyScore}")
+        scoreLabel.setText("${screen.state.playerScore} - ${screen.state.enemyScore}")
         postGameResultTimer1.start()
     }
 
     private fun showPostGameResult2() {
-        state.updateScores()
-        scoreLabel.setText("${state.playerScore} - ${state.enemyScore}")
-        val matchState = state.getMatchState()
+        screen.state.updateScores()
+        scoreLabel.setText("${screen.state.playerScore} - ${screen.state.enemyScore}")
+        val matchState = screen.state.getMatchState()
         matchStateTag = when (matchState) {
             MatchState.Tiebreaker -> res.getTexture("tiebreaker_tag")
             MatchState.MatchPoint -> res.getTexture("match_point_tag")
@@ -474,9 +470,9 @@ class BattleScene(
     }
 
     private fun handleMatchState() {
-        val matchState = state.getMatchState()
+        val matchState = screen.state.getMatchState()
         if (matchState == MatchState.PlayerWin || matchState == MatchState.EnemyWin) {
-            battleScreen.onBattleEnd(matchState, state.playerScore, state.enemyScore)
+            screen.onBattleEnd(matchState, screen.state.playerScore, screen.state.enemyScore)
         } else {
             startCountdown()
         }

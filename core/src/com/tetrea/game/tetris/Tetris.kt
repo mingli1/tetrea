@@ -1,9 +1,9 @@
 package com.tetrea.game.tetris
 
 import com.badlogic.gdx.math.MathUtils
-import com.tetrea.game.battle.BattleState
 import com.tetrea.game.extension.default
 import com.tetrea.game.res.SQUARE_SIZE
+import com.tetrea.game.screen.BattleScreen
 import com.tetrea.game.tetris.model.Piece
 import com.tetrea.game.tetris.model.Square
 import com.tetrea.game.tetris.model.Unit
@@ -15,11 +15,11 @@ import kotlin.math.max
 class Tetris(
     private val screenX: Float,
     private val screenY: Float,
-    private val config: TetrisConfig
+    private val config: TetrisConfig,
+    private val screen: BattleScreen
 ) {
 
     var started = false
-    lateinit var state: BattleState
 
     private val piecesPool = mutableListOf(
         Piece(this, PieceType.L),
@@ -147,7 +147,7 @@ class Tetris(
 
     fun queueGarbage(numLines: Int) {
         garbage.add(numLines)
-        state.scene.addGarbage(numLines)
+        screen.scene.addGarbage(numLines)
     }
 
     fun addSquare(x: Int, y: Int, square: Square) {
@@ -237,7 +237,7 @@ class Tetris(
         stats.maxCombo = max(stats.maxCombo, combo)
 
         attack += config.comboTable(combo)
-        if (combo > 1) state.scene.spawnComboParticle(combo)
+        if (combo > 1) screen.scene.spawnComboParticle(combo)
 
         val applyB2bBonus = b2b > 0
 
@@ -245,7 +245,7 @@ class Tetris(
             applyTSpin(numLinesToClear, applyB2bBonus)
             b2b++
             totalB2b++
-            if (b2b > 1) state.scene.spawnB2BParticle(b2b)
+            if (b2b > 1) screen.scene.spawnB2BParticle(b2b)
             return
         }
         applyLineClears(numLinesToClear, applyB2bBonus)
@@ -256,7 +256,7 @@ class Tetris(
             totalB2b++
         }
 
-        if (b2b > 1) state.scene.spawnB2BParticle(b2b)
+        if (b2b > 1) screen.scene.spawnB2BParticle(b2b)
     }
 
     fun clearLines() {
@@ -279,7 +279,7 @@ class Tetris(
         if (content.all { row -> row.all { !it.filled } }) {
             stats.numPC++
             attack += config.attackPC
-            state.scene.spawnPerfectClearParticle()
+            screen.scene.spawnPerfectClearParticle()
         }
         totalAttack += attack
         cancelGarbage()
@@ -291,20 +291,20 @@ class Tetris(
         stats.maxSpike = max(stats.maxSpike, spike)
 
         if (spike >= config.spikeThreshold) {
-            state.scene.spawnSpikeParticle(spike)
+            screen.scene.spawnSpikeParticle(spike)
         } else {
-            state.scene.spawnLineClearParticle(currLineClearType)
+            screen.scene.spawnLineClearParticle(currLineClearType)
         }
 
         if (attack > 0) {
             currPiece?.let {
-                state.scene.spawnNumberParticle(
+                screen.scene.spawnNumberParticle(
                     attack,
                     screenX + it.squares[0].x * SQUARE_SIZE,
                     screenY + it.squares[0].y * SQUARE_SIZE
                 )
             }
-            if (state.attackEnemy(attack)) gameOver(true)
+            if (screen.state.attackEnemy(attack)) gameOver(true)
         }
     }
 
@@ -343,7 +343,7 @@ class Tetris(
         startLockDelay2 = false
         garbageTimer.reset()
 
-        if (resetGarbage) state.scene.resetGarbage()
+        if (resetGarbage) screen.scene.resetGarbage()
     }
 
     fun toggleLockDelay2(start: Boolean) {
@@ -371,8 +371,8 @@ class Tetris(
         started = false
         currPiece = null
         recordStats()
-        state.playerWonGame = win
-        state.scene.startGameOverSequence()
+        screen.state.playerWonGame = win
+        screen.scene.startGameOverSequence()
     }
 
     private fun receiveGarbage() {
@@ -402,7 +402,7 @@ class Tetris(
         // top out
         if (lines >= config.height) gameOver(false)
 
-        state.scene.cancelGarbage(lines)
+        screen.scene.cancelGarbage(lines)
         garbage.clear()
     }
 
@@ -413,7 +413,7 @@ class Tetris(
         var newAttack = attack - totalGarbage
         if (newAttack < 0) newAttack = 0
 
-        state.scene.cancelGarbage(attack)
+        screen.scene.cancelGarbage(attack)
 
         val remainingGarbage = totalGarbage - attack
         attack = newAttack

@@ -22,9 +22,9 @@ const val ARG_ENEMY_NAME = "ARG_ENEMY_NAME"
 
 class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
-    private lateinit var tetris: Tetris
-    private lateinit var scene: BattleScene
-    private lateinit var state: BattleState
+    lateinit var tetris: Tetris
+    lateinit var scene: BattleScene
+    lateinit var state: BattleState
 
     private val multiplexer = InputMultiplexer()
     private lateinit var inputHandler: TetrisInputHandler
@@ -40,13 +40,11 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         val boardX = stage.width / 2 - (config.width * SQUARE_SIZE) / 2f + 3
         val boardY = (stage.height / 2 - (config.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 16f else 32f
 
-        tetris = Tetris(boardX, boardY, TetrisConfig())
+        tetris = Tetris(boardX, boardY, TetrisConfig(), this)
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
-        state = BattleState(battleConfig)
-        scene = BattleScene(boardX, boardY, tetris, state, config, stage, game.res, this)
-        state.scene = scene
-        tetris.state = state
+        state = BattleState(battleConfig, this)
+        scene = BattleScene(boardX, boardY, config, stage, game.res, this)
 
         if (isAndroid()) androidInput = TetrisAndroidInput(stage, inputHandler, game.res)
 

@@ -1,10 +1,8 @@
 package com.tetrea.game.battle
 
-import com.tetrea.game.scene.BattleScene
+import com.tetrea.game.screen.BattleScreen
 
-class BattleState(private val config: BattleConfig) {
-
-    lateinit var scene: BattleScene
+class BattleState(private val config: BattleConfig, private val screen: BattleScreen) {
 
     val firstToText = "FT${config.firstTo}"
     var playerText = ""
@@ -18,9 +16,14 @@ class BattleState(private val config: BattleConfig) {
     var gameNumber = 0
     var playerWonGame = false
 
+    fun update(dt: Float) {
+        playerText = "YOU $playerScore"
+        enemyText = "$enemyScore ${config.enemy.name}"
+    }
+
     fun attackEnemy(attack: Int): Boolean {
         enemyHp -= attack
-        scene.attackEnemyHp(attack)
+        screen.scene.attackEnemyHp(attack)
         if (enemyHp <= 0) {
             enemyHp = 0
             return true
@@ -30,11 +33,6 @@ class BattleState(private val config: BattleConfig) {
 
     fun resetEnemyHp() {
         enemyHp = enemyMaxHp
-    }
-
-    fun update(dt: Float) {
-        playerText = "YOU $playerScore"
-        enemyText = "$enemyScore ${config.enemy.name}"
     }
 
     fun updateGameNumber() = gameNumber++
