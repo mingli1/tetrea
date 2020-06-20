@@ -4,6 +4,7 @@ import com.tetrea.game.extension.formatMMSS
 
 class TetrisStats {
 
+    var numGames = 0
     var time = 0f
     var pps = 0f
     var apm = 0f
@@ -23,30 +24,11 @@ class TetrisStats {
     // todo
     var maxCombo = 0
 
-    fun reset() {
-        time = 0f
-        pps = 0f
-        apm = 0f
-        attack = 0
-        linesSent = 0
-        numB2B = 0
-        numTSS = 0
-        numTSD = 0
-        numTST = 0
-        numSingle = 0
-        numDouble = 0
-        numTriple = 0
-        numQuad = 0
-        numPC = 0
-        maxSpike = 0
-        maxCombo = 0
-    }
-
     fun getLabeledPairs(): Map<String, String> {
         return mapOf(
-            "TIME" to formatTime(),
-            "PIECES PER SECOND" to formatPPS(),
-            "ATTACK PER MINUTE" to formatAPM(),
+            "TOTAL TIME" to time.formatMMSS(),
+            "PIECES PER SECOND" to String.format("%.2f", pps / numGames),
+            "ATTACK PER MINUTE" to String.format("%.2f", apm / numGames),
             "ATTACK" to attack.toString(),
             "LINES SENT" to linesSent.toString(),
             "MAX SPIKE" to maxSpike.toString(),
@@ -61,10 +43,4 @@ class TetrisStats {
             "PERFECT CLEARS" to numPC.toString()
         )
     }
-
-    fun formatTime() = time.formatMMSS()
-
-    fun formatPPS() = String.format("%.2f", pps)
-
-    fun formatAPM() = String.format("%.2f", apm)
 }

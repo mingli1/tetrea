@@ -67,7 +67,9 @@ class Tetris(
     private var spike = 0
     private var currLineClearType = LineClearType.None
 
-    private var clockTimer = 0f
+    var clockTimer = 0f
+    var apm = 0f
+    var pps = 0f
     private var gravityTimer = Timer(config.gravity, { currPiece?.move(0, -1) }, true)
 
     private var lockDelay1Timer = 0f
@@ -94,13 +96,8 @@ class Tetris(
         if (!started) return
 
         clockTimer += dt
-
-        stats.time = clockTimer
-        stats.pps = piecesPlaced / clockTimer
-        stats.numB2B = totalB2b
-        stats.attack = totalAttack
-        stats.apm = totalAttack / clockTimer * 60
-        stats.linesSent = linesSent
+        apm = totalAttack / clockTimer * 60
+        pps = piecesPlaced / clockTimer
 
         gravityTimer.update(dt)
 
@@ -328,7 +325,6 @@ class Tetris(
         holdPiece = null
         canHold = true
         piecesPlaced = 0
-        clockTimer = 0f
         garbage.clear()
 
         combo = 0
@@ -336,13 +332,15 @@ class Tetris(
         b2b = 0
         totalAttack = 0
         linesSent = 0
+        clockTimer = 0f
+        apm = 0f
+        pps = 0f
         currLineClearType = LineClearType.None
 
         solidGarbageRow = 0
         startLockDelay2 = false
         garbageTimer.reset()
 
-        stats.reset()
         if (resetGarbage) state.scene.resetGarbage()
     }
 
@@ -370,6 +368,7 @@ class Tetris(
     private fun gameOver(win: Boolean) {
         started = false
         currPiece = null
+        recordStats()
         state.playerWonGame = win
         state.scene.startGameOverSequence()
     }
@@ -540,5 +539,15 @@ class Tetris(
                 currLineClearType = LineClearType.TST
             }
         }
+    }
+
+    private fun recordStats() {
+        stats.numGames++
+        stats.time += clockTimer
+        stats.pps += piecesPlaced / clockTimer
+        stats.numB2B += totalB2b
+        stats.attack += totalAttack
+        stats.apm += totalAttack / clockTimer * 60
+        stats.linesSent += linesSent
     }
 }

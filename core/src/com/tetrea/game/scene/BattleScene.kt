@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.BattleState
 import com.tetrea.game.battle.MatchState
+import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.AnimatedBar
 import com.tetrea.game.scene.component.HealthBar
@@ -184,9 +185,9 @@ class BattleScene(
         playerHeaderLabel.setText(state.playerText)
         enemyHeaderLabel.setText(state.enemyText)
 
-        timeLabel.setText(tetris.stats.formatTime())
-        apmLabel.setText(tetris.stats.formatAPM())
-        ppsLabel.setText(tetris.stats.formatPPS())
+        timeLabel.setText(tetris.clockTimer.formatMMSS())
+        apmLabel.setText(String.format("%.2f", tetris.apm))
+        ppsLabel.setText(String.format("%.2f", tetris.pps))
 
         if (startCountdown) {
             countdownTimer += dt

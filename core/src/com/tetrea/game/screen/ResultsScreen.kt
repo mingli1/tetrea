@@ -39,7 +39,6 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
             enemyScore = it[ARG_ENEMY_SCORE] as Int
             enemyName = it[ARG_ENEMY_NAME] as String
         }
-        stats = TetrisStats()
 
         val bgTable = Table().apply { setFillParent(true) }
         stage.addActor(bgTable)
