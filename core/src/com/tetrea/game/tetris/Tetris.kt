@@ -234,6 +234,8 @@ class Tetris(
             combo++
         }
 
+        stats.maxCombo = max(stats.maxCombo, combo)
+
         attack += config.comboTable(combo)
         if (combo > 1) state.scene.spawnComboParticle(combo)
 
@@ -542,12 +544,10 @@ class Tetris(
     }
 
     private fun recordStats() {
-        stats.numGames++
         stats.time += clockTimer
-        stats.pps += piecesPlaced / clockTimer
+        stats.numPiecesPlaced += piecesPlaced
         stats.numB2B += totalB2b
         stats.attack += totalAttack
-        stats.apm += totalAttack / clockTimer * 60
         stats.linesSent += linesSent
     }
 }

@@ -4,10 +4,7 @@ import com.tetrea.game.extension.formatMMSS
 
 class TetrisStats {
 
-    var numGames = 0
     var time = 0f
-    var pps = 0f
-    var apm = 0f
     var attack = 0
     var linesSent = 0
     var numB2B = 0
@@ -20,18 +17,20 @@ class TetrisStats {
     var numQuad = 0
     var numPC = 0
     var maxSpike = 0
-
-    // todo
     var maxCombo = 0
+    var numPiecesPlaced = 0
+    var numInputs = 0
 
     fun getLabeledPairs(): Map<String, String> {
         return mapOf(
             "TOTAL TIME" to time.formatMMSS(),
-            "PIECES PER SECOND" to String.format("%.2f", pps / numGames),
-            "ATTACK PER MINUTE" to String.format("%.2f", apm / numGames),
+            "PIECES PER SECOND" to String.format("%.2f", numPiecesPlaced / time),
+            "ATTACK PER MINUTE" to String.format("%.2f", attack / time * 60),
             "ATTACK" to attack.toString(),
             "LINES SENT" to linesSent.toString(),
+            "PIECES PLACED" to numPiecesPlaced.toString(),
             "MAX SPIKE" to maxSpike.toString(),
+            "MAX COMBO" to maxCombo.toString(),
             "BACK TO BACKS" to numB2B.toString(),
             "SINGLES" to numSingle.toString(),
             "DOUBLES" to numDouble.toString(),
@@ -40,7 +39,9 @@ class TetrisStats {
             "T-SPIN SINGLES" to numTSS.toString(),
             "T-SPIN DOUBLES" to numTSD.toString(),
             "T-SPIN TRIPLES" to numTST.toString(),
-            "PERFECT CLEARS" to numPC.toString()
+            "PERFECT CLEARS" to numPC.toString(),
+            "INPUTS PER PIECE" to String.format("%.2f", numInputs.toFloat() / numPiecesPlaced),
+            "INPUTS" to numInputs.toString()
         )
     }
 }
