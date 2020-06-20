@@ -1,7 +1,10 @@
 package com.tetrea.game.battle
 
+import com.squareup.moshi.Json
+
 data class BattleConfig(
-    val firstTo: Int,
-    val enemy: Enemy,
-    val attackPattern: AttackPattern
+    @Json(name = "firstTo") val firstTo: Int,
+    @Json(name = "enemy") val enemy: Enemy,
+    @Json(name = "attackPatterns") val attackPatterns: List<AttackPattern>,
+    @Json(name = "attackScheme") val attackScheme: List<Attack>? = null
 )

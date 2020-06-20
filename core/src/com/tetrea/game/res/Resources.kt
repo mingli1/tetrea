@@ -13,6 +13,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.tetris.util.PieceType
 
 const val SQUARE_SIZE = 12
@@ -34,8 +37,13 @@ class Resources : Disposable {
 
     private val assetManager = AssetManager()
     private val atlas: TextureAtlas
+    private val moshi = Moshi.Builder()
+        .add(KotlinJsonAdapterFactory())
+        .build()
+
     private val texturesCache = mutableMapOf<String, TextureRegion>()
     private val ninePatchCache = mutableMapOf<String, NinePatch>()
+    private val battleConfigCache = mutableMapOf<String, BattleConfig>()
     private val tetrisSheet: Array<Array<TextureRegion>>
     private val tetrisButtons: Array<Array<TextureRegion>>
 
@@ -51,32 +59,8 @@ class Resources : Disposable {
             setUseIntegerPositions(false)
         }
 
-        loadTexture("tetris")
-        loadTexture("red")
-        loadTexture("yellow")
-        loadTexture("tetris_buttons")
-        loadTexture("tetris_board_bg")
-        loadTexture("item_slots_bg")
-        loadTexture("apm_icon")
-        loadTexture("pps_icon")
-        loadTexture("battle_bg_sky")
-        loadTexture("score_header")
-        loadTexture("enemy_hp_bar")
-        loadTexture("bar_decay")
-        loadTexture("bar_restore")
-        loadTexture("match_point_tag")
-        loadTexture("tiebreaker_tag")
-        loadTexture("victory_tag")
-        loadTexture("defeat_tag")
-
-        loadTexture("black_100_opacity")
-
-        loadNinePatch("gray_blue_bg")
-        loadNinePatch("gray_blue_button_up")
-        loadNinePatch("gray_blue_button_down")
-        loadNinePatch("red_bg")
-        loadNinePatch("red_button_up")
-        loadNinePatch("red_button_down")
+        loadTextures()
+        loadBattleConfigs()
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)
@@ -85,6 +69,8 @@ class Resources : Disposable {
     fun getTexture(key: String): TextureRegion = checkNotNull(texturesCache[key])
 
     fun getNinePatch(key: String): NinePatch = checkNotNull(ninePatchCache[key])
+
+    fun getBattleConfig(key: String): BattleConfig = checkNotNull(battleConfigCache[key])
 
     fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
 
@@ -141,6 +127,43 @@ class Resources : Disposable {
 
     private fun loadNinePatch(key: String) {
         ninePatchCache[key] = atlas.createPatch(key)
+    }
+
+    private fun fileString(path: String) = Gdx.files.internal(path).readString()
+
+    private fun loadTextures() {
+        loadTexture("tetris")
+        loadTexture("red")
+        loadTexture("yellow")
+        loadTexture("tetris_buttons")
+        loadTexture("tetris_board_bg")
+        loadTexture("item_slots_bg")
+        loadTexture("apm_icon")
+        loadTexture("pps_icon")
+        loadTexture("battle_bg_sky")
+        loadTexture("score_header")
+        loadTexture("enemy_hp_bar")
+        loadTexture("bar_decay")
+        loadTexture("bar_restore")
+        loadTexture("match_point_tag")
+        loadTexture("tiebreaker_tag")
+        loadTexture("victory_tag")
+        loadTexture("defeat_tag")
+
+        loadTexture("black_100_opacity")
+
+        loadNinePatch("gray_blue_bg")
+        loadNinePatch("gray_blue_button_up")
+        loadNinePatch("gray_blue_button_down")
+        loadNinePatch("red_bg")
+        loadNinePatch("red_button_up")
+        loadNinePatch("red_button_down")
+    }
+
+    private fun loadBattleConfigs() {
+        val adapter = moshi.adapter(BattleConfig::class.java)
+        val config = adapter.fromJson(fileString("configs/battle/battle_config1.json")) ?: return
+        battleConfigCache["test_config"] = config
     }
 
     override fun dispose() {

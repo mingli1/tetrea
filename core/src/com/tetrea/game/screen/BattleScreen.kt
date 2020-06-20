@@ -31,7 +31,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var tetrisKeyInput: TetrisKeyInput
     private var androidInput: TetrisAndroidInput? = null
 
-    private val battleConfig = BattleConfig(3, Enemy("DOG", 10), AttackPattern.Random)
+    private val battleConfig = game.res.getBattleConfig("test_config")
 
     override fun show() {
         super.show()

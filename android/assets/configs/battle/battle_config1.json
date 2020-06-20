@@ -1,0 +1,35 @@
+{
+  "firstTo": 3,
+  "enemy": {
+    "name": "DOG",
+    "maxHp": 20,
+    "attack": 55,
+    "defense": 30,
+    "speed": 40
+  },
+  "attackPatterns": [
+    "Normal"
+  ],
+  "attackScheme": [
+    {
+      "action": "SendLines",
+      "time": 3.5,
+      "lines": 4
+    },
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 3
+    },
+    {
+      "action": "SendLines",
+      "time": 7,
+      "lines": 10
+    },
+    {
+      "action": "SendLines",
+      "time": 5,
+      "lines": 4
+    }
+  ]
+}
