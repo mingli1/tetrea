@@ -3,15 +3,14 @@ package com.tetrea.game.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.TetreaGame
 import com.tetrea.game.battle.MatchState
-import com.tetrea.game.res.GAME_DARK_RED
-import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
-import com.tetrea.game.res.GAME_YELLOW
+import com.tetrea.game.res.*
 import com.tetrea.game.tetris.TetrisStats
 
 private const val BUTTON_WIDTH = 76f
@@ -24,7 +23,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var buttonTable: Table
 
     private lateinit var stats: TetrisStats
-    private var playerWin = false
+    private var playerWin = true
     private var playerScore = 0
     private var enemyScore = 0
     private var enemyName = ""
@@ -40,11 +39,9 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
             enemyScore = it[ARG_ENEMY_SCORE] as Int
             enemyName = it[ARG_ENEMY_NAME] as String
         }
+        stats = TetrisStats()
 
-        val bgTable = Table().apply {
-            setFillParent(true)
-            debug = true
-        }
+        val bgTable = Table().apply { setFillParent(true) }
         stage.addActor(bgTable)
 
         headerTable = Table().apply {
@@ -56,7 +53,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
         buttonTable = Table()
 
         bgTable.add(headerTable).size(247f, 80f).expandY().row()
-        bgTable.add(bodyTable).size(247f, 240f).expandY().row()
+        bgTable.add(bodyTable).size(247f, 260f).expandY().row()
         bgTable.add(buttonTable).width(247f).expandY()
 
         createHeader()
@@ -102,7 +99,28 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
     }
 
     private fun createBody() {
+        val headerText = game.res.getLabel(
+            text = "STATS",
+            color = if (playerWin) GAME_DARK_GRAY_BLUE else GAME_DARK_RED,
+            fontScale = 1f
+        )
+        bodyTable.add(headerText).expand().top().left().padTop(8f).padLeft(8f).row()
 
+        val statsTable = Table()
+        val statsMap = stats.getLabeledPairs()
+        statsMap.forEach { (label, value) ->
+            val labelText = game.res.getLabel(text = label, color = if (playerWin) GAME_LIGHT_GRAY_BLUE else GAME_LIGHT_RED, fontScale = 1f)
+            val statText = game.res.getLabel(text = value, fontScale = 1f)
+            statsTable.add(labelText).expandX().left()
+            statsTable.add(statText).expandX().right().row()
+        }
+
+        val scrollPane = ScrollPane(statsTable).apply {
+            setOverscroll(false, false)
+            layout()
+        }
+
+        bodyTable.add(scrollPane).width(231f).padTop(8f).padBottom(8f)
     }
 
     private fun createButtons() {

@@ -20,6 +20,9 @@ class TetrisStats {
     var numPC = 0
     var maxSpike = 0
 
+    // todo
+    var maxCombo = 0
+
     fun reset() {
         time = 0f
         pps = 0f
@@ -36,11 +39,26 @@ class TetrisStats {
         numQuad = 0
         numPC = 0
         maxSpike = 0
+        maxCombo = 0
     }
 
     fun getLabeledPairs(): Map<String, String> {
         return mapOf(
-
+            "TIME" to formatTime(),
+            "PIECES PER SECOND" to formatPPS(),
+            "ATTACK PER MINUTE" to formatAPM(),
+            "ATTACK" to attack.toString(),
+            "LINES SENT" to linesSent.toString(),
+            "MAX SPIKE" to maxSpike.toString(),
+            "BACK TO BACKS" to numB2B.toString(),
+            "SINGLES" to numSingle.toString(),
+            "DOUBLES" to numDouble.toString(),
+            "TRIPLES" to numTriple.toString(),
+            "QUADS" to numQuad.toString(),
+            "T-SPIN SINGLES" to numTSS.toString(),
+            "T-SPIN DOUBLES" to numTSD.toString(),
+            "T-SPIN TRIPLES" to numTST.toString(),
+            "PERFECT CLEARS" to numPC.toString()
         )
     }
 
