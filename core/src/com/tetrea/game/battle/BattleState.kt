@@ -94,7 +94,7 @@ class BattleState(
             } else {
                 val attack = getAttack()
                 screen.scene.startEnemyCharge(attackDelay, Action.SendLines)
-                ({ screen.tetris.queueGarbage(attack) })
+                ({ sendAttack(attack) })
             }
             initAction = true
         }
@@ -144,15 +144,16 @@ class BattleState(
     }
 
     private fun getAttackDelay(): Float {
-        val minDelay = (1f - (config.enemy.speed / 100f)) * (MAX_ATTACK_DELAY - MIN_ATTACK_DELAY)
+        val minAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MIN_ATTACK_DELAY + 3f else MIN_ATTACK_DELAY
+        val maxAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MAX_ATTACK_DELAY + 3f else MAX_ATTACK_DELAY
+        val minDelay = (1f - (config.enemy.speed / 100f)) * (maxAttackDelay - minAttackDelay)
         val maxDelay = minDelay + SPEED_RANGE
         return MathUtils.random(minDelay, maxDelay)
     }
 
     private fun getAttack(): Int {
-        val chance = MathUtils.random()
-        if (chance <= 0.8f) {
-            val att = ((config.enemy.attack / 100f) * MAX_ATTACK).toInt()
+        if (MathUtils.random() <= 0.8f) {
+            val att = ((config.enemy.attack / 100f) * (if (config.hasPattern(AttackPattern.Spiker)) MAX_ATTACK + 4 else MAX_ATTACK)).toInt()
             val minAttack = max(1, att - ATTACK_OFFSET)
             val maxAttack = att + ATTACK_OFFSET
             return MathUtils.random(minAttack, maxAttack)
@@ -162,12 +163,28 @@ class BattleState(
 
     private fun shouldHeal(): Boolean {
         val chance = MathUtils.random()
-        return chance <= (config.enemy.defense / 100f) * HEAL_CHANCE_MULTIPLIER
+        val multiplier = if (config.hasPattern(AttackPattern.Defensive)) HEAL_CHANCE_MULTIPLIER + 0.2f else HEAL_CHANCE_MULTIPLIER
+        return chance <= (config.enemy.defense / 100f) * multiplier
     }
 
     private fun getHeal(): Int {
         val minHeal = max(1, (MIN_HEAL_PERCENTAGE * config.enemy.maxHp).toInt())
         val maxHeal = max(1, (MAX_HEAL_PERCENTAGE * config.enemy.maxHp).toInt())
         return ((config.enemy.defense / 100f) * (maxHeal - minHeal) + minHeal).toInt()
+    }
+
+    private fun sendAttack(attack: Int) {
+        if (config.hasPattern(AttackPattern.Cheeser)) {
+            var att = attack
+            var split = MathUtils.random(1, 3)
+            while (att - split >= 0) {
+                screen.tetris.queueGarbage(split)
+                att -= split
+                split = MathUtils.random(1, 3)
+            }
+            if (att != 0) screen.tetris.queueGarbage(att)
+        } else {
+            screen.tetris.queueGarbage(attack)
+        }
     }
 }

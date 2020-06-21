@@ -7,4 +7,7 @@ data class BattleConfig(
     @Json(name = "enemy") val enemy: Enemy,
     @Json(name = "attackPatterns") val attackPatterns: List<AttackPattern>,
     @Json(name = "attackScheme") val attackScheme: List<Attack>? = null
-)
+) {
+
+    fun hasPattern(pattern: AttackPattern) = attackPatterns.contains(pattern)
+}
