@@ -14,17 +14,22 @@
     {
       "action": "SendLines",
       "time": 3.5,
-      "lines": 4
+      "lines": 1
     },
     {
       "action": "SendLines",
       "time": 2,
-      "lines": 3
+      "lines": 2
+    },
+    {
+      "action": "Heal",
+      "time": 3.5,
+      "heal": 5
     },
     {
       "action": "SendLines",
       "time": 7,
-      "lines": 10
+      "lines": 3
     },
     {
       "action": "SendLines",

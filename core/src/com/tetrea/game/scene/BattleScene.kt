@@ -4,11 +4,11 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
-import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
+import com.tetrea.game.battle.Action
 import com.tetrea.game.battle.MatchState
 import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.*
@@ -91,9 +91,9 @@ class BattleScene(
         setAlignment(Align.left)
         setPosition(44f, this@BattleScene.stage.height - 44)
     }
-    private var enemyChargeDelay = MathUtils.random(4, 6)
-    private var enemyChargeTimer = 0f
+    private var enemyChargeDelay = 0f
     private var enemyChargeBarWidth = 0f
+    private var enemyChargeBarTexture = res.getTexture("yellow")
 
     private val garbageBar = AnimatedBar(
         x = boardX - 5,
@@ -212,18 +212,10 @@ class BattleScene(
 
         garbageBar.update(dt)
 
-        if (screen.tetris.started) {
-            enemyChargeTimer += dt
-            enemyChargeBarWidth = Interpolation.linear.apply(0f, 220f, enemyChargeTimer / enemyChargeDelay)
-            if (enemyChargeTimer >= enemyChargeDelay) {
-                enemyChargeBarWidth = 0f
-                enemyChargeTimer = 0f
-                enemyChargeDelay = MathUtils.random(4, 6)
-                screen.tetris.queueGarbage(MathUtils.random(1, 6))
-            }
+        enemyChargeBarWidth = if (screen.tetris.started) {
+            Interpolation.linear.apply(0f, 220f, screen.state.attackTimer / enemyChargeDelay)
         } else {
-            enemyChargeBarWidth = 0f
-            enemyChargeTimer = 0f
+            0f
         }
 
         gameOverTimer.update(dt)
@@ -236,13 +228,21 @@ class BattleScene(
         batch.draw(res.getTexture("tetris_board_bg"), boardX - 66, boardY - 1)
         batch.draw(res.getTexture("item_slots_bg"), boardX - 66, boardY - 1)
         batch.draw(res.getTexture("enemy_hp_bar"), 36f, stage.height - 54f)
-        batch.draw(res.getTexture("yellow"), 37f, stage.height - 53f, enemyChargeBarWidth, 4f)
+        batch.draw(enemyChargeBarTexture, 37f, stage.height - 53f, enemyChargeBarWidth, 4f)
 
         enemyHpBar.render(batch)
         renderTetris(batch)
 
         matchStateTag?.let {
             batch.draw(it, boardX + 10, boardY + 50)
+        }
+    }
+
+    fun startEnemyCharge(delay: Float, action: Action) {
+        enemyChargeDelay = delay
+        enemyChargeBarTexture = when (action) {
+            Action.Heal -> res.getTexture("bar_restore")
+            else -> res.getTexture("yellow")
         }
     }
 
@@ -363,6 +363,8 @@ class BattleScene(
 
     fun attackEnemyHp(attack: Int) = enemyHpBar.applyChange(attack.toFloat(), true)
 
+    fun healEnemyHp(heal: Int) = enemyHpBar.applyChange(heal.toFloat(), false)
+
     fun addGarbage(lines: Int) = garbageBar.applyChange(lines.toFloat(), false)
 
     fun cancelGarbage(lines: Int) = garbageBar.applyChange(lines.toFloat(), true)
@@ -430,7 +432,7 @@ class BattleScene(
     private fun startCountdown() {
         screen.tetris.generateQueue()
         screen.state.updateGameNumber()
-        screen.state.resetEnemyHp()
+        screen.state.resetState()
         enemyHpBar.reset()
 
         resultsLabel.isVisible = false
