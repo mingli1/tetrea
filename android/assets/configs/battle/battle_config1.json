@@ -2,9 +2,9 @@
   "firstTo": 3,
   "enemy": {
     "name": "DOG",
-    "maxHp": 20,
+    "maxHp": 50,
     "attack": 55,
-    "defense": 30,
+    "defense": 0,
     "speed": 40
   },
   "attackPatterns": [
@@ -12,29 +12,13 @@
   ],
   "attackScheme": [
     {
-      "action": "SendLines",
-      "time": 3.5,
-      "lines": 1
-    },
-    {
-      "action": "SendLines",
-      "time": 2,
-      "lines": 2
+      "action": "Random",
+      "numMoves": 3
     },
     {
       "action": "Heal",
       "time": 3.5,
-      "heal": 5
-    },
-    {
-      "action": "SendLines",
-      "time": 7,
-      "lines": 3
-    },
-    {
-      "action": "SendLines",
-      "time": 5,
-      "lines": 4
+      "heal": 2
     }
   ]
 }
