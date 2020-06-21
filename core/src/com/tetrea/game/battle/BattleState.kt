@@ -1,6 +1,7 @@
 package com.tetrea.game.battle
 
 import com.badlogic.gdx.math.MathUtils
+import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BattleScreen
 import kotlin.math.max
 
@@ -15,10 +16,12 @@ private const val MAX_HEAL_PERCENTAGE = 0.3f
 
 class BattleState(
     private val config: BattleConfig,
-    private val screen: BattleScreen
+    private val screen: BattleScreen,
+    res: Resources
 ) {
 
     val firstToText = "FT${config.firstTo}"
+    val enemyAvatar = res.getTexture(config.enemy.avatar)
     var playerText = ""
     var enemyText = ""
 

@@ -150,6 +150,8 @@ class Resources : Disposable {
         loadTexture("victory_tag")
         loadTexture("defeat_tag")
 
+        loadTexture("enemy_ittzzi")
+
         loadTexture("black_100_opacity")
 
         loadNinePatch("gray_blue_bg")

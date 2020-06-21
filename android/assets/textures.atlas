@@ -6,63 +6,70 @@ filter: Nearest,Nearest
 repeat: none
 apm_icon
   rotate: false
-  xy: 1006, 925
+  xy: 1006, 928
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 bar_decay
   rotate: false
-  xy: 2, 2
+  xy: 104, 27
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 bar_restore
   rotate: false
-  xy: 112, 40
+  xy: 214, 65
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 battle_bg_sky
   rotate: false
-  xy: 2, 309
+  xy: 2, 312
   size: 264, 650
   orig: 264, 650
   offset: 0, 0
   index: -1
 black_100_opacity
   rotate: false
-  xy: 782, 932
+  xy: 296, 651
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 defeat_tag
   rotate: false
-  xy: 590, 908
+  xy: 330, 809
   size: 100, 20
   orig: 100, 20
   offset: 0, 0
   index: -1
 enemy_hp_bar
   rotate: false
-  xy: 782, 935
+  xy: 782, 938
   size: 222, 24
   orig: 222, 24
   offset: 0, 0
   index: -1
+enemy_ittzzi
+  rotate: false
+  xy: 268, 626
+  size: 26, 26
+  orig: 26, 26
+  offset: 0, 0
+  index: -1
 font
   rotate: false
-  xy: 268, 930
+  xy: 268, 933
   size: 512, 29
   orig: 512, 29
   offset: 0, 0
   index: -1
 gray_blue_bg
   rotate: false
-  xy: 330, 800
+  xy: 432, 825
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -70,7 +77,7 @@ gray_blue_bg
   index: -1
 gray_blue_button_down
   rotate: false
-  xy: 251, 303
+  xy: 251, 306
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -78,7 +85,7 @@ gray_blue_button_down
   index: -1
 gray_blue_button_up
   rotate: false
-  xy: 432, 822
+  xy: 2, 2
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -86,35 +93,35 @@ gray_blue_button_up
   index: -1
 item_slots_bg
   rotate: false
-  xy: 268, 651
+  xy: 268, 654
   size: 60, 175
   orig: 60, 175
   offset: 0, 0
   index: -1
 match_point_tag
   rotate: false
-  xy: 2, 5
+  xy: 112, 46
   size: 100, 20
   orig: 100, 20
   offset: 0, 0
   index: -1
 pps_icon
   rotate: false
-  xy: 1006, 943
+  xy: 1006, 946
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 red
   rotate: false
-  xy: 104, 24
+  xy: 112, 43
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 red_bg
   rotate: false
-  xy: 590, 902
+  xy: 330, 803
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -122,7 +129,7 @@ red_bg
   index: -1
 red_button_down
   rotate: false
-  xy: 268, 645
+  xy: 590, 905
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -130,7 +137,7 @@ red_button_down
   index: -1
 red_button_up
   rotate: false
-  xy: 522, 842
+  xy: 522, 845
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -138,49 +145,49 @@ red_button_up
   index: -1
 score_header
   rotate: false
-  xy: 268, 828
+  xy: 268, 831
   size: 252, 18
   orig: 252, 18
   offset: 0, 0
   index: -1
 tetris
   rotate: false
-  xy: 2, 27
+  xy: 2, 30
   size: 108, 36
   orig: 108, 36
   offset: 0, 0
   index: -1
 tetris_board_bg
   rotate: false
-  xy: 2, 65
+  xy: 2, 68
   size: 247, 242
   orig: 247, 242
   offset: 0, 0
   index: -1
 tetris_buttons
   rotate: false
-  xy: 268, 848
+  xy: 268, 851
   size: 320, 80
   orig: 320, 80
   offset: 0, 0
   index: -1
 tiebreaker_tag
   rotate: false
-  xy: 112, 43
+  xy: 590, 911
   size: 100, 20
   orig: 100, 20
   offset: 0, 0
   index: -1
 victory_tag
   rotate: false
-  xy: 330, 806
+  xy: 2, 8
   size: 100, 20
   orig: 100, 20
   offset: 0, 0
   index: -1
 yellow
   rotate: false
-  xy: 214, 62
+  xy: 268, 623
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

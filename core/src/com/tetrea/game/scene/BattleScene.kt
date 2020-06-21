@@ -229,6 +229,7 @@ class BattleScene(
         batch.draw(res.getTexture("item_slots_bg"), boardX - 66, boardY - 1)
         batch.draw(res.getTexture("enemy_hp_bar"), 36f, stage.height - 54f)
         batch.draw(enemyChargeBarTexture, 37f, stage.height - 53f, enemyChargeBarWidth, 4f)
+        batch.draw(screen.state.enemyAvatar, 6f, stage.height - 55f)
 
         enemyHpBar.render(batch)
         renderTetris(batch)
