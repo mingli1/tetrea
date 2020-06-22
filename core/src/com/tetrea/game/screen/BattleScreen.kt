@@ -56,6 +56,8 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     }
 
     override fun update(dt: Float) {
+        super.update(dt)
+
         if (tetris.started) tetris.update(dt)
         inputHandler.update(dt)
         scene.update(dt)
@@ -73,6 +75,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
         scene.render(game.batch)
+        if (transition != Transition.None) fade.draw(game.batch)
 
         game.batch.end()
 

@@ -1,9 +1,9 @@
 {
-  "firstTo": 3,
+  "firstTo": 1,
   "enemy": {
     "name": "ENEMY",
     "avatar": "enemy_ittzzi",
-    "maxHp": 30,
+    "maxHp": 10,
     "attack": 55,
     "defense": 20,
     "speed": 40

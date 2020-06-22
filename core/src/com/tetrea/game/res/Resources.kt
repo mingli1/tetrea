@@ -152,6 +152,7 @@ class Resources : Disposable {
 
         loadTexture("enemy_ittzzi")
 
+        loadTexture("black")
         loadTexture("black_100_opacity")
 
         loadNinePatch("gray_blue_bg")

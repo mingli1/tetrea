@@ -62,9 +62,6 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
         Gdx.input.inputProcessor = stage
     }
 
-    override fun update(dt: Float) {
-    }
-
     override fun render(dt: Float) {
         super.render(dt)
 
@@ -76,6 +73,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
         game.batch.draw(game.res.getTexture("black_100_opacity"), 0f, 0f, stage.width, stage.height)
+        if (transition != Transition.None) fade.draw(game.batch)
 
         game.batch.end()
 
