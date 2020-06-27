@@ -160,6 +160,8 @@ class Resources : Disposable {
         loadNinePatch("gray_blue_bg")
         loadNinePatch("gray_blue_button_up")
         loadNinePatch("gray_blue_button_down")
+        loadNinePatch("purple_button_up")
+        loadNinePatch("purple_button_down")
         loadNinePatch("red_bg")
         loadNinePatch("red_button_up")
         loadNinePatch("red_button_down")

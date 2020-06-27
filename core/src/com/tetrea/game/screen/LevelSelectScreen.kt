@@ -1,6 +1,7 @@
 package com.tetrea.game.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.*
@@ -9,7 +10,9 @@ import com.tetrea.game.TetreaGame
 import com.tetrea.game.extension.onHover
 import com.tetrea.game.res.*
 
-private const val SELECTION_HEIGHT_PERCENT = 0.8f
+private const val SELECTION_HEIGHT_PERCENT = 0.78f
+private const val BUTTON_WIDTH = 76f
+private const val BUTTON_HEIGHT = 28f
 
 class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
@@ -31,7 +34,8 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             add(game.res.getLabel("CHOOSE A MATCHUP", fontScale = 1f))
         }
 
-        parentTable.add(headerTable).size(220f, 32f).top().padTop(16f).expandY().row()
+        parentTable.add(headerTable).size(220f, 32f).top().padTop(16f).row()
+        createBackButton()
         populateSelections()
 
         Gdx.input.inputProcessor = stage
@@ -53,6 +57,17 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
         stage.act(dt)
         stage.draw()
+    }
+
+    private fun createBackButton() {
+        val backButton = game.res.getNinePatchTextButton(
+            text = "BACK",
+            key = "purple_button",
+            colorUp = GAME_LIGHT_GRAY_BLUE,
+            colorDown = Color.WHITE
+        )
+
+        parentTable.add(backButton).top().left().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).expandY().row()
     }
 
     private fun populateSelections() {
