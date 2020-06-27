@@ -1,7 +1,9 @@
 {
-  "firstTo": 1,
+  "worldId": 0,
+  "levelId": 4,
+  "firstTo": 3,
   "enemy": {
-    "name": "ENEMY",
+    "name": "ENEMY 1",
     "avatar": "enemy_ittzzi",
     "maxHp": 10,
     "attack": 55,

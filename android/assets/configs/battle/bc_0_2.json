@@ -1,0 +1,24 @@
+{
+  "worldId": 0,
+  "levelId": 2,
+  "firstTo": 3,
+  "enemy": {
+    "name": "ENEMY 1",
+    "avatar": "enemy_ittzzi",
+    "maxHp": 10,
+    "attack": 55,
+    "defense": 20,
+    "speed": 40
+  },
+  "attackScheme": [
+    {
+      "action": "Random",
+      "numMoves": 3
+    },
+    {
+      "action": "Heal",
+      "time": 3.5,
+      "heal": 5
+    }
+  ]
+}

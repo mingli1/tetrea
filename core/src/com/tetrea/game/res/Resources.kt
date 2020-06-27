@@ -43,7 +43,7 @@ class Resources : Disposable {
 
     private val texturesCache = mutableMapOf<String, TextureRegion>()
     private val ninePatchCache = mutableMapOf<String, NinePatch>()
-    private val battleConfigCache = mutableMapOf<String, BattleConfig>()
+    private val battleConfigCache = mutableListOf<MutableList<BattleConfig>>()
     private val tetrisSheet: Array<Array<TextureRegion>>
     private val tetrisButtons: Array<Array<TextureRegion>>
 
@@ -70,7 +70,7 @@ class Resources : Disposable {
 
     fun getNinePatch(key: String): NinePatch = checkNotNull(ninePatchCache[key])
 
-    fun getBattleConfig(key: String): BattleConfig = checkNotNull(battleConfigCache[key])
+    fun getBattleConfigs(worldId: Int): List<BattleConfig> = battleConfigCache[worldId]
 
     fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
 
@@ -155,18 +155,24 @@ class Resources : Disposable {
         loadTexture("black")
         loadTexture("black_100_opacity")
 
+        loadNinePatch("dark_gray_bg")
         loadNinePatch("gray_blue_bg")
         loadNinePatch("gray_blue_button_up")
         loadNinePatch("gray_blue_button_down")
         loadNinePatch("red_bg")
         loadNinePatch("red_button_up")
         loadNinePatch("red_button_down")
+        loadNinePatch("purple_bg")
     }
 
     private fun loadBattleConfigs() {
         val adapter = moshi.adapter(BattleConfig::class.java)
-        val config = adapter.fromJson(fileString("configs/battle/battle_config1.json")) ?: return
-        battleConfigCache["test_config"] = config
+        val world = mutableListOf<BattleConfig>()
+        for (level in 0 until 5) {
+            val config = adapter.fromJson(fileString("configs/battle/bc_0_$level.json")) ?: return
+            world.add(config)
+        }
+        battleConfigCache.add(world)
     }
 
     override fun dispose() {

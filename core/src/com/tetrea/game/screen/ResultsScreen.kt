@@ -114,6 +114,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
 
         val scrollPane = ScrollPane(statsTable).apply {
             setOverscroll(false, false)
+            fadeScrollBars = false
             layout()
         }
 
