@@ -18,10 +18,11 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
     private lateinit var parentTable: Table
     private lateinit var headerTable: Table
+    private lateinit var scrollPane: ScrollPane
 
     // temp defeated and locked states
     private val playerWorldId = 0
-    private val playerLevelId = 3
+    private val playerLevelId = 4
 
     override fun show() {
         super.show()
@@ -144,11 +145,12 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             selectionTable.add(table).size(195f, 60f).padBottom(16f).row()
         }
 
-        val scrollPane = ScrollPane(selectionTable).apply {
+        scrollPane = ScrollPane(selectionTable).apply {
             setOverscroll(false, false)
             fadeScrollBars = false
             layout()
         }
+        scrollPane.scrollTo(0f, 72f * (configs.size - playerLevelId), 195f, 60f)
         parentTable.add(scrollPane).height(stage.height * SELECTION_HEIGHT_PERCENT)
     }
 }

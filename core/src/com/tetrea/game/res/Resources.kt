@@ -172,7 +172,7 @@ class Resources : Disposable {
     private fun loadBattleConfigs() {
         val adapter = moshi.adapter(BattleConfig::class.java)
         val world = mutableListOf<BattleConfig>()
-        for (level in 0 until 5) {
+        for (level in 0 until 8) {
             val config = adapter.fromJson(fileString("configs/battle/bc_0_$level.json")) ?: return
             world.add(config)
         }
