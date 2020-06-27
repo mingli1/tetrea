@@ -156,6 +156,7 @@ class Resources : Disposable {
         loadTexture("black_100_opacity")
 
         loadNinePatch("dark_gray_bg")
+        loadNinePatch("light_gray_blue_bg")
         loadNinePatch("gray_blue_bg")
         loadNinePatch("gray_blue_button_up")
         loadNinePatch("gray_blue_button_down")
@@ -163,6 +164,7 @@ class Resources : Disposable {
         loadNinePatch("red_button_up")
         loadNinePatch("red_button_down")
         loadNinePatch("purple_bg")
+        loadNinePatch("light_purple_bg")
     }
 
     private fun loadBattleConfigs() {

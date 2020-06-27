@@ -24,3 +24,14 @@ fun Actor.onClick(down: () -> Unit, up: () -> Unit) {
         }
     })
 }
+
+fun Actor.onHover(enter: () -> Unit, exit: () -> Unit) {
+    addListener(object : InputListener() {
+        override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
+            enter()
+        }
+        override fun exit(event: InputEvent?, x: Float, y: Float, pointer: Int, toActor: Actor?) {
+            exit()
+        }
+    })
+}

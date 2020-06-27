@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.tetrea.game.TetreaGame
+import com.tetrea.game.extension.onHover
 import com.tetrea.game.res.*
 
 private const val SELECTION_HEIGHT_PERCENT = 0.8f
@@ -65,16 +66,28 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             val completedState = currWorldId < playerWorldId || levelId < playerLevelId
             val activeState = levelId == playerLevelId
 
+            val enteredBg = NinePatchDrawable(
+                when {
+                    completedState -> game.res.getNinePatch("light_gray_blue_bg")
+                    activeState -> game.res.getNinePatch("light_purple_bg")
+                    else -> game.res.getNinePatch("dark_gray_bg")
+                }
+            )
+            val exitedBg = NinePatchDrawable(
+                when {
+                    completedState -> game.res.getNinePatch("gray_blue_bg")
+                    activeState -> game.res.getNinePatch("purple_bg")
+                    else -> game.res.getNinePatch("dark_gray_bg")
+                }
+            )
+
             val table = Table().apply {
                 touchable = Touchable.enabled
-                background = NinePatchDrawable(
-                    when {
-                        completedState -> game.res.getNinePatch("gray_blue_bg")
-                        activeState -> game.res.getNinePatch("purple_bg")
-                        else -> game.res.getNinePatch("dark_gray_bg")
-                    }
+                background = exitedBg
+                onHover(
+                    enter = { background = enteredBg },
+                    exit = { background = exitedBg }
                 )
-
             }
             val avatar = Image(game.res.getTexture(config.enemy.avatar))
             table.add(avatar).padTop(8f).padLeft(8f).top().left()
