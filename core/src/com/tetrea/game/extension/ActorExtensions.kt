@@ -25,8 +25,15 @@ fun Actor.onClick(down: () -> Unit, up: () -> Unit) {
     })
 }
 
-fun Actor.onHover(enter: () -> Unit, exit: () -> Unit) {
+fun Actor.onClick(down: () -> Unit = {}, up: () -> Unit = {}, enter: () -> Unit, exit: () -> Unit) {
     addListener(object : InputListener() {
+        override fun touchDown(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int): Boolean {
+            down()
+            return true
+        }
+        override fun touchUp(event: InputEvent, x: Float, y: Float, pointer: Int, button: Int) {
+            up()
+        }
         override fun enter(event: InputEvent?, x: Float, y: Float, pointer: Int, fromActor: Actor?) {
             enter()
         }

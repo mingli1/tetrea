@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Interpolation
 import kotlin.math.max
 import kotlin.math.min
 
-class AnimatedBar(
+open class AnimatedBar(
     private val x: Float,
     private val y: Float,
     private val speed: Float,
@@ -18,12 +18,12 @@ class AnimatedBar(
     private val interpolator: Interpolation = Interpolation.linear
 ) {
 
-    private var curr = 0f
+    protected var curr = 0f
     private var currValue = 0f
-    private var start = 0f
-    private var end = 0f
-    private var animate = false
-    private var timer = 0f
+    protected var start = 0f
+    protected var end = 0f
+    protected var animate = false
+    protected var timer = 0f
     private var isDecay = false
 
     fun applyChange(value: Float, decay: Boolean) {
@@ -38,7 +38,7 @@ class AnimatedBar(
         animate = true
     }
 
-    fun update(dt: Float) {
+    open fun update(dt: Float) {
         if (animate) {
             timer += dt
             curr = interpolator.apply(start, end, timer / speed)
@@ -52,7 +52,7 @@ class AnimatedBar(
         batch.draw(barTexture, x, y, if (vertical) maxWidth else curr, if (vertical) curr else maxHeight)
     }
 
-    fun reset() {
+    open fun reset() {
         curr = 0f
         currValue = 0f
         start = 0f
@@ -64,7 +64,7 @@ class AnimatedBar(
 
     private fun getDimen(value: Float) = (value / maxValue) * (if (vertical) maxHeight else maxWidth)
 
-    private fun finishAnimation() {
+    open fun finishAnimation() {
         timer = 0f
         animate = false
         curr = end
