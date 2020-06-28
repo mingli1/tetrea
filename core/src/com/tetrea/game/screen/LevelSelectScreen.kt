@@ -4,18 +4,20 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Touchable
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.tetrea.game.TetreaGame
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.extension.onClick
+import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.SelectionDialog
 
 private const val SELECTION_SCROLL_HEIGHT_PERCENT = 0.78f
 private const val BUTTON_WIDTH = 76f
 private const val BUTTON_HEIGHT = 28f
+private const val DIALOG_FADE_DURATION = 0.4f
 
 enum class SelectionState {
     Completed,
@@ -29,6 +31,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var headerTable: Table
     private lateinit var scrollPane: ScrollPane
     private lateinit var selectionTable: Table
+    private lateinit var selectionBg: Image
     private val selectionDialog = SelectionDialog(game.res)
 
     // temp defeated and locked states
@@ -50,12 +53,15 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
         createBackButton()
         populateSelections()
 
+        selectionBg = Image(game.res.getTexture("black_100_opacity")).apply {
+            setSize(this@LevelSelectScreen.stage.width, this@LevelSelectScreen.stage.height)
+            isVisible = false
+            onTap { hideSelectionDialog() }
+        }
+        stage.addActor(selectionBg)
         selectionTable = Table().apply {
-            touchable = Touchable.enabled
-            background = TextureRegionDrawable(game.res.getTexture("black_100_opacity"))
             setFillParent(true)
             isVisible = false
-            onClick { hideSelectionDialog() }
         }
         selectionTable.add(selectionDialog).size(196f, 272f)
         stage.addActor(selectionTable)
@@ -76,6 +82,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.batch.projectionMatrix = cam.combined
         game.batch.begin()
+        game.batch.color = Color.WHITE
 
         game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
         if (transition != Transition.None) fade.draw(game.batch)
@@ -131,9 +138,9 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
                 background = exitedBg
                 onClick(
                     enter = { background = enteredBg },
-                    exit = { background = exitedBg },
-                    up = { showSelectionDialog(config, selectionState) }
+                    exit = { background = exitedBg }
                 )
+                onTap { showSelectionDialog(config, selectionState) }
             }
             val avatar = Image(game.res.getTexture(config.enemy.avatar))
             table.add(avatar).padTop(16f).padLeft(8f).top().left()
@@ -191,11 +198,21 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
     }
 
     private fun showSelectionDialog(config: BattleConfig, selectionState: SelectionState) {
+        selectionDialog.resetBarAnimations()
         selectionDialog.setConfig(config, selectionState)
+
+        selectionBg.isVisible = true
+        selectionBg.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION)))
+
         selectionTable.isVisible = true
+        selectionTable.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION),
+            Actions.run { selectionDialog.startBarAnimations(config) }))
     }
 
     private fun hideSelectionDialog() {
-        selectionTable.isVisible = false
+        selectionBg.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(DIALOG_FADE_DURATION),
+            Actions.run { selectionBg.isVisible = false }))
+        selectionTable.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(DIALOG_FADE_DURATION),
+            Actions.run { selectionTable.isVisible = false }))
     }
 }

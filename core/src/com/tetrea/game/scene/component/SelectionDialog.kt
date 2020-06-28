@@ -1,5 +1,6 @@
 package com.tetrea.game.scene.component
 
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -24,6 +25,7 @@ class SelectionDialog(private val res: Resources) : Table() {
     private val spdBar = AnimatedImageBar(1f, 1f, 0.5f, false, 100f, 142f, 8f, res.getTexture("spd"))
 
     init {
+        touchable = Touchable.enabled
         //debug = true
         add(avatar).right().padTop(6f)
         val textTable = Table().apply {
@@ -123,12 +125,17 @@ class SelectionDialog(private val res: Resources) : Table() {
         attackPatternLabel.color = labelColor
 
         statsLabel.color = labelColor
+    }
 
+    fun resetBarAnimations() {
         atkBar.reset()
-        atkBar.applyChange(config.enemy.attack.toFloat(), false)
         defBar.reset()
-        defBar.applyChange(config.enemy.defense.toFloat(), false)
         spdBar.reset()
+    }
+
+    fun startBarAnimations(config: BattleConfig) {
+        atkBar.applyChange(config.enemy.attack.toFloat(), false)
+        defBar.applyChange(config.enemy.defense.toFloat(), false)
         spdBar.applyChange(config.enemy.speed.toFloat(), false)
     }
 }
