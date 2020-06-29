@@ -59,7 +59,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
         createBody()
         createButtons()
 
-        Gdx.input.inputProcessor = stage
+        Gdx.input.inputProcessor = multiplexer
     }
 
     override fun render(dt: Float) {

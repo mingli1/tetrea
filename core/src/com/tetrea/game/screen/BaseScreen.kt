@@ -1,5 +1,6 @@
 package com.tetrea.game.screen
 
+import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.Screen
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.g2d.Sprite
@@ -13,6 +14,7 @@ import com.tetrea.game.IS_DEBUG
 import com.tetrea.game.TetreaGame
 import com.tetrea.game.V_HEIGHT
 import com.tetrea.game.V_WIDTH
+import com.tetrea.game.input.MultiTouchDisabler
 
 const val FADE_DURATION = 0.4f
 
@@ -30,12 +32,18 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
     private var fadeTimer = 0f
     private var nextScreen: BaseScreen? = null
 
+    protected val multiplexer: InputMultiplexer
+
     init {
         viewport = ExtendViewport(V_WIDTH.toFloat(), V_HEIGHT.toFloat(), cam)
         stage = Stage(viewport, game.batch)
         fade = Sprite(game.res.getTexture("black")).apply {
             setSize(stage.width, stage.height)
             setPosition(0f, 0f)
+        }
+        multiplexer = InputMultiplexer().apply {
+            addProcessor(MultiTouchDisabler())
+            addProcessor(stage)
         }
     }
 

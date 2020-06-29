@@ -66,7 +66,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
         selectionTable.add(selectionDialog).size(196f, 272f)
         stage.addActor(selectionTable)
 
-        Gdx.input.inputProcessor = stage
+        Gdx.input.inputProcessor = multiplexer
     }
 
     override fun update(dt: Float) {

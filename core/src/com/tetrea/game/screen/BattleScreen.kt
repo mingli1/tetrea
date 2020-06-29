@@ -26,7 +26,6 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     lateinit var scene: BattleScene
     lateinit var state: BattleState
 
-    private val multiplexer = InputMultiplexer()
     private lateinit var inputHandler: TetrisInputHandler
     private lateinit var tetrisKeyInput: TetrisKeyInput
     private var androidInput: TetrisAndroidInput? = null
@@ -47,9 +46,6 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         scene = BattleScene(boardX, boardY, config, stage, game.res, this)
 
         if (isAndroid()) androidInput = TetrisAndroidInput(stage, inputHandler, game.res)
-
-        multiplexer.clear()
-        multiplexer.addProcessor(stage)
         if (!isAndroid()) multiplexer.addProcessor(tetrisKeyInput)
 
         Gdx.input.inputProcessor = multiplexer
