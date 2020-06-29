@@ -91,12 +91,14 @@ class Resources : Disposable {
         colorUp: Color = Color.WHITE,
         colorDown: Color = Color.GRAY,
         width: Float = 0f,
-        height: Float = 0f
+        height: Float = 0f,
+        disabledKey: String? = null
     ): TextButton {
         val style = TextButton.TextButtonStyle().apply {
             up = NinePatchDrawable(getNinePatch(key + BUTTON_UP_KEY))
             down = NinePatchDrawable(getNinePatch(key + BUTTON_DOWN_KEY))
             over = NinePatchDrawable(getNinePatch(key + BUTTON_DOWN_KEY))
+            disabledKey?.let { disabled = NinePatchDrawable(getNinePatch(it)) }
             font = this@Resources.font
             fontColor = colorUp
             downFontColor = colorDown
@@ -160,6 +162,7 @@ class Resources : Disposable {
         loadTexture("spd")
 
         loadNinePatch("dark_gray_bg")
+        loadNinePatch("light_gray_bg")
         loadNinePatch("light_gray_blue_bg")
         loadNinePatch("gray_blue_bg")
         loadNinePatch("gray_blue_button_up")
@@ -171,6 +174,8 @@ class Resources : Disposable {
         loadNinePatch("red_button_down")
         loadNinePatch("purple_bg")
         loadNinePatch("light_purple_bg")
+        loadNinePatch("orange_button_up")
+        loadNinePatch("orange_button_down")
     }
 
     private fun loadBattleConfigs() {

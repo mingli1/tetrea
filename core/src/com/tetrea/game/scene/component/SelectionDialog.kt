@@ -1,5 +1,6 @@
 package com.tetrea.game.scene.component
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
@@ -16,6 +17,8 @@ class SelectionDialog(private val res: Resources) : Table() {
     private val title = res.getLabel(fontScale = 1f)
     private val desc = res.getLabel()
     private val rating = res.getLabel(color = GAME_ORANGE)
+    private val h2hLabel = res.getLabel(text = "ALL TIME RECORD")
+    private val h2h = res.getLabel()
     private val attackPatternLabel = res.getLabel(text = "ATTACK PATTERN")
     private val attackPatterns = res.getLabel()
 
@@ -23,6 +26,9 @@ class SelectionDialog(private val res: Resources) : Table() {
     private val atkBar = AnimatedImageBar(1f, 1f, 0.5f, false, 100f, 142f, 8f, res.getTexture("atk"))
     private val defBar = AnimatedImageBar(1f, 1f, 0.5f, false, 100f, 142f, 8f, res.getTexture("def"))
     private val spdBar = AnimatedImageBar(1f, 1f, 0.5f, false, 100f, 142f, 8f, res.getTexture("spd"))
+
+    private val battleButton = res.getNinePatchTextButton("", "orange_button",
+        colorUp = Color.WHITE, colorDown = Color.WHITE, disabledKey = "light_gray_bg")
 
     init {
         touchable = Touchable.enabled
@@ -35,6 +41,10 @@ class SelectionDialog(private val res: Resources) : Table() {
         }
         add(textTable).padTop(6f).padLeft(10f).top().left().row()
         add(Image(res.getTexture("white"))).width(170f).padTop(4f).colspan(2).row()
+
+        add(h2hLabel).padLeft(12f).padTop(8f).top().left().colspan(2).row()
+        add(h2h).padLeft(12f).padTop(4f).top().left().colspan(2).row()
+
         add(attackPatternLabel).padLeft(12f).padTop(8f).top().left().colspan(2).row()
         add(attackPatterns).padLeft(12f).padTop(4f).top().left().colspan(2).row()
 
@@ -68,7 +78,9 @@ class SelectionDialog(private val res: Resources) : Table() {
 
             add(stack).size(144f, 10f).expandX()
         }
-        add(spdTable).padLeft(12f).padTop(6f).top().left().colspan(2).expand().row()
+        add(spdTable).padLeft(12f).padTop(6f).top().left().colspan(2).row()
+
+        add(battleButton).padTop(6f).size(170f, 35f).colspan(2).expand()
     }
 
     fun update(dt: Float) {
@@ -118,13 +130,26 @@ class SelectionDialog(private val res: Resources) : Table() {
             "RATING: ???"
         })
 
-        var attackPatternText = "- "
-        attackPatternText += if (config.attackPatterns.isEmpty()) "RANDOM" else
-            config.attackPatterns.joinToString { it.text }
-        attackPatterns.setText(attackPatternText)
+        h2hLabel.color = labelColor
+        // todo get h2h score from save
+        h2h.setText("YOU 14 - 3 ENEMY")
+
+        val attackPatternsText = when {
+            selectionState == SelectionState.Locked -> "???"
+            config.attackPatterns.isEmpty() -> "RANDOM"
+            else -> config.attackPatterns.joinToString { it.text }
+        }
+        attackPatterns.setText(attackPatternsText)
         attackPatternLabel.color = labelColor
 
         statsLabel.color = labelColor
+
+        battleButton.isDisabled = selectionState == SelectionState.Locked
+        battleButton.setText(if (selectionState == SelectionState.Locked) {
+            "BATTLE (FT?)"
+        } else {
+            "BATTLE (FT${config.firstTo})"
+        })
     }
 
     fun resetBarAnimations() {

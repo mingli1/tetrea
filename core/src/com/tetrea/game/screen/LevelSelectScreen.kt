@@ -122,7 +122,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
                 when (selectionState) {
                     SelectionState.Completed -> game.res.getNinePatch("light_gray_blue_bg")
                     SelectionState.Active -> game.res.getNinePatch("light_purple_bg")
-                    else -> game.res.getNinePatch("dark_gray_bg")
+                    else -> game.res.getNinePatch("light_gray_bg")
                 }
             )
             val exitedBg = NinePatchDrawable(
@@ -206,7 +206,9 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
         selectionTable.isVisible = true
         selectionTable.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION),
-            Actions.run { selectionDialog.startBarAnimations(config) }))
+            Actions.run {
+                if (selectionState != SelectionState.Locked) selectionDialog.startBarAnimations(config)
+            }))
     }
 
     private fun hideSelectionDialog() {
