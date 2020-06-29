@@ -8,10 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.tetrea.game.battle.BattleConfig
+import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
+import com.tetrea.game.screen.ARG_BATTLE_CONFIG
+import com.tetrea.game.screen.BATTLE_SCREEN
+import com.tetrea.game.screen.LevelSelectScreen
 import com.tetrea.game.screen.SelectionState
 
-class SelectionDialog(private val res: Resources) : Table() {
+class SelectionDialog(private val res: Resources, private val screen: LevelSelectScreen) : Table() {
 
     private val avatar = Image()
     private val title = res.getLabel(fontScale = 1f)
@@ -29,6 +33,8 @@ class SelectionDialog(private val res: Resources) : Table() {
 
     private val battleButton = res.getNinePatchTextButton("", "orange_button",
         colorUp = Color.WHITE, colorDown = Color.WHITE, disabledKey = "light_gray_bg")
+
+    private lateinit var battleConfig: BattleConfig
 
     init {
         touchable = Touchable.enabled
@@ -80,6 +86,7 @@ class SelectionDialog(private val res: Resources) : Table() {
         add(spdTable).padLeft(12f).padTop(6f).top().left().colspan(2).row()
 
         add(battleButton).padTop(6f).size(170f, 35f).colspan(2).expand()
+        battleButton.onTap { onBattleClicked() }
     }
 
     fun update(dt: Float) {
@@ -89,6 +96,8 @@ class SelectionDialog(private val res: Resources) : Table() {
     }
 
     fun setConfig(config: BattleConfig, selectionState: SelectionState) {
+        battleConfig = config
+
         val labelColor =  when (selectionState) {
             SelectionState.Completed -> GAME_WHITE_BLUE
             SelectionState.Active -> GAME_YELLOW
@@ -144,6 +153,7 @@ class SelectionDialog(private val res: Resources) : Table() {
         statsLabel.color = labelColor
 
         battleButton.isDisabled = selectionState == SelectionState.Locked
+        battleButton.touchable = if (selectionState == SelectionState.Locked) Touchable.disabled else Touchable.enabled
         battleButton.setText(if (selectionState == SelectionState.Locked) {
             "BATTLE (FT?)"
         } else {
@@ -161,5 +171,10 @@ class SelectionDialog(private val res: Resources) : Table() {
         atkBar.applyChange(config.enemy.attack.toFloat(), false)
         defBar.applyChange(config.enemy.defense.toFloat(), false)
         spdBar.applyChange(config.enemy.speed.toFloat(), false)
+    }
+
+    private fun onBattleClicked() {
+        val args = mapOf(ARG_BATTLE_CONFIG to battleConfig)
+        screen.navigateTo(BATTLE_SCREEN, args)
     }
 }

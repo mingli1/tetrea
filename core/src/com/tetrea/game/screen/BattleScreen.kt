@@ -1,7 +1,6 @@
 package com.tetrea.game.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.TetreaGame
 import com.tetrea.game.battle.*
@@ -14,6 +13,7 @@ import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.TetrisConfig
 
+const val ARG_BATTLE_CONFIG = "ARG_BATTLE_CONFIG"
 const val ARG_MATCH_STATE = "ARG_MATCH_STATE"
 const val ARG_TETRIS_STATS = "ARG_TETRIS_STATS"
 const val ARG_PLAYER_SCORE = "ARG_PLAYER_SCORE"
@@ -30,10 +30,14 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var tetrisKeyInput: TetrisKeyInput
     private var androidInput: TetrisAndroidInput? = null
 
-    private val battleConfig = game.res.getBattleConfigs(0)[0]
+    private lateinit var battleConfig: BattleConfig
 
     override fun show() {
         super.show()
+
+        arguments?.let {
+            battleConfig = it[ARG_BATTLE_CONFIG] as BattleConfig
+        }
 
         val config = TetrisConfig()
         val boardX = stage.width / 2 - (config.width * SQUARE_SIZE) / 2f + 3

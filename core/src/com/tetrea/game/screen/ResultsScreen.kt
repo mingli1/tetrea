@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.TetreaGame
 import com.tetrea.game.battle.MatchState
+import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
 import com.tetrea.game.tetris.TetrisStats
 
@@ -122,7 +123,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
     }
 
     private fun createButtons() {
-        val backButton = getButton("BACK")
+        val backButton = getButton("BACK").apply { onTap { navigateTo(LEVEL_SELECT_SCREEN) } }
         val retryButton = getButton("RETRY")
         val nextButton = getButton("NEXT")
 

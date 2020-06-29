@@ -32,7 +32,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var scrollPane: ScrollPane
     private lateinit var selectionTable: Table
     private lateinit var selectionBg: Image
-    private val selectionDialog = SelectionDialog(game.res)
+    private val selectionDialog = SelectionDialog(game.res, this)
 
     // temp defeated and locked states
     private val playerWorldId = 0
