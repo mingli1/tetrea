@@ -32,14 +32,13 @@ class SelectionDialog(private val res: Resources) : Table() {
 
     init {
         touchable = Touchable.enabled
-        //debug = true
-        add(avatar).right().padTop(6f)
+        add(avatar).padTop(6f).padLeft(10f)
         val textTable = Table().apply {
-            add(title).top().left().padBottom(2f).row()
-            add(desc).top().left().padBottom(2f).row()
-            add(rating).top().left().padBottom(2f)
+            add(title).top().left().expandX().padBottom(2f).row()
+            add(desc).top().left().expandX().padBottom(2f).row()
+            add(rating).top().left().expandX().padBottom(2f)
         }
-        add(textTable).padTop(6f).padLeft(10f).top().left().row()
+        add(textTable).width(112f).padTop(6f).padLeft(10f).top().left().row()
         add(Image(res.getTexture("white"))).width(170f).padTop(4f).colspan(2).row()
 
         add(h2hLabel).padLeft(12f).padTop(8f).top().left().colspan(2).row()
