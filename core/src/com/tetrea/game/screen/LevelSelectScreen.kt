@@ -49,11 +49,12 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             add(game.res.getLabel("CHOOSE A MATCHUP", fontScale = 1f))
         }
 
-        parentTable.add(headerTable).size(220f, 32f).top().padTop(16f).row()
+        parentTable.add(headerTable).size(220f, 32f).top().padTop(16f).colspan(2).row()
         createBackButton()
+        createHelpButton()
         populateSelections()
 
-        selectionBg = Image(game.res.getTexture("black_100_opacity")).apply {
+        selectionBg = Image(game.res.getTexture("black_150_opacity")).apply {
             setSize(this@LevelSelectScreen.stage.width, this@LevelSelectScreen.stage.height)
             isVisible = false
             onTap { hideSelectionDialog() }
@@ -101,7 +102,18 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             colorDown = Color.WHITE
         )
 
-        parentTable.add(backButton).top().left().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).expandY().row()
+        parentTable.add(backButton).top().left().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).expandY()
+    }
+
+    private fun createHelpButton() {
+        val helpButton = game.res.getNinePatchTextButton(
+            text = "HELP",
+            key = "purple_button",
+            colorUp = GAME_LIGHT_GRAY_BLUE,
+            colorDown = Color.WHITE
+        )
+
+        parentTable.add(helpButton).top().right().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).expandY().row()
     }
 
     private fun populateSelections() {
@@ -194,7 +206,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             layout()
         }
         scrollPane.scrollTo(0f, 72f * (configs.size - playerLevelId), 195f, 60f)
-        parentTable.add(scrollPane).height(stage.height * SELECTION_SCROLL_HEIGHT_PERCENT)
+        parentTable.add(scrollPane).height(stage.height * SELECTION_SCROLL_HEIGHT_PERCENT).colspan(2)
     }
 
     private fun showSelectionDialog(config: BattleConfig, selectionState: SelectionState) {
