@@ -75,7 +75,7 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
             if (fadeTimer >= FADE_DURATION) {
                 nextScreen?.let { game.updateScreen(it) }
                 fadeTimer = 0f
-                transition = Transition.None
+                transition = if (transition == Transition.FadeOut) Transition.AfterFadeOut else Transition.None
             }
         }
     }
@@ -99,6 +99,7 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
     enum class Transition {
         FadeIn,
         FadeOut,
+        AfterFadeOut,
         None
     }
 }

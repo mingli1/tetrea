@@ -2,11 +2,12 @@ package com.tetrea.game.scene
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.Action
 import com.tetrea.game.battle.MatchState
@@ -20,6 +21,8 @@ import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.LineClearType
 import com.tetrea.game.tetris.util.PieceType
 import com.tetrea.game.util.Timer
+
+private const val END_SEQUENCE_DELAY = 2f
 
 class BattleScene(
     private val boardX: Float,
@@ -65,10 +68,17 @@ class BattleScene(
         setAlignment(Align.center)
         setPosition(boardX, boardY + 100)
     }
-    private var matchStateTag: TextureRegion? = null
-    private val gameOverTimer = Timer(2f, { showPostGameResult1() })
-    private val postGameResultTimer1 = Timer(2f, { showPostGameResult2() })
-    private val postGameResultTimer2 = Timer(2f, { handleMatchState() })
+
+    private val tiebreakerDrawable = TextureRegionDrawable(res.getTexture("tiebreaker_tag"))
+    private val matchPointDrawable = TextureRegionDrawable(res.getTexture("match_point_tag"))
+    private val victoryDrawable = TextureRegionDrawable(res.getTexture("victory_tag"))
+    private val defeatDrawable = TextureRegionDrawable(res.getTexture("defeat_tag"))
+    private var matchStateTag = Image().apply {
+        setPosition(boardX + 10, boardY + 50)
+        setSize(100f, 20f)
+    }
+
+    private val gameOverTimer = Timer(END_SEQUENCE_DELAY, { showPostGameResult1() })
 
     private val timeLabel: Label
     private val apmLabel: Label
@@ -171,6 +181,7 @@ class BattleScene(
         stage.addActor(gameNumberLabel)
         stage.addActor(resultsLabel)
         stage.addActor(scoreLabel)
+        stage.addActor(matchStateTag)
 
         startCountdown()
 
@@ -191,16 +202,16 @@ class BattleScene(
                 countdown--
                 when (countdown) {
                     0 -> {
-                        gameNumberLabel.isVisible = false
-                        matchStateTag = null
-                        countdownLabel.setText("GO!")
+                        hideGameNumberLabel()
+                        hideMatchStateTag()
+                        updateCountdown("GO!")
                         screen.tetris.start()
                     }
                     -1 -> {
                         countdownLabel.isVisible = false
                         startCountdown = false
                     }
-                    else -> countdownLabel.setText(countdown)
+                    else -> updateCountdown(countdown.toString())
                 }
                 countdownTimer = 0f
             }
@@ -219,8 +230,6 @@ class BattleScene(
         }
 
         gameOverTimer.update(dt)
-        postGameResultTimer1.update(dt)
-        postGameResultTimer2.update(dt)
     }
 
     fun render(batch: Batch) {
@@ -233,10 +242,6 @@ class BattleScene(
 
         enemyHpBar.render(batch)
         renderTetris(batch)
-
-        matchStateTag?.let {
-            batch.draw(it, boardX + 10, boardY + 50)
-        }
     }
 
     fun startEnemyCharge(delay: Float, action: Action) {
@@ -245,14 +250,6 @@ class BattleScene(
             Action.Heal -> res.getTexture("bar_restore")
             else -> res.getTexture("yellow")
         }
-    }
-
-    fun startGameOverSequence() {
-        gameNumberLabel.isVisible = true
-        gameNumberLabel.setText("GAME ${screen.state.gameNumber}")
-        resultsLabel.isVisible = true
-        resultsLabel.setText("FINISHED!")
-        gameOverTimer.start()
     }
 
     fun spawnNumberParticle(lines: Int, x: Float, y: Float) {
@@ -442,9 +439,23 @@ class BattleScene(
         gameNumberLabel.isVisible = true
         countdown = config.startDelay
         countdownLabel.isVisible = true
-        countdownLabel.setText(countdown)
+        updateCountdown(countdown.toString())
         countdownTimer = 0f
         startCountdown = true
+    }
+
+    fun startGameOverSequence() {
+        gameNumberLabel.isVisible = true
+        gameNumberLabel.setText("GAME ${screen.state.gameNumber}")
+        resultsLabel.isVisible = true
+        resultsLabel.addAction(Actions.sequence(
+            Actions.run { resultsLabel.setText("FINISHED!") },
+            Actions.alpha(1f),
+            Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.slowFast),
+            Actions.run { resultsLabel.setText(if (screen.state.playerWonGame) "YOU WIN!" else "YOU LOST!") },
+            Actions.alpha(1f)
+        ))
+        gameOverTimer.start()
     }
 
     private fun showPostGameResult1() {
@@ -452,24 +463,38 @@ class BattleScene(
         screen.tetris.currPiece = null
         screen.tetris.bag.clear()
 
-        resultsLabel.setText(if (screen.state.playerWonGame) "YOU WIN!" else "YOU LOST!")
         scoreLabel.isVisible = true
-        scoreLabel.setText("${screen.state.playerScore} - ${screen.state.enemyScore}")
-        postGameResultTimer1.start()
+        scoreLabel.addAction(Actions.sequence(
+            Actions.run { scoreLabel.setText("${screen.state.playerScore} - ${screen.state.enemyScore}") },
+            Actions.alpha(1f),
+            Actions.fadeOut(END_SEQUENCE_DELAY),
+            Actions.run { showPostGameResult2() },
+            Actions.fadeIn(0.5f)
+        ))
     }
 
     private fun showPostGameResult2() {
         screen.state.updateScores()
         scoreLabel.setText("${screen.state.playerScore} - ${screen.state.enemyScore}")
         val matchState = screen.state.getMatchState()
-        matchStateTag = when (matchState) {
-            MatchState.Tiebreaker -> res.getTexture("tiebreaker_tag")
-            MatchState.MatchPoint -> res.getTexture("match_point_tag")
-            MatchState.PlayerWin -> res.getTexture("victory_tag")
-            MatchState.EnemyWin -> res.getTexture("defeat_tag")
+        matchStateTag.drawable = when (matchState) {
+            MatchState.Tiebreaker -> tiebreakerDrawable
+            MatchState.MatchPoint -> matchPointDrawable
+            MatchState.PlayerWin -> victoryDrawable
+            MatchState.EnemyWin -> defeatDrawable
             else -> null
         }
-        postGameResultTimer2.start()
+        if (matchStateTag.drawable != null) {
+            matchStateTag.isVisible = true
+            matchStateTag.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(1f)))
+        }
+
+        resultsLabel.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.slowFast)))
+        scoreLabel.addAction(Actions.sequence(
+            Actions.alpha(1f),
+            Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.slowFast),
+            Actions.run { handleMatchState() }
+        ))
     }
 
     private fun handleMatchState() {
@@ -478,6 +503,32 @@ class BattleScene(
             screen.onBattleEnd(matchState, screen.state.playerScore, screen.state.enemyScore)
         } else {
             startCountdown()
+        }
+    }
+
+    private fun updateCountdown(text: String) {
+        countdownLabel.setText(text)
+        countdownLabel.clearActions()
+        countdownLabel.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(1f), Actions.alpha(1f)))
+    }
+
+    private fun hideGameNumberLabel() {
+        gameNumberLabel.addAction(Actions.sequence(
+            Actions.alpha(1f),
+            Actions.fadeOut(1f),
+            Actions.run { gameNumberLabel.isVisible = false },
+            Actions.alpha(1f)
+        ))
+    }
+
+    private fun hideMatchStateTag() {
+        if (matchStateTag.drawable != null) {
+            matchStateTag.addAction(Actions.sequence(
+                Actions.alpha(1f),
+                Actions.fadeOut(1f),
+                Actions.run { matchStateTag.isVisible = false },
+                Actions.alpha(1f)
+            ))
         }
     }
 }

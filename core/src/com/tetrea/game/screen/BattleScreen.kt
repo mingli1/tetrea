@@ -1,6 +1,8 @@
 package com.tetrea.game.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.InputMultiplexer
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.TetreaGame
 import com.tetrea.game.battle.*
@@ -26,6 +28,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     lateinit var scene: BattleScene
     lateinit var state: BattleState
 
+    private val inputMultiplexer = InputMultiplexer()
     private lateinit var inputHandler: TetrisInputHandler
     private lateinit var tetrisKeyInput: TetrisKeyInput
     private var androidInput: TetrisAndroidInput? = null
@@ -49,10 +52,11 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         state = BattleState(battleConfig, this, game.res)
         scene = BattleScene(boardX, boardY, config, stage, game.res, this)
 
+        inputMultiplexer.addProcessor(stage)
         if (isAndroid()) androidInput = TetrisAndroidInput(stage, inputHandler, game.res)
-        if (!isAndroid()) multiplexer.addProcessor(tetrisKeyInput)
+        if (!isAndroid()) inputMultiplexer.addProcessor(tetrisKeyInput)
 
-        Gdx.input.inputProcessor = multiplexer
+        Gdx.input.inputProcessor = inputMultiplexer
     }
 
     override fun update(dt: Float) {
@@ -72,6 +76,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.batch.projectionMatrix = cam.combined
         game.batch.begin()
+        game.batch.color = (Color.WHITE)
 
         game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
         scene.render(game.batch)
