@@ -16,6 +16,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tetrea.game.battle.BattleConfig
+import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.PieceType
 
 const val SQUARE_SIZE = 12
@@ -43,6 +44,7 @@ class Resources : Disposable {
 
     private val texturesCache = mutableMapOf<String, TextureRegion>()
     private val ninePatchCache = mutableMapOf<String, NinePatch>()
+    private val tetrisConfigCache = mutableMapOf<String, TetrisConfig>()
     private val battleConfigCache = mutableListOf<MutableList<BattleConfig>>()
     private val tetrisSheet: Array<Array<TextureRegion>>
     private val tetrisButtons: Array<Array<TextureRegion>>
@@ -60,6 +62,7 @@ class Resources : Disposable {
         }
 
         loadTextures()
+        loadTetrisConfigs()
         loadBattleConfigs()
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
@@ -69,6 +72,8 @@ class Resources : Disposable {
     fun getTexture(key: String): TextureRegion = checkNotNull(texturesCache[key])
 
     fun getNinePatch(key: String): NinePatch = checkNotNull(ninePatchCache[key])
+
+    fun getTetrisConfig(key: String): TetrisConfig = checkNotNull(tetrisConfigCache[key])
 
     fun getBattleConfigs(worldId: Int): List<BattleConfig> = battleConfigCache[worldId]
 
@@ -177,6 +182,11 @@ class Resources : Disposable {
         loadNinePatch("light_purple_bg")
         loadNinePatch("orange_button_up")
         loadNinePatch("orange_button_down")
+    }
+
+    private fun loadTetrisConfigs() {
+        val adapter = moshi.adapter(TetrisConfig::class.java)
+        tetrisConfigCache["default"] = adapter.fromJson(fileString("configs/tetris/default.json")) ?: return
     }
 
     private fun loadBattleConfigs() {

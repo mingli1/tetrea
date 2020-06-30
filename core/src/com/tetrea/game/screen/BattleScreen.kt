@@ -13,7 +13,6 @@ import com.tetrea.game.isAndroid
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.Tetris
-import com.tetrea.game.tetris.TetrisConfig
 
 const val ARG_BATTLE_CONFIG = "ARG_BATTLE_CONFIG"
 const val ARG_MATCH_STATE = "ARG_MATCH_STATE"
@@ -42,15 +41,15 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
             battleConfig = it[ARG_BATTLE_CONFIG] as BattleConfig
         }
 
-        val config = TetrisConfig()
-        val boardX = stage.width / 2 - (config.width * SQUARE_SIZE) / 2f + 3
-        val boardY = (stage.height / 2 - (config.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 16f else 32f
+        val tetrisConfig = game.res.getTetrisConfig(battleConfig.tetrisConfig)
+        val boardX = stage.width / 2 - (tetrisConfig.width * SQUARE_SIZE) / 2f + 3
+        val boardY = (stage.height / 2 - (tetrisConfig.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 16f else 32f
 
-        tetris = Tetris(boardX, boardY, TetrisConfig(), this)
+        tetris = Tetris(boardX, boardY, tetrisConfig, this)
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
         state = BattleState(battleConfig, this, game.res)
-        scene = BattleScene(boardX, boardY, config, stage, game.res, this)
+        scene = BattleScene(boardX, boardY, tetrisConfig, stage, game.res, this)
 
         inputMultiplexer.addProcessor(stage)
         if (isAndroid()) androidInput = TetrisAndroidInput(stage, inputHandler, game.res)

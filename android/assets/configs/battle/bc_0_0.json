@@ -5,7 +5,7 @@
   "enemy": {
     "name": "ENEMY 1",
     "avatar": "enemy_ittzzi",
-    "maxHp": 10,
+    "maxHp": 1000,
     "attack": 55,
     "defense": 20,
     "speed": 40

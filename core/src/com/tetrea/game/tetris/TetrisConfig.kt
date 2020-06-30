@@ -1,36 +1,29 @@
 package com.tetrea.game.tetris
 
+import com.squareup.moshi.Json
+
 data class TetrisConfig(
-    val width: Int = 10,
-    val height: Int = 20,
-    val startDelay: Int = 3,
-    val bagSize: Int = 7,
-    val numPreviews: Int = 5,
-    val gravity: Float = 1f,
+    @Json(name = "width") val width: Int,
+    @Json(name = "height") val height: Int,
+    @Json(name = "startDelay") val startDelay: Int,
+    @Json(name = "bagSize") val bagSize: Int,
+    @Json(name = "numPreviews") val numPreviews: Int,
+    @Json(name = "gravity") val gravity: Float,
     // Delays
-    val lockDelay1: Float = 0.5f,
-    val lockDelay2: Float = 5f,
-    val lockDelay3: Float = 20f,
-    val garbageDelay: Float = 0.5f,
+    @Json(name = "lockDelay1") val lockDelay1: Float,
+    @Json(name = "lockDelay2") val lockDelay2: Float,
+    @Json(name = "lockDelay3") val lockDelay3: Float,
+    @Json(name = "garbageDelay") val garbageDelay: Float,
     // Attack tables
-    val attackSingle: Int = 0,
-    val attackDouble: Int = 1,
-    val attackTriple: Int = 2,
-    val attackQuad: Int = 4,
-    val comboTable: (Int) -> Int = { combo ->
-        when (combo) {
-            1 -> 0
-            2, 3, 4 -> 1
-            5, 6 -> 2
-            7, 8 -> 3
-            9, 10, 11 -> 4
-            else -> 5
-        }
-    },
-    val attackTSS: Int = 2,
-    val attackTSD: Int = 4,
-    val attackTST: Int = 6,
-    val b2bBonus: Int = 1,
-    val attackPC: Int = 10,
-    val spikeThreshold: Int = 10
+    @Json(name = "attackSingle") val attackSingle: Int,
+    @Json(name = "attackDouble") val attackDouble: Int,
+    @Json(name = "attackTriple") val attackTriple: Int,
+    @Json(name = "attackQuad") val attackQuad: Int,
+    @Json(name = "comboTable") val comboTable: ComboTable,
+    @Json(name = "attackTSS") val attackTSS: Int,
+    @Json(name = "attackTSD") val attackTSD: Int,
+    @Json(name = "attackTST") val attackTST: Int,
+    @Json(name = "b2bBonus") val b2bBonus: Int,
+    @Json(name = "attackPC") val attackPC: Int,
+    @Json(name = "spikeThreshold") val spikeThreshold: Int
 )

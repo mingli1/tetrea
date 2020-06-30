@@ -236,7 +236,11 @@ class Tetris(
 
         stats.maxCombo = max(stats.maxCombo, combo)
 
-        attack += config.comboTable(combo)
+        attack += if (combo >= config.comboTable.attackTable.size) {
+            config.comboTable.maxAttack
+        } else {
+            config.comboTable.attackTable[combo]
+        }
         if (combo > 1) screen.scene.spawnComboParticle(combo)
 
         val applyB2bBonus = b2b > 0
