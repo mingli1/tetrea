@@ -1,6 +1,7 @@
 package com.tetrea.game.scene.effect
 
 import com.badlogic.gdx.graphics.Color
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.math.Vector3
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
@@ -45,7 +46,7 @@ class NumberParticle(
         label.setText(text)
         label.color = color
         label.setFontScale(fontScale)
-        label.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(lifetime)))
+        label.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(lifetime, Interpolation.slowFast)))
         this.lifetime = lifetime
         stage.addActor(label)
     }
