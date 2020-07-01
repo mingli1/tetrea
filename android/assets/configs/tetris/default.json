@@ -25,6 +25,8 @@
       0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2
     ]
   },
+  "critChance": 0.1,
+  "critMultiplier": 2.0,
   "attackTSS": 2,
   "attackTSD": 4,
   "attackTST": 6,

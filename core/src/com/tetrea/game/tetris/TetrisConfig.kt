@@ -15,6 +15,8 @@ data class TetrisConfig(
     @Json(name = "lockDelay3") val lockDelay3: Float,
     @Json(name = "garbageDelay") val garbageDelay: Float,
     // Attack tables
+    @Json(name = "critChance") val critChance: Float,
+    @Json(name = "critMultiplier") val critMultiplier: Float,
     @Json(name = "attackSingle") val attackSingle: Int,
     @Json(name = "attackDouble") val attackDouble: Int,
     @Json(name = "attackTriple") val attackTriple: Int,

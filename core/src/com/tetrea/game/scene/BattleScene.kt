@@ -252,12 +252,12 @@ class BattleScene(
         }
     }
 
-    fun spawnNumberParticle(lines: Int, x: Float, y: Float) {
+    fun spawnNumberParticle(lines: Int, x: Float, y: Float, crit: Boolean) {
         textParticleSpawner.spawn(
-            lines.toString(),
+            if (crit) "$lines CRIT" else lines.toString(),
+            if (crit) GAME_YELLOW else
             when (lines) {
-                1, 2, 3 -> Color.WHITE
-                4, 5, 6 -> GAME_YELLOW
+                1, 2, 3, 4, 5, 6 -> Color.WHITE
                 else -> GAME_LIGHT_BLUE
             },
             x, y

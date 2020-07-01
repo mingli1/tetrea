@@ -289,6 +289,13 @@ class Tetris(
             attack += config.attackPC
             screen.scene.spawnPerfectClearParticle()
         }
+
+        var crit = false
+        if (MathUtils.random() <= config.critChance) {
+            attack = (attack * config.critMultiplier).toInt()
+            crit = true
+        }
+
         totalAttack += attack
         cancelGarbage()
         linesSent += attack
@@ -309,7 +316,8 @@ class Tetris(
                 screen.scene.spawnNumberParticle(
                     attack,
                     screenX + it.squares[0].x * SQUARE_SIZE,
-                    screenY + it.squares[0].y * SQUARE_SIZE
+                    screenY + it.squares[0].y * SQUARE_SIZE,
+                    crit
                 )
             }
             if (screen.state.attackEnemy(attack)) gameOver(true)
