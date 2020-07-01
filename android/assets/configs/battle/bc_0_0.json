@@ -15,10 +15,6 @@
   ],
   "attackScheme": [
     {
-      "action": "Random",
-      "numMoves": 3
-    },
-    {
       "action": "Heal",
       "time": 3.5,
       "heal": 5

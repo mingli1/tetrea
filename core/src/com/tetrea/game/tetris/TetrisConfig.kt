@@ -19,11 +19,11 @@ data class TetrisConfig(
     @Json(name = "attackDouble") val attackDouble: Int,
     @Json(name = "attackTriple") val attackTriple: Int,
     @Json(name = "attackQuad") val attackQuad: Int,
-    @Json(name = "comboTable") val comboTable: ComboTable,
+    @Json(name = "comboTable") val comboTable: AttackTable,
+    @Json(name = "b2bTable") val b2bTable: AttackTable,
     @Json(name = "attackTSS") val attackTSS: Int,
     @Json(name = "attackTSD") val attackTSD: Int,
     @Json(name = "attackTST") val attackTST: Int,
-    @Json(name = "b2bBonus") val b2bBonus: Int,
     @Json(name = "attackPC") val attackPC: Int,
     @Json(name = "spikeThreshold") val spikeThreshold: Int
 )

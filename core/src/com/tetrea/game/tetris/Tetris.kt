@@ -236,23 +236,27 @@ class Tetris(
 
         stats.maxCombo = max(stats.maxCombo, combo)
 
-        attack += if (combo >= config.comboTable.attackTable.size) {
-            config.comboTable.maxAttack
+        attack += if (combo >= config.comboTable.table.size) {
+            config.comboTable.max
         } else {
-            config.comboTable.attackTable[combo]
+            config.comboTable.table[combo]
         }
         if (combo > 1) screen.scene.spawnComboParticle(combo)
 
-        val applyB2bBonus = b2b > 0
+        val b2bBonus = if (b2b >= config.b2bTable.table.size) {
+            config.b2bTable.max
+        } else {
+            config.b2bTable.table[b2b]
+        }
 
         if (currPiece?.pieceType == PieceType.T && currPiece?.isTwist().default(false)) {
-            applyTSpin(numLinesToClear, applyB2bBonus)
+            applyTSpin(numLinesToClear, b2bBonus)
             b2b++
             totalB2b++
             if (b2b > 1) screen.scene.spawnB2BParticle(b2b)
             return
         }
-        applyLineClears(numLinesToClear, applyB2bBonus)
+        applyLineClears(numLinesToClear, b2bBonus)
 
         if (numLinesToClear < 4) b2b = 0
         else {
@@ -502,7 +506,7 @@ class Tetris(
         longRotationTimer = 0f
     }
 
-    private fun applyLineClears(lines: Int, b2b: Boolean) {
+    private fun applyLineClears(lines: Int, b2b: Int) {
         when (lines) {
             1 -> {
                 stats.numSingle++
@@ -521,27 +525,27 @@ class Tetris(
             }
             4 -> {
                 stats.numQuad++
-                attack += config.attackQuad + (if (b2b) config.b2bBonus else 0)
+                attack += config.attackQuad + b2b
                 currLineClearType = LineClearType.Quad
             }
         }
     }
 
-    private fun applyTSpin(lines: Int, b2b: Boolean) {
+    private fun applyTSpin(lines: Int, b2b: Int) {
         when (lines) {
             1 -> {
                 stats.numTSS++
-                attack += config.attackTSS + (if (b2b) config.b2bBonus else 0)
+                attack += config.attackTSS + b2b
                 currLineClearType = LineClearType.TSS
             }
             2 -> {
                 stats.numTSD++
-                attack += config.attackTSD + (if (b2b) config.b2bBonus else 0)
+                attack += config.attackTSD + b2b
                 currLineClearType = LineClearType.TSD
             }
             3 -> {
                 stats.numTST++
-                attack += config.attackTST + (if (b2b) config.b2bBonus else 0)
+                attack += config.attackTST + b2b
                 currLineClearType = LineClearType.TST
             }
         }
