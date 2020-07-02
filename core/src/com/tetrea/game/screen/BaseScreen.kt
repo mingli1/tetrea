@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.tetrea.game.IS_DEBUG
-import com.tetrea.game.TetreaGame
-import com.tetrea.game.V_HEIGHT
-import com.tetrea.game.V_WIDTH
+import com.tetrea.game.global.IS_DEBUG
+import com.tetrea.game.global.TetreaGame
+import com.tetrea.game.global.V_HEIGHT
+import com.tetrea.game.global.V_WIDTH
 import com.tetrea.game.input.MultiTouchDisabler
 
 const val FADE_DURATION = 0.4f

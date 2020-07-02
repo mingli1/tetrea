@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.extension.onTap
+import com.tetrea.game.global.Player
 import com.tetrea.game.res.*
 import com.tetrea.game.screen.ARG_BATTLE_CONFIG
 import com.tetrea.game.screen.BATTLE_SCREEN
@@ -95,7 +96,7 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         spdBar.update(dt)
     }
 
-    fun setConfig(config: BattleConfig, selectionState: SelectionState) {
+    fun setConfig(config: BattleConfig, selectionState: SelectionState, player: Player) {
         battleConfig = config
 
         val labelColor =  when (selectionState) {
@@ -122,12 +123,14 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
 
         when (selectionState) {
             SelectionState.Completed -> {
-                // todo get score from save file
-                desc.setText("YOU 3 - 0 ENEMY")
+                player.battleRecords[config.compositeKey]?.bestScore?.let {
+                    desc.setText("YOU ${it.x} - ${it.y} ENEMY")
+                }
             }
             SelectionState.Active -> {
-                // todo get attempts from save file
-                desc.setText("3 ATTEMPTS")
+                player.battleRecords[config.compositeKey]?.let {
+                    desc.setText("${it.attempts} ATTEMPTS")
+                }
             }
             else -> desc.setText("LOCKED")
         }
@@ -139,8 +142,9 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         })
 
         h2hLabel.color = labelColor
-        // todo get h2h score from save
-        h2h.setText("YOU 14 - 3 ENEMY")
+        player.battleRecords[config.compositeKey]?.let {
+            h2h.setText("YOU ${it.allTimeRecord.x} - ${it.allTimeRecord.y} ENEMY")
+        }
 
         val attackPatternsText = when {
             selectionState == SelectionState.Locked -> "???"

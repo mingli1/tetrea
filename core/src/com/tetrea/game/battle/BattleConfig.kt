@@ -11,6 +11,6 @@ data class BattleConfig(
     @Json(name = "attackScheme") val attackScheme: List<Attack>? = null,
     @Json(name = "tetrisConfig") val tetrisConfig: String = "default"
 ) {
-
+    val compositeKey = "$worldId-$levelId"
     fun hasPattern(pattern: AttackPattern) = attackPatterns.contains(pattern)
 }

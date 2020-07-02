@@ -7,7 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
-import com.tetrea.game.TetreaGame
+import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.extension.onClick
 import com.tetrea.game.extension.onTap
@@ -33,10 +33,6 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var selectionTable: Table
     private lateinit var selectionBg: Image
     private val selectionDialog = SelectionDialog(game.res, this)
-
-    // temp defeated and locked states
-    private val playerWorldId = 0
-    private val playerLevelId = 4
 
     override fun show() {
         super.show()
@@ -120,13 +116,12 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
         // todo: implement multiple worlds
         val selectionTable = Table()
         val currWorldId = 0
-
         val configs = game.res.getBattleConfigs(currWorldId)
 
         configs.forEachIndexed { levelId, config ->
             val selectionState = when {
-                currWorldId < playerWorldId || levelId < playerLevelId -> SelectionState.Completed
-                levelId == playerLevelId -> SelectionState.Active
+                currWorldId < game.player.currWorldId || levelId < game.player.currLevelId -> SelectionState.Completed
+                levelId == game.player.currLevelId -> SelectionState.Active
                 else -> SelectionState.Locked
             }
 
@@ -176,12 +171,14 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             val desc = game.res.getLabel()
             when (selectionState) {
                 SelectionState.Completed -> {
-                    // todo get score from save file
-                    desc.setText("YOU 3 - 0 ENEMY")
+                    game.player.battleRecords[config.compositeKey]?.bestScore?.let {
+                        desc.setText("YOU ${it.x} - ${it.y} ENEMY")
+                    }
                 }
                 SelectionState.Active -> {
-                    // todo get attempts from save file
-                    desc.setText("3 ATTEMPTS")
+                    game.player.battleRecords[config.compositeKey]?.let {
+                        desc.setText("${it.attempts} ATTEMPTS")
+                    }
                 }
                 else -> desc.setText("LOCKED")
             }
@@ -205,13 +202,13 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             fadeScrollBars = false
             layout()
         }
-        scrollPane.scrollTo(0f, 72f * (configs.size - playerLevelId), 195f, 60f)
+        scrollPane.scrollTo(0f, 72f * (configs.size - game.player.currLevelId), 195f, 60f)
         parentTable.add(scrollPane).height(stage.height * SELECTION_SCROLL_HEIGHT_PERCENT).colspan(2)
     }
 
     private fun showSelectionDialog(config: BattleConfig, selectionState: SelectionState) {
         selectionDialog.resetBarAnimations()
-        selectionDialog.setConfig(config, selectionState)
+        selectionDialog.setConfig(config, selectionState, game.player)
 
         selectionBg.isVisible = true
         selectionBg.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION)))

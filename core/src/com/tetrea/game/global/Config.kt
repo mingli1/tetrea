@@ -1,4 +1,4 @@
-package com.tetrea.game
+package com.tetrea.game.global
 
 import com.badlogic.gdx.Application
 import com.badlogic.gdx.Gdx

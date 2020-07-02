@@ -4,12 +4,12 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.tetrea.game.TetreaGame
+import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.*
 import com.tetrea.game.input.TetrisAndroidInput
 import com.tetrea.game.input.TetrisInputHandler
 import com.tetrea.game.input.TetrisKeyInput
-import com.tetrea.game.isAndroid
+import com.tetrea.game.global.isAndroid
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.Tetris
@@ -48,7 +48,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         tetris = Tetris(boardX, boardY, tetrisConfig, this)
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
-        state = BattleState(battleConfig, this, game.res)
+        state = BattleState(battleConfig, this, game.player, game.res)
         scene = BattleScene(boardX, boardY, tetrisConfig, stage, game.res, this)
 
         inputMultiplexer.addProcessor(stage)

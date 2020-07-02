@@ -8,7 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
-import com.tetrea.game.TetreaGame
+import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.MatchState
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
@@ -91,7 +91,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
         )
         headerTable.add(matchStateLabel).row()
         val finalScoreLabel = game.res.getLabel(
-            text = "YOU $playerScore - $enemyScore $enemyName",
+            text = "${game.player.name} $playerScore - $enemyScore $enemyName",
             fontScale = 1f
         )
         headerTable.add(finalScoreLabel)

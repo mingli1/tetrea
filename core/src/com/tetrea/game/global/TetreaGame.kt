@@ -1,4 +1,4 @@
-package com.tetrea.game
+package com.tetrea.game.global
 
 import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.tetrea.game.res.Resources
-import com.tetrea.game.screen.BATTLE_SCREEN
 import com.tetrea.game.screen.BaseScreen
 import com.tetrea.game.screen.LEVEL_SELECT_SCREEN
 import com.tetrea.game.screen.ScreenFactory
@@ -17,6 +16,7 @@ class TetreaGame : Game() {
     lateinit var batch: Batch
     lateinit var res: Resources
     lateinit var screenFactory: ScreenFactory
+    lateinit var player: Player
 
     lateinit var fpsLabel: Label
 
@@ -26,6 +26,7 @@ class TetreaGame : Game() {
         batch = SpriteBatch()
         res = Resources()
         screenFactory = ScreenFactory(this)
+        player = Player()
 
         if (IS_DEBUG) {
             fpsLabel = res.getLabel().apply { setPosition(5f, 5f) }

@@ -1,6 +1,6 @@
 package com.tetrea.game.screen
 
-import com.tetrea.game.TetreaGame
+import com.tetrea.game.global.TetreaGame
 
 const val BATTLE_SCREEN = "BATTLE_SCREEN"
 const val RESULTS_SCREEN = "RESULTS_SCREEN"

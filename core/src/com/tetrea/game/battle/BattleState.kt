@@ -1,6 +1,7 @@
 package com.tetrea.game.battle
 
 import com.badlogic.gdx.math.MathUtils
+import com.tetrea.game.global.Player
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BattleScreen
 import kotlin.math.max
@@ -17,6 +18,7 @@ private const val MAX_HEAL_PERCENTAGE = 0.3f
 class BattleState(
     private val config: BattleConfig,
     private val screen: BattleScreen,
+    private val player: Player,
     res: Resources
 ) {
 
@@ -45,7 +47,7 @@ class BattleState(
             config.attackScheme?.let { handleAttackScheme(dt, it) } ?: handleRandomScheme(dt)
         }
 
-        playerText = "YOU $playerScore"
+        playerText = "${player.name} $playerScore"
         enemyText = "$enemyScore ${config.enemy.name}"
     }
 
