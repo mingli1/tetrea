@@ -5,7 +5,7 @@ import com.tetrea.game.util.Int2
 
 class Player {
     val name = "PLAYER"
-    val avatar = ""
+    val avatar = "enemy_ittzzi"
     val rating = 3333
     val currWorldId = 0
     val currLevelId = 4

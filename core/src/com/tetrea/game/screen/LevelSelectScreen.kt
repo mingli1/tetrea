@@ -13,6 +13,7 @@ import com.tetrea.game.extension.onClick
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.SelectionDialog
+import com.tetrea.game.scene.component.VersusCard
 
 private const val SELECTION_SCROLL_HEIGHT_PERCENT = 0.78f
 private const val BUTTON_WIDTH = 76f
@@ -33,6 +34,9 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var selectionTable: Table
     private lateinit var selectionBg: Image
     private val selectionDialog = SelectionDialog(game.res, this)
+    private var playerVersusCard: VersusCard? = null
+    private var enemyVersusCard: VersusCard? = null
+    private lateinit var versusTag: Image
 
     override fun show() {
         super.show()
@@ -63,12 +67,18 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
         selectionTable.add(selectionDialog).size(196f, 272f)
         stage.addActor(selectionTable)
 
+        versusTag = Image(game.res.getTexture("versus_tag")).apply {
+            setPosition(this@LevelSelectScreen.stage.width / 2 - 76f / 2, this@LevelSelectScreen.stage.height / 2 - 44f / 2)
+        }
+
         Gdx.input.inputProcessor = multiplexer
     }
 
     override fun update(dt: Float) {
         super.update(dt)
         selectionDialog.update(dt)
+        playerVersusCard?.update(dt)
+        enemyVersusCard?.update(dt)
     }
 
     override fun render(dt: Float) {
@@ -88,6 +98,38 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
         stage.act(dt)
         stage.draw()
+    }
+
+    fun onBattleButtonClicked(battleConfig: BattleConfig) {
+        playerVersusCard = VersusCard(
+            stage = stage,
+            onScreen = false,
+            isEnemy = false,
+            onFinished = { onVersusCardFinished(battleConfig) },
+            res = game.res,
+            player = game.player
+        )
+        enemyVersusCard = VersusCard(
+            stage = stage,
+            onScreen = false,
+            isEnemy = true,
+            onFinished = {},
+            res = game.res,
+            enemy = battleConfig.enemy
+        )
+    }
+
+    private fun onVersusCardFinished(battleConfig: BattleConfig) {
+        stage.addActor(versusTag)
+        versusTag.addAction(Actions.sequence(
+            Actions.alpha(0f),
+            Actions.fadeIn(1f),
+            Actions.delay(1f),
+            Actions.run {
+                val args = mapOf(ARG_BATTLE_CONFIG to battleConfig)
+                navigateTo(BATTLE_SCREEN, args)
+            }
+        ))
     }
 
     private fun createBackButton() {

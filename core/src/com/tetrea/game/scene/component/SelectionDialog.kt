@@ -87,7 +87,7 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         add(spdTable).padLeft(12f).padTop(6f).top().left().colspan(2).row()
 
         add(battleButton).padTop(6f).size(170f, 35f).colspan(2).expand()
-        battleButton.onTap { onBattleClicked() }
+        battleButton.onTap { screen.onBattleButtonClicked(battleConfig) }
     }
 
     fun update(dt: Float) {

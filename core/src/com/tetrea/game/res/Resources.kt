@@ -20,6 +20,7 @@ import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.PieceType
 
 const val SQUARE_SIZE = 12
+const val AVATAR_SIZE = 26f
 
 const val TETRIS_BUTTON_SIZE = 40
 const val TETRIS_BUTTON_LEFT = 0
@@ -156,6 +157,7 @@ class Resources : Disposable {
         loadTexture("tiebreaker_tag")
         loadTexture("victory_tag")
         loadTexture("defeat_tag")
+        loadTexture("versus_tag")
 
         loadTexture("enemy_ittzzi")
 
@@ -182,6 +184,8 @@ class Resources : Disposable {
         loadNinePatch("light_purple_bg")
         loadNinePatch("orange_button_up")
         loadNinePatch("orange_button_down")
+        loadNinePatch("versus_blue_bg")
+        loadNinePatch("versus_orange_bg")
     }
 
     private fun loadTetrisConfigs() {
