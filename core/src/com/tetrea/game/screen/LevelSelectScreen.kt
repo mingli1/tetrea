@@ -26,7 +26,7 @@ enum class SelectionState {
     Locked
 }
 
-class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
+class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
     private lateinit var parentTable: Table
     private lateinit var headerTable: Table

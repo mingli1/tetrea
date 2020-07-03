@@ -8,14 +8,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BaseScreen
 import com.tetrea.game.screen.LEVEL_SELECT_SCREEN
-import com.tetrea.game.screen.ScreenFactory
+import com.tetrea.game.screen.LateDisposable
+import com.tetrea.game.screen.ScreenManager
 import kotlin.math.min
 
 class TetreaGame : Game() {
 
     lateinit var batch: Batch
     lateinit var res: Resources
-    lateinit var screenFactory: ScreenFactory
+    lateinit var screenManager: ScreenManager
     lateinit var player: Player
 
     lateinit var fpsLabel: Label
@@ -25,19 +26,24 @@ class TetreaGame : Game() {
     override fun create() {
         batch = SpriteBatch()
         res = Resources()
-        screenFactory = ScreenFactory(this)
+        screenManager = ScreenManager(this)
         player = Player()
 
         if (IS_DEBUG) {
             fpsLabel = res.getLabel().apply { setPosition(5f, 5f) }
         }
 
-        updateScreen(screenFactory.getScreen(LEVEL_SELECT_SCREEN))
+        updateScreen(screenManager.getScreen(LEVEL_SELECT_SCREEN))
     }
 
     fun updateScreen(screen: BaseScreen) {
         setScreen(screen)
-        currentScreen?.dispose()
+        if (currentScreen is LateDisposable) {
+            currentScreen?.let { screenManager.addLateDisposable(it) }
+        } else {
+            screenManager.dispose()
+            currentScreen?.dispose()
+        }
         currentScreen = screen
     }
 

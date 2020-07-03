@@ -49,7 +49,7 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
     }
 
     fun navigateTo(key: String, arguments: Map<String, Any>? = null, shouldFade: Boolean = true) {
-        val screen = game.screenFactory.getScreen(key)
+        val screen = game.screenManager.getScreen(key)
         screen.arguments = arguments
         screen.shouldFade = shouldFade
         nextScreen = screen
