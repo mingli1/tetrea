@@ -27,6 +27,7 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
         setToOrtho(false, V_WIDTH.toFloat(), V_HEIGHT.toFloat())
     }
 
+    private var shouldFade = true
     protected val fade: Sprite
     protected var transition = Transition.None
     private var fadeTimer = 0f
@@ -47,21 +48,28 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
         }
     }
 
-    fun navigateTo(key: String, arguments: Map<String, Any>? = null) {
+    fun navigateTo(key: String, arguments: Map<String, Any>? = null, shouldFade: Boolean = true) {
         val screen = game.screenFactory.getScreen(key)
         screen.arguments = arguments
+        screen.shouldFade = shouldFade
         nextScreen = screen
 
-        transition = Transition.FadeOut
-        fade.setAlpha(0f)
-        stage.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(FADE_DURATION)))
+        if (shouldFade) {
+            transition = Transition.FadeOut
+            fade.setAlpha(0f)
+            stage.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(FADE_DURATION)))
+        } else {
+            game.updateScreen(screen)
+        }
     }
 
     override fun show() {
         if (IS_DEBUG) stage.addActor(game.fpsLabel)
-        transition = Transition.FadeIn
 
-        stage.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(FADE_DURATION)))
+        if (shouldFade) {
+            transition = Transition.FadeIn
+            stage.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(FADE_DURATION)))
+        }
     }
 
     open fun update(dt: Float) {

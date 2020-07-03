@@ -78,6 +78,11 @@ class VersusCard(
         stage.addActor(name)
         stage.addActor(rating)
 
+        if (!onScreen) start = true
+        else updateActorPositions()
+    }
+
+    fun start() {
         start = true
     }
 

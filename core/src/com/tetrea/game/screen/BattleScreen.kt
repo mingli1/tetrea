@@ -49,7 +49,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
         state = BattleState(battleConfig, this, game.player, game.res)
-        scene = BattleScene(boardX, boardY, tetrisConfig, stage, game.res, this)
+        scene = BattleScene(boardX, boardY, tetrisConfig, game.player, battleConfig.enemy, stage, game.res, this)
 
         inputMultiplexer.addProcessor(stage)
         if (isAndroid()) androidInput = TetrisAndroidInput(stage, inputHandler, game.res)

@@ -127,7 +127,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game) {
             Actions.delay(1f),
             Actions.run {
                 val args = mapOf(ARG_BATTLE_CONFIG to battleConfig)
-                navigateTo(BATTLE_SCREEN, args)
+                navigateTo(BATTLE_SCREEN, args, shouldFade = false)
             }
         ))
     }

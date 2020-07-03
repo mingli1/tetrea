@@ -10,11 +10,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.Action
+import com.tetrea.game.battle.Enemy
 import com.tetrea.game.battle.MatchState
 import com.tetrea.game.extension.formatMMSS
+import com.tetrea.game.global.Player
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.AnimatedBar
 import com.tetrea.game.scene.component.HealthBar
+import com.tetrea.game.scene.component.VersusCard
 import com.tetrea.game.scene.effect.TextParticleSpawner
 import com.tetrea.game.screen.BattleScreen
 import com.tetrea.game.tetris.TetrisConfig
@@ -28,6 +31,8 @@ class BattleScene(
     private val boardX: Float,
     private val boardY: Float,
     private val config: TetrisConfig,
+    player: Player,
+    enemy: Enemy,
     private val stage: Stage,
     private val res: Resources,
     private val screen: BattleScreen
@@ -116,6 +121,12 @@ class BattleScene(
         barTexture = res.getTexture("red")
     )
 
+    private var playerVersusCard: VersusCard? = null
+    private var enemyVersusCard: VersusCard? = null
+    private val versusTag = Image(res.getTexture("versus_tag")).apply {
+        setPosition(this@BattleScene.stage.width / 2 - 76f / 2, this@BattleScene.stage.height / 2 - 44f / 2)
+    }
+
     init {
         stage.addActor(res.getLabel(
             screen.state.firstToText,
@@ -183,12 +194,40 @@ class BattleScene(
         stage.addActor(scoreLabel)
         stage.addActor(matchStateTag)
 
-        startCountdown()
-
         textParticleSpawner = TextParticleSpawner(res, stage)
+
+        playerVersusCard = VersusCard(
+            stage = stage,
+            onScreen = true,
+            isEnemy = false,
+            onFinished = { startCountdown() },
+            res = res,
+            player = player
+        )
+        enemyVersusCard = VersusCard(
+            stage = stage,
+            onScreen = true,
+            isEnemy = true,
+            onFinished = {},
+            res = res,
+            enemy = enemy
+        )
+        stage.addActor(versusTag)
+
+        versusTag.addAction(Actions.sequence(
+            Actions.alpha(1f),
+            Actions.fadeOut(1f),
+            Actions.run {
+                playerVersusCard?.start()
+                enemyVersusCard?.start()
+            }
+        ))
     }
 
     fun update(dt: Float) {
+        playerVersusCard?.update(dt)
+        enemyVersusCard?.update(dt)
+
         playerHeaderLabel.setText(screen.state.playerText)
         enemyHeaderLabel.setText(screen.state.enemyText)
 
