@@ -64,6 +64,8 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
         }
     }
 
+    fun isPaused() = gameState == GameState.Pause
+
     override fun show() {
         if (IS_DEBUG) stage.addActor(game.fpsLabel)
 

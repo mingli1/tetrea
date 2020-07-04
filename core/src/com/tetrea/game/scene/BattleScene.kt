@@ -432,13 +432,16 @@ class BattleScene(
                         boardY + screen.tetris.content[y][x].y * SQUARE_SIZE)
                 }
 
-                if (screen.tetris.content[y][x].filled) {
+                if (screen.tetris.content[y][x].filled && !screen.isPaused()) {
                     batch.draw(res.getSquare(screen.tetris.content[y][x].square.pieceType),
                         boardX + screen.tetris.content[y][x].x * SQUARE_SIZE,
                         boardY + screen.tetris.content[y][x].y * SQUARE_SIZE)
                 }
             }
         }
+
+        if (screen.isPaused()) return
+
         screen.tetris.currPiece?.let { currPiece ->
             currPiece.squares.forEach {
                 batch.draw(res.getSquare(currPiece.pieceType),
