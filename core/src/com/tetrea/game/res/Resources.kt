@@ -32,6 +32,7 @@ const val TETRIS_BUTTON_ROTATE_CW = 4
 const val TETRIS_BUTTON_ROTATE_CCW = 5
 const val TETRIS_BUTTON_ROTATE_180 = 6
 const val TETRIS_BUTTON_HOLD = 7
+const val TETRIS_BUTTON_PAUSE = 8
 
 private const val BUTTON_UP_KEY = "_up"
 private const val BUTTON_DOWN_KEY = "_down"

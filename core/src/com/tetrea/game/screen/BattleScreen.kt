@@ -46,7 +46,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         val boardY = (stage.height / 2 - (tetrisConfig.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 16f else 32f
 
         tetris = Tetris(boardX, boardY, tetrisConfig, this)
-        inputHandler = TetrisInputHandler(tetris, 0.117f, 0f, 0f)
+        inputHandler = TetrisInputHandler(tetris, this, 0.117f, 0f, 0f)
         tetrisKeyInput = TetrisKeyInput(inputHandler)
         state = BattleState(battleConfig, this, game.player, game.res)
         scene = BattleScene(boardX, boardY, tetrisConfig, game.player, battleConfig.enemy, stage, game.res, this)

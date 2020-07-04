@@ -54,5 +54,9 @@ class TetrisAndroidInput(
             onClick { tetrisInputHandler.onHold() }
             setPosition(stage.width - 100f, 66f)
         })
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_PAUSE)).apply {
+            onClick { tetrisInputHandler.onPause() }
+            setPosition(stage.width - 50f, stage.height - 100f)
+        })
     }
 }

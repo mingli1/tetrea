@@ -24,6 +24,7 @@ class TetrisKeyInput(private val inputHandler: TetrisInputHandler) : InputProces
             Input.Keys.Z -> inputHandler.rotateCounterClockwise()
             Input.Keys.X -> inputHandler.rotate180()
             Input.Keys.SHIFT_LEFT -> inputHandler.onHold()
+            Input.Keys.ESCAPE -> inputHandler.onPause()
         }
         return true
     }

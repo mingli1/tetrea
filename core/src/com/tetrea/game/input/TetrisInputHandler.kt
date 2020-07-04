@@ -1,11 +1,13 @@
 package com.tetrea.game.input
 
 import com.tetrea.game.extension.default
+import com.tetrea.game.screen.BaseScreen
 import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.util.Rotation
 
 class TetrisInputHandler(
     private val tetris: Tetris,
+    private val screen: BaseScreen,
     das: Float,
     arr: Float,
     private val sds: Float
@@ -33,6 +35,10 @@ class TetrisInputHandler(
                 }
             }
         }
+    }
+
+    fun onPause() {
+        screen.notifyPause()
     }
 
     fun onRight(down: Boolean) {
