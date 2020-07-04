@@ -27,9 +27,9 @@ open class BaseModalDialog(
         isMovable = false
         titleLabel.run {
             setAlignment(Align.center)
-            setFontScale(2f)
+            setFontScale(1.5f)
             color = GAME_YELLOW
-            padTop(64f)
+            padTop(48f)
         }
 
         bg.onTap { if (dismissable) hide() }

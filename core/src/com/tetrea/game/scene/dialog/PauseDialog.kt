@@ -6,11 +6,11 @@ import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BaseScreen
 import com.tetrea.game.screen.LEVEL_SELECT_SCREEN
 
-private const val WINDOW_MIN_HEIGHT = 200f
+private const val WINDOW_MIN_HEIGHT = 180f
 private const val BUTTON_WIDTH = 150f
 private const val BUTTON_HEIGHT = 36f
 private const val BUTTON_PADDING = 16f
-private const val TOP_BOTTOM_PADDING = 8f
+private const val TOP_BOTTOM_PADDING = 2f
 
 private const val RESUME = "RESUME"
 private const val SETTINGS = "SETTINGS"
@@ -46,6 +46,8 @@ class PauseDialog(
             this::dismissConfirmDialog,
             res
         )
+
+        buttonTable.padBottom(16f)
     }
 
     override fun show(stage: Stage): Dialog {

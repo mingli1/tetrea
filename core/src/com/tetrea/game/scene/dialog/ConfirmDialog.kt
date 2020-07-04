@@ -5,7 +5,7 @@ import com.tetrea.game.res.Resources
 
 private const val WINDOW_MIN_HEIGHT = 120f
 private const val BUTTON_WIDTH = 80f
-private const val BUTTON_HEIGHT = 36f
+private const val BUTTON_HEIGHT = 30f
 private const val WIDTH = 220f
 private const val AFFIRMATIVE_TAG = "AFFIRMATIVE_TAG"
 private const val DISMISSIVE_TAG = "DISMISSIVE_TAG"
@@ -31,7 +31,7 @@ class ConfirmDialog(
         buttonTable.defaults().width(BUTTON_WIDTH)
         buttonTable.defaults().height(BUTTON_HEIGHT)
 
-        val messageLabel = res.getLabel(text = message, fontScale = 1f).apply {
+        val messageLabel = res.getLabel(text = message).apply {
             setWrap(true)
             setAlignment(Align.center)
         }
