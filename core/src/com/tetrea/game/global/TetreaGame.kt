@@ -47,6 +47,11 @@ class TetreaGame : Game() {
         currentScreen = screen
     }
 
+
+    override fun pause() {
+        currentScreen?.notifyPause()
+    }
+
     override fun render() {
         screen.render(min(DELTA_TIME_BOUND, Gdx.graphics.deltaTime))
         if (IS_DEBUG) {
@@ -57,6 +62,7 @@ class TetreaGame : Game() {
     override fun dispose() {
         batch.dispose()
         res.dispose()
+        screenManager.dispose()
         currentScreen?.dispose()
     }
 }

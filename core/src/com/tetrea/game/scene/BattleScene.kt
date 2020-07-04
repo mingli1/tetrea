@@ -18,6 +18,7 @@ import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.AnimatedBar
 import com.tetrea.game.scene.component.HealthBar
 import com.tetrea.game.scene.component.VersusCard
+import com.tetrea.game.scene.dialog.PauseDialog
 import com.tetrea.game.scene.effect.TextParticleSpawner
 import com.tetrea.game.screen.BattleScreen
 import com.tetrea.game.tetris.TetrisConfig
@@ -126,6 +127,8 @@ class BattleScene(
     private val versusTag = Image(res.getTexture("versus_tag")).apply {
         setPosition(this@BattleScene.stage.width / 2 - 76f / 2, this@BattleScene.stage.height / 2 - 44f / 2)
     }
+
+    private val pauseDialog = PauseDialog(res, screen)
 
     init {
         stage.addActor(res.getLabel(
@@ -408,6 +411,12 @@ class BattleScene(
 
     fun resetGarbage() = garbageBar.reset()
 
+    fun showPauseDialog() {
+        if (!stage.actors.contains(pauseDialog)) {
+            pauseDialog.show(stage)
+        }
+    }
+
     private fun renderTetris(batch: Batch) {
         for (y in 0 until config.height * 2) {
             for (x in 0 until config.width) {
@@ -490,7 +499,7 @@ class BattleScene(
         resultsLabel.addAction(Actions.sequence(
             Actions.run { resultsLabel.setText("FINISHED!") },
             Actions.alpha(1f),
-            Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.slowFast),
+            Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.pow2In),
             Actions.run { resultsLabel.setText(if (screen.state.playerWonGame) "YOU WIN!" else "YOU LOST!") },
             Actions.alpha(1f)
         ))
@@ -528,10 +537,10 @@ class BattleScene(
             matchStateTag.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(1f)))
         }
 
-        resultsLabel.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.slowFast)))
+        resultsLabel.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.pow2In)))
         scoreLabel.addAction(Actions.sequence(
             Actions.alpha(1f),
-            Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.slowFast),
+            Actions.fadeOut(END_SEQUENCE_DELAY, Interpolation.pow2In),
             Actions.run { handleMatchState() }
         ))
     }

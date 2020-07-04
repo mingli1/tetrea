@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.Window
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
@@ -113,6 +114,13 @@ class Resources : Disposable {
         return TextButton(text, style).apply {
             setSize(width, height)
         }
+    }
+
+    fun getNinePatchWindowStyle(
+        key: String,
+        fontColor: Color = Color.WHITE
+    ): Window.WindowStyle {
+        return Window.WindowStyle(font, fontColor, NinePatchDrawable(getNinePatch(key)))
     }
 
     fun getSquare(pieceType: PieceType) = tetrisSheet[0][pieceType.index]

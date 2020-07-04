@@ -46,7 +46,7 @@ class NumberParticle(
         label.setText(text)
         label.color = color
         label.setFontScale(fontScale)
-        label.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(lifetime, Interpolation.slowFast)))
+        label.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(lifetime, Interpolation.pow2In)))
         this.lifetime = lifetime
         stage.addActor(label)
     }

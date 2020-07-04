@@ -1,4 +1,4 @@
-package com.tetrea.game.scene.component
+package com.tetrea.game.scene.dialog
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Touchable
@@ -11,8 +11,7 @@ import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.*
-import com.tetrea.game.screen.ARG_BATTLE_CONFIG
-import com.tetrea.game.screen.BATTLE_SCREEN
+import com.tetrea.game.scene.component.AnimatedImageBar
 import com.tetrea.game.screen.LevelSelectScreen
 import com.tetrea.game.screen.SelectionState
 
@@ -87,7 +86,10 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         add(spdTable).padLeft(12f).padTop(6f).top().left().colspan(2).row()
 
         add(battleButton).padTop(6f).size(170f, 35f).colspan(2).expand()
-        battleButton.onTap { screen.onBattleButtonClicked(battleConfig) }
+        battleButton.onTap {
+            battleButton.touchable = Touchable.disabled
+            screen.onBattleButtonClicked(battleConfig)
+        }
     }
 
     fun update(dt: Float) {
@@ -175,10 +177,5 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         atkBar.applyChange(config.enemy.attack.toFloat(), false)
         defBar.applyChange(config.enemy.defense.toFloat(), false)
         spdBar.applyChange(config.enemy.speed.toFloat(), false)
-    }
-
-    private fun onBattleClicked() {
-        val args = mapOf(ARG_BATTLE_CONFIG to battleConfig)
-        screen.navigateTo(BATTLE_SCREEN, args)
     }
 }

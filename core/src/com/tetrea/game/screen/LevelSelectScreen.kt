@@ -12,7 +12,7 @@ import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.extension.onClick
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
-import com.tetrea.game.scene.component.SelectionDialog
+import com.tetrea.game.scene.dialog.SelectionDialog
 import com.tetrea.game.scene.component.VersusCard
 
 private const val SELECTION_SCROLL_HEIGHT_PERCENT = 0.78f
@@ -241,7 +241,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
         scrollPane = ScrollPane(selectionTable).apply {
             setOverscroll(false, false)
-            fadeScrollBars = false
+            setFadeScrollBars(false)
             layout()
         }
         scrollPane.scrollTo(0f, 72f * (configs.size - game.player.currLevelId), 195f, 60f)

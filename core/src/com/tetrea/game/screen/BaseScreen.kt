@@ -26,6 +26,7 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
     protected val cam: OrthographicCamera = OrthographicCamera().apply {
         setToOrtho(false, V_WIDTH.toFloat(), V_HEIGHT.toFloat())
     }
+    protected var gameState = GameState.Resume
 
     private var shouldFade = true
     protected val fade: Sprite
@@ -102,6 +103,19 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
 
     override fun dispose() {
         stage.dispose()
+    }
+
+    open fun notifyResume() {
+        gameState = GameState.Resume
+    }
+
+    open fun notifyPause() {
+        gameState = GameState.Pause
+    }
+
+    enum class GameState {
+        Resume,
+        Pause
     }
 
     enum class Transition {

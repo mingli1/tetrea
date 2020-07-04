@@ -103,7 +103,7 @@ class VersusCard(
     }
 
     private fun updateActorPositions() {
-        bg.y = currY
+        bg.setPosition(-1f, currY)
         if (isEnemy) {
             avatar.setPosition(stage.width - 20f - (AVATAR_SIZE * 2), currY + (stage.height / 4 - AVATAR_SIZE))
             name.setPosition(4f, currY + (stage.height / 4 + 12f))

@@ -68,7 +68,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     }
 
     override fun render(dt: Float) {
-        super.render(dt)
+        if (gameState != GameState.Pause) super.render(dt)
 
         Gdx.gl.glClearColor(0f, 0f, 0f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
@@ -83,8 +83,21 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.batch.end()
 
-        stage.act(dt)
+        if (gameState != GameState.Pause) stage.act(dt)
         stage.draw()
+    }
+
+    override fun notifyPause() {
+        super.notifyPause()
+        if (!isAndroid()) inputMultiplexer.removeProcessor(tetrisKeyInput)
+        scene.showPauseDialog()
+    }
+
+    override fun notifyResume() {
+        super.notifyResume()
+        if (!isAndroid() && !inputMultiplexer.processors.contains(tetrisKeyInput)) {
+            inputMultiplexer.addProcessor(tetrisKeyInput)
+        }
     }
 
     fun onBattleEnd(matchState: MatchState, playerScore: Int, enemyScore: Int) {
