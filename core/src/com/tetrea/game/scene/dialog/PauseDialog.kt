@@ -41,7 +41,7 @@ class PauseDialog(
 
         confirmDialog = ConfirmDialog(
             "QUIT MATCH",
-            "ARE YOU SURE YOU WANT TO QUIT THIS MATCH? YOU WILL LOSE RATING.",
+            "ARE YOU SURE YOU WANT TO QUIT THIS MATCH? THIS WILL COUNT AS A LOSS.",
             this::exit,
             this::dismissConfirmDialog,
             res

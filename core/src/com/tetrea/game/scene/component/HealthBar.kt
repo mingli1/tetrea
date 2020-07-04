@@ -34,7 +34,7 @@ class HealthBar(
         if (animate) finishCurrAnimation()
 
         isDecay = decay
-        prevChangeWidth = getWidth(if (currValue == maxValue) value else min(maxValue - currValue, value))
+        prevChangeWidth = getWidth(min(currValue, value))
         currValue = if (decay) max(0f, currValue - value) else min(maxValue, currValue + value)
         prevBarWidth = currBarWidth
         finalBarWidth = getWidth(currValue)

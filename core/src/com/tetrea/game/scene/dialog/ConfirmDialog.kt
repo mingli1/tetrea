@@ -33,9 +33,8 @@ class ConfirmDialog(
 
         val messageLabel = res.getLabel(text = message).apply {
             setWrap(true)
-            setAlignment(Align.center)
         }
-        contentTable.add(messageLabel).width(WIDTH).fill().space(8f).padLeft(8f).padRight(8f)
+        contentTable.add(messageLabel).width(WIDTH).fill().space(8f).padLeft(12f).padRight(8f).align(Align.center)
 
         button(getButton(affirmativeText), AFFIRMATIVE_TAG)
         button(getButton(dismissiveText), DISMISSIVE_TAG)
