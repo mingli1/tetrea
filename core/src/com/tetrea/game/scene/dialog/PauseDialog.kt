@@ -1,9 +1,10 @@
 package com.tetrea.game.scene.dialog
 
-import com.badlogic.gdx.graphics.Color
-import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
+import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BaseScreen
+import com.tetrea.game.screen.LEVEL_SELECT_SCREEN
 
 private const val WINDOW_MIN_HEIGHT = 200f
 private const val BUTTON_WIDTH = 150f
@@ -16,13 +17,15 @@ private const val SETTINGS = "SETTINGS"
 private const val QUIT = "QUIT"
 
 class PauseDialog(
-    private val res: Resources,
+    res: Resources,
     private val screen: BaseScreen
 ) : BaseModalDialog(
     "PAUSED",
     res.getNinePatchWindowStyle("gray_blue_bg"),
     res
 ) {
+
+    private val confirmDialog: ConfirmDialog
 
     init {
         background.minHeight = WINDOW_MIN_HEIGHT
@@ -35,18 +38,40 @@ class PauseDialog(
         button(getButton(SETTINGS), SETTINGS)
         buttonTable.row()
         button(getButton(QUIT), QUIT)
+
+        confirmDialog = ConfirmDialog(
+            "QUIT MATCH",
+            "ARE YOU SURE YOU WANT TO QUIT THIS MATCH? YOU WILL LOSE RATING.",
+            this::exit,
+            this::dismissConfirmDialog,
+            res
+        )
+    }
+
+    override fun show(stage: Stage): Dialog {
+        if (currStage?.actors?.contains(confirmDialog) == true) return this
+        return super.show(stage)
     }
 
     override fun result(obj: Any) {
         when (obj) {
             RESUME, SETTINGS -> screen.notifyResume()
+            QUIT -> {
+                hide(null)
+                currStage?.let { confirmDialog.show(it) }
+            }
         }
     }
 
-    private fun getButton(text: String) = res.getNinePatchTextButton(
-        text = text,
-        key = "gray_blue_button",
-        colorUp = GAME_LIGHT_GRAY_BLUE,
-        colorDown = Color.WHITE
-    )
+    private fun dismissConfirmDialog() {
+        confirmDialog.hide(null)
+        currStage?.let { show(it) }
+    }
+
+    private fun exit() {
+        screen.notifyResume()
+        confirmDialog.hide(null)
+        hide(null)
+        screen.navigateTo(LEVEL_SELECT_SCREEN)
+    }
 }
