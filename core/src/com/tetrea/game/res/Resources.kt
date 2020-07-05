@@ -7,10 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
 import com.badlogic.gdx.graphics.g2d.TextureAtlas
 import com.badlogic.gdx.graphics.g2d.TextureRegion
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Label
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
-import com.badlogic.gdx.scenes.scene2d.ui.Window
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
@@ -22,6 +19,7 @@ import com.tetrea.game.tetris.util.PieceType
 
 const val SQUARE_SIZE = 12
 const val AVATAR_SIZE = 26f
+const val TITLE_LETTER_WIDTH = 36
 
 const val TETRIS_BUTTON_SIZE = 40
 const val TETRIS_BUTTON_LEFT = 0
@@ -51,6 +49,7 @@ class Resources : Disposable {
     private val battleConfigCache = mutableListOf<MutableList<BattleConfig>>()
     private val tetrisSheet: Array<Array<TextureRegion>>
     private val tetrisButtons: Array<Array<TextureRegion>>
+    val titleLetters: Array<TextureRegion>
 
     private val font: BitmapFont
 
@@ -70,6 +69,7 @@ class Resources : Disposable {
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)
+        titleLetters = getTexture("title_letters").split(TITLE_LETTER_WIDTH, 44)[0]
     }
 
     fun getTexture(key: String): TextureRegion = checkNotNull(texturesCache[key])
@@ -117,6 +117,30 @@ class Resources : Disposable {
         }
     }
 
+    fun getNinePatchImageTextButton(
+        text: String,
+        ninePatchKey: String,
+        imageKey: String,
+        colorUp: Color = Color.WHITE,
+        colorDown: Color = Color.GRAY,
+        width: Float = 0f,
+        height: Float = 0f
+    ): ImageTextButton {
+        val style = ImageTextButton.ImageTextButtonStyle().apply {
+            up = NinePatchDrawable(getNinePatch(ninePatchKey + BUTTON_UP_KEY))
+            down = NinePatchDrawable(getNinePatch(ninePatchKey + BUTTON_DOWN_KEY))
+            over = NinePatchDrawable(getNinePatch(ninePatchKey + BUTTON_DOWN_KEY))
+            font = this@Resources.font
+            fontColor = colorUp
+            downFontColor = colorDown
+            overFontColor = colorDown
+            imageUp = TextureRegionDrawable(getTexture(imageKey))
+        }
+        return ImageTextButton(text, style).apply {
+            setSize(width, height)
+        }
+    }
+
     fun getNinePatchWindowStyle(
         key: String,
         fontColor: Color = Color.WHITE
@@ -149,6 +173,10 @@ class Resources : Disposable {
     private fun fileString(path: String) = Gdx.files.internal(path).readString()
 
     private fun loadTextures() {
+        loadTexture("home_screen_bg")
+        loadTexture("home_screen_overlay")
+        loadTexture("title_letters")
+
         loadTexture("tetris")
         loadTexture("red")
         loadTexture("yellow")
@@ -195,6 +223,14 @@ class Resources : Disposable {
         loadNinePatch("orange_button_down")
         loadNinePatch("versus_blue_bg")
         loadNinePatch("versus_orange_bg")
+        loadNinePatch("versus_button_up")
+        loadNinePatch("versus_button_down")
+        loadNinePatch("arcade_button_up")
+        loadNinePatch("arcade_button_down")
+        loadNinePatch("profile_button_up")
+        loadNinePatch("profile_button_down")
+        loadNinePatch("settings_button_up")
+        loadNinePatch("settings_button_down")
     }
 
     private fun loadTetrisConfigs() {

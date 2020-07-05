@@ -138,7 +138,9 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             key = "purple_button",
             colorUp = GAME_LIGHT_GRAY_BLUE,
             colorDown = Color.WHITE
-        )
+        ).apply {
+            onTap { navigateTo(HOME_SCREEN) }
+        }
 
         parentTable.add(backButton).top().left().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).expandY()
     }
