@@ -6,22 +6,29 @@ filter: Nearest,Nearest
 repeat: none
 apm_icon
   rotate: false
-  xy: 800, 803
+  xy: 964, 980
   size: 16, 16
   orig: 16, 16
   offset: 0, 0
   index: -1
 arcade_button_down
   rotate: false
-  xy: 868, 970
+  xy: 522, 346
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
   offset: 0, 0
   index: -1
+arcade_button_icon
+  rotate: false
+  xy: 800, 789
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: -1
 arcade_button_up
   rotate: false
-  xy: 862, 964
+  xy: 220, 63
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -29,7 +36,7 @@ arcade_button_up
   index: -1
 atk
   rotate: false
-  xy: 17, 2
+  xy: 14, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -43,14 +50,14 @@ bar_decay
   index: -1
 bar_restore
   rotate: false
-  xy: 26, 2
+  xy: 23, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 battle_bg_sky
   rotate: false
-  xy: 2, 372
+  xy: 268, 372
   size: 264, 650
   orig: 264, 650
   offset: 0, 0
@@ -71,14 +78,14 @@ black_100_opacity
   index: -1
 black_150_opacity
   rotate: false
-  xy: 14, 2
+  xy: 29, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 dark_gray_bg
   rotate: false
-  xy: 522, 346
+  xy: 788, 366
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -86,7 +93,7 @@ dark_gray_bg
   index: -1
 def
   rotate: false
-  xy: 23, 2
+  xy: 5, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -121,7 +128,7 @@ font
   index: -1
 gray_blue_bg
   rotate: false
-  xy: 970, 992
+  xy: 361, 225
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -129,7 +136,7 @@ gray_blue_bg
   index: -1
 gray_blue_button_down
   rotate: false
-  xy: 862, 970
+  xy: 516, 346
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -137,7 +144,7 @@ gray_blue_button_down
   index: -1
 gray_blue_button_up
   rotate: false
-  xy: 463, 247
+  xy: 182, 39
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -145,14 +152,14 @@ gray_blue_button_up
   index: -1
 home_screen_bg
   rotate: false
-  xy: 534, 372
+  xy: 2, 372
   size: 264, 650
   orig: 264, 650
   offset: 0, 0
   index: -1
 home_screen_overlay
   rotate: false
-  xy: 268, 372
+  xy: 534, 372
   size: 264, 650
   orig: 264, 650
   offset: 0, 0
@@ -166,7 +173,7 @@ item_slots_bg
   index: -1
 light_gray_bg
   rotate: false
-  xy: 353, 209
+  xy: 469, 253
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -174,7 +181,7 @@ light_gray_bg
   index: -1
 light_gray_blue_bg
   rotate: false
-  xy: 251, 187
+  xy: 367, 231
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -182,7 +189,7 @@ light_gray_blue_bg
   index: -1
 light_purple_bg
   rotate: false
-  xy: 788, 366
+  xy: 285, 193
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -190,14 +197,14 @@ light_purple_bg
   index: -1
 match_point_tag
   rotate: false
-  xy: 80, 29
+  xy: 361, 237
   size: 100, 20
   orig: 100, 20
   offset: 0, 0
   index: -1
 orange_button_down
   rotate: false
-  xy: 367, 231
+  xy: 86, 23
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -205,7 +212,7 @@ orange_button_down
   index: -1
 orange_button_up
   rotate: false
-  xy: 257, 193
+  xy: 463, 247
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -220,15 +227,22 @@ pps_icon
   index: -1
 profile_button_down
   rotate: false
-  xy: 361, 225
+  xy: 80, 17
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
   offset: 0, 0
   index: -1
+profile_button_icon
+  rotate: false
+  xy: 251, 167
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: -1
 profile_button_up
   rotate: false
-  xy: 182, 45
+  xy: 862, 938
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -236,7 +250,7 @@ profile_button_up
   index: -1
 purple_button_down
   rotate: false
-  xy: 964, 992
+  xy: 353, 215
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -244,7 +258,7 @@ purple_button_down
   index: -1
 purple_button_up
   rotate: false
-  xy: 516, 346
+  xy: 251, 161
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -259,7 +273,7 @@ red
   index: -1
 red_bg
   rotate: false
-  xy: 220, 63
+  xy: 896, 970
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -267,7 +281,7 @@ red_bg
   index: -1
 red_button_down
   rotate: false
-  xy: 964, 986
+  xy: 353, 209
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -275,7 +289,7 @@ red_button_down
   index: -1
 red_button_up
   rotate: false
-  xy: 361, 231
+  xy: 182, 45
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -290,15 +304,22 @@ score_header
   index: -1
 settings_button_down
   rotate: false
-  xy: 251, 193
+  xy: 463, 253
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
   offset: 0, 0
   index: -1
+settings_button_icon
+  rotate: false
+  xy: 862, 944
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: -1
 settings_button_up
   rotate: false
-  xy: 80, 23
+  xy: 834, 815
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -306,7 +327,7 @@ settings_button_up
   index: -1
 spd
   rotate: false
-  xy: 20, 2
+  xy: 17, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
@@ -334,7 +355,7 @@ tetris_buttons
   index: -1
 tiebreaker_tag
   rotate: false
-  xy: 251, 199
+  xy: 80, 29
   size: 100, 20
   orig: 100, 20
   offset: 0, 0
@@ -348,7 +369,7 @@ title_letters
   index: -1
 versus_blue_bg
   rotate: false
-  xy: 818, 815
+  xy: 982, 992
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -356,15 +377,22 @@ versus_blue_bg
   index: -1
 versus_button_down
   rotate: false
-  xy: 463, 253
+  xy: 361, 231
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
   offset: 0, 0
   index: -1
+versus_button_icon
+  rotate: false
+  xy: 800, 757
+  size: 32, 30
+  orig: 32, 30
+  offset: 0, 0
+  index: -1
 versus_button_up
   rotate: false
-  xy: 353, 215
+  xy: 80, 23
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -372,7 +400,7 @@ versus_button_up
   index: -1
 purple_bg
   rotate: false
-  xy: 353, 215
+  xy: 80, 23
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -380,7 +408,7 @@ purple_bg
   index: -1
 versus_orange_bg
   rotate: false
-  xy: 800, 797
+  xy: 800, 751
   size: 4, 4
   split: 1, 2, 1, 2
   orig: 4, 4
@@ -395,21 +423,21 @@ versus_tag
   index: -1
 victory_tag
   rotate: false
-  xy: 361, 237
+  xy: 251, 199
   size: 100, 20
   orig: 100, 20
   offset: 0, 0
   index: -1
 white
   rotate: false
-  xy: 5, 2
+  xy: 20, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0
   index: -1
 yellow
   rotate: false
-  xy: 29, 2
+  xy: 26, 2
   size: 1, 1
   orig: 1, 1
   offset: 0, 0

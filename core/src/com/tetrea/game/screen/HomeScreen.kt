@@ -46,7 +46,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
         val versusButton = getButton(
             text = "VERSUS",
             ninePatchKey = "versus_button",
-            imageKey = "enemy_ittzzi",
+            imageKey = "versus_button_icon",
             colorUp = Color(216 / 255f, 206 / 255f, 1f, 1f),
             y = buttonTableY,
             onClick = { navigateTo(LEVEL_SELECT_SCREEN) }
@@ -56,7 +56,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
         val arcadeButton = getButton(
             text = "ARCADE",
             ninePatchKey = "arcade_button",
-            imageKey = "enemy_ittzzi",
+            imageKey = "arcade_button_icon",
             colorUp = Color(206 / 255f, 234 / 255f, 219 / 255f, 1f),
             y = buttonTableY - (BUTTON_HEIGHT + BUTTON_PADDING),
             onClick = {}
@@ -66,7 +66,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
         val profileButton = getButton(
             text = "PROFILE",
             ninePatchKey = "profile_button",
-            imageKey = "enemy_ittzzi",
+            imageKey = "profile_button_icon",
             colorUp = Color(234 / 255f, 211 / 255f, 204 / 255f, 1f),
             y = buttonTableY - 2 * (BUTTON_HEIGHT + BUTTON_PADDING),
             onClick = {}
@@ -76,7 +76,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
         val settingsButton = getButton(
             text = "SETTINGS",
             ninePatchKey = "settings_button",
-            imageKey = "enemy_ittzzi",
+            imageKey = "settings_button_icon",
             colorUp = Color(201 / 255f, 210 / 255f, 234 / 255f, 1f),
             y = buttonTableY - 3 * (BUTTON_HEIGHT + BUTTON_PADDING),
             onClick = {}

@@ -195,6 +195,10 @@ class Resources : Disposable {
         loadTexture("victory_tag")
         loadTexture("defeat_tag")
         loadTexture("versus_tag")
+        loadTexture("versus_button_icon")
+        loadTexture("arcade_button_icon")
+        loadTexture("profile_button_icon")
+        loadTexture("settings_button_icon")
 
         loadTexture("enemy_ittzzi")
 
