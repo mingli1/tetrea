@@ -5,20 +5,9 @@
   "enemy": {
     "name": "ENEMY 1",
     "avatar": "enemy_ittzzi",
-    "maxHp": 10,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
-  },
-  "attackScheme": [
-    {
-      "action": "Random",
-      "numMoves": 3
-    },
-    {
-      "action": "Heal",
-      "time": 3.5,
-      "heal": 5
-    }
-  ]
+    "maxHp": 100,
+    "attack": 100,
+    "defense": 100,
+    "speed": 100
+  }
 }

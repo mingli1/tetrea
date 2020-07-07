@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.tetrea.game.battle.BattleConfig
+import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.*
@@ -138,7 +139,7 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         }
 
         rating.setText(if (selectionState == SelectionState.Completed || selectionState == SelectionState.Active) {
-            "RATING: ${config.enemy.rating}"
+            "RATING: ${Elo.getRating(config.enemy)}"
         } else {
             "RATING: ???"
         })

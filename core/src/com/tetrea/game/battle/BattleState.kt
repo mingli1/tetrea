@@ -14,6 +14,7 @@ private const val ATTACK_OFFSET = 2
 private const val HEAL_CHANCE_MULTIPLIER = 0.4f
 private const val MIN_HEAL_PERCENTAGE = 0.1f
 private const val MAX_HEAL_PERCENTAGE = 0.3f
+private const val CHEESE_PERCENTAGE = 0.2f
 
 class BattleState(
     private val config: BattleConfig,
@@ -179,7 +180,7 @@ class BattleState(
     }
 
     private fun sendAttack(attack: Int) {
-        if (config.hasPattern(AttackPattern.Cheeser)) {
+        if (config.hasPattern(AttackPattern.Cheeser) || MathUtils.random() < CHEESE_PERCENTAGE) {
             var att = attack
             var split = MathUtils.random(1, 3)
             while (att - split >= 0) {

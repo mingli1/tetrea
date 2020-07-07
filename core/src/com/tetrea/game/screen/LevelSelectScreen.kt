@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.BattleConfig
+import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.extension.onClick
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
@@ -230,7 +231,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
             val rating = game.res.getLabel(
                 text = if (selectionState == SelectionState.Completed || selectionState == SelectionState.Active)
-                    "RATING: ${config.enemy.rating}"
+                    "RATING: ${Elo.getRating(config.enemy)}"
                     else "RATING: ???",
                 color = GAME_ORANGE
             )
@@ -243,7 +244,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
         scrollPane = ScrollPane(selectionTable).apply {
             setOverscroll(false, false)
-            setFadeScrollBars(false)
+            fadeScrollBars = false
             layout()
         }
         scrollPane.scrollTo(0f, 72f * (configs.size - game.player.currLevelId), 195f, 60f)
