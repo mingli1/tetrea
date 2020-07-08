@@ -1,13 +1,13 @@
 package com.tetrea.game.battle.rating
 
-import com.tetrea.game.battle.Enemy
+import com.tetrea.game.battle.enemy.Enemy
 import kotlin.math.log2
 import kotlin.math.min
 import kotlin.math.pow
 
-private const val MIN_ENEMY_ELO = 400f
-private const val MAX_ENEMY_ELO = 3400f
-private const val ENEMY_HP_TO_ELO_PERCENT = 0.2f
+const val MIN_ENEMY_ELO = 400f
+const val MAX_ENEMY_ELO = 3400f
+const val ENEMY_HP_TO_ELO_PERCENT = 0.2f
 
 object Elo {
 

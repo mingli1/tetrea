@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
-import com.tetrea.game.battle.Enemy
+import com.tetrea.game.battle.enemy.Enemy
 import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.AVATAR_SIZE

@@ -1,4 +1,4 @@
-package com.tetrea.game.battle
+package com.tetrea.game.battle.enemy
 
 import com.squareup.moshi.Json
 
