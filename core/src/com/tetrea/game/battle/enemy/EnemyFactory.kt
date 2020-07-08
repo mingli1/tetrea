@@ -58,9 +58,9 @@ enum class StatPriority {
     SpeedDefense,
     DefenseSpeed;
 
-    var first = 0
-    var second = 0
-    var third = 0
+    private var first = 0
+    private var second = 0
+    private var third = 0
 
     fun increment(split: Int) {
         when (split) {

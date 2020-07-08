@@ -47,10 +47,11 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
         headerTable = Table().apply {
             background = NinePatchDrawable(game.res.getNinePatch("purple_bg"))
-            add(game.res.getLabel("CHOOSE A MATCHUP", fontScale = 1f))
+            add(game.res.getLabel("CHOOSE A MATCHUP", fontScale = 1f)).padBottom(2f).row()
+            add(game.res.getLabel("WORLD ${game.player.currWorldId + 1}"))
         }
 
-        parentTable.add(headerTable).size(220f, 32f).top().padTop(16f).colspan(2).row()
+        parentTable.add(headerTable).size(220f, 40f).top().padTop(16f).colspan(2).row()
         createBackButton()
         createHelpButton()
         populateSelections()
