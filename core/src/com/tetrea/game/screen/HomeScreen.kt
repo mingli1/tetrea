@@ -49,7 +49,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
             imageKey = "versus_button_icon",
             colorUp = Color(216 / 255f, 206 / 255f, 1f, 1f),
             y = buttonTableY,
-            onClick = { navigateTo(LEVEL_SELECT_SCREEN) }
+            onClick = { navigateTo(VERSUS_SELECT_SCREEN) }
         )
         stage.addActor(versusButton)
 

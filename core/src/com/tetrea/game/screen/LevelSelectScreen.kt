@@ -16,7 +16,7 @@ import com.tetrea.game.res.*
 import com.tetrea.game.scene.dialog.SelectionDialog
 import com.tetrea.game.scene.component.VersusCard
 
-private const val SELECTION_SCROLL_HEIGHT_PERCENT = 0.78f
+private const val SELECTION_SCROLL_HEIGHT_PERCENT = 0.77f
 private const val BUTTON_WIDTH = 76f
 private const val BUTTON_HEIGHT = 28f
 private const val DIALOG_FADE_DURATION = 0.4f
@@ -141,7 +141,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             colorUp = GAME_LIGHT_GRAY_BLUE,
             colorDown = Color.WHITE
         ).apply {
-            onTap { navigateTo(HOME_SCREEN) }
+            onTap { navigateTo(VERSUS_SELECT_SCREEN) }
         }
 
         parentTable.add(backButton).top().left().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).expandY()

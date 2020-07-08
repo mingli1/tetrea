@@ -175,6 +175,7 @@ class Resources : Disposable {
     private fun loadTextures() {
         loadTexture("home_screen_bg")
         loadTexture("home_screen_overlay")
+        loadTexture("versus_select_overlay")
         loadTexture("title_letters")
 
         loadTexture("tetris")
@@ -199,6 +200,8 @@ class Resources : Disposable {
         loadTexture("arcade_button_icon")
         loadTexture("profile_button_icon")
         loadTexture("settings_button_icon")
+        loadTexture("find_match_button_icon")
+        loadTexture("adventure_button_icon")
 
         loadTexture("enemy_ittzzi")
 
@@ -235,6 +238,10 @@ class Resources : Disposable {
         loadNinePatch("profile_button_down")
         loadNinePatch("settings_button_up")
         loadNinePatch("settings_button_down")
+        loadNinePatch("find_match_button_up")
+        loadNinePatch("find_match_button_down")
+        loadNinePatch("adventure_button_up")
+        loadNinePatch("adventure_button_down")
     }
 
     private fun loadTetrisConfigs() {

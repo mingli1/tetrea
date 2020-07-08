@@ -6,6 +6,7 @@ import com.tetrea.game.global.TetreaGame
 const val HOME_SCREEN = "HOME_SCREEN"
 const val BATTLE_SCREEN = "BATTLE_SCREEN"
 const val RESULTS_SCREEN = "RESULTS_SCREEN"
+const val VERSUS_SELECT_SCREEN = "VERSUS_SELECT_SCREEN"
 const val LEVEL_SELECT_SCREEN = "LEVEL_SELECT_SCREEN"
 
 class ScreenManager(private val game: TetreaGame) : Disposable {
@@ -17,6 +18,7 @@ class ScreenManager(private val game: TetreaGame) : Disposable {
         HOME_SCREEN -> HomeScreen(game)
         BATTLE_SCREEN -> BattleScreen(game)
         RESULTS_SCREEN -> ResultsScreen(game)
+        VERSUS_SELECT_SCREEN -> VersusSelectScreen(game)
         LEVEL_SELECT_SCREEN -> LevelSelectScreen(game)
         else -> throw IllegalArgumentException("Screen $key not found.")
     }
