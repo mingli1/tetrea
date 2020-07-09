@@ -3,21 +3,26 @@ package com.tetrea.game.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
+import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.MatchState
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
+import com.tetrea.game.scene.component.VersusCard
+import com.tetrea.game.scene.dialog.ConfirmDialog
 import com.tetrea.game.tetris.TetrisStats
 
 private const val BUTTON_WIDTH = 76f
 private const val BUTTON_HEIGHT = 36f
 
-class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
+class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
     private lateinit var headerTable: Table
     private lateinit var bodyTable: Table
@@ -27,7 +32,18 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
     private var playerWin = true
     private var playerScore = 0
     private var enemyScore = 0
-    private var enemyName = ""
+    private lateinit var config: BattleConfig
+
+    private var playerVersusCard: VersusCard? = null
+    private var enemyVersusCard: VersusCard? = null
+    private lateinit var versusTag: Image
+    private val retryConfirmDialog = ConfirmDialog(
+        "REMATCH",
+        "ARE YOU SURE YOU WANT A REMATCH?",
+        this::onRetry,
+        this::dismissConfirmDialog,
+        game.res
+    )
 
     override fun show() {
         super.show()
@@ -38,7 +54,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
             playerWin = matchState == MatchState.PlayerWin
             playerScore = it[ARG_PLAYER_SCORE] as Int
             enemyScore = it[ARG_ENEMY_SCORE] as Int
-            enemyName = it[ARG_ENEMY_NAME] as String
+            config = it[ARG_BATTLE_CONFIG] as BattleConfig
         }
 
         val bgTable = Table().apply { setFillParent(true) }
@@ -60,7 +76,16 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
         createBody()
         createButtons()
 
+        versusTag = Image(game.res.getTexture("versus_tag")).apply {
+            setPosition(this@ResultsScreen.stage.width / 2 - 76f / 2, this@ResultsScreen.stage.height / 2 - 44f / 2)
+        }
+
         Gdx.input.inputProcessor = multiplexer
+    }
+
+    override fun update(dt: Float) {
+        playerVersusCard?.update(dt)
+        enemyVersusCard?.update(dt)
     }
 
     override fun render(dt: Float) {
@@ -90,7 +115,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
         )
         headerTable.add(matchStateLabel).row()
         val finalScoreLabel = game.res.getLabel(
-            text = "${game.player.name} $playerScore - $enemyScore $enemyName",
+            text = "${game.player.name} $playerScore - $enemyScore ${config.enemy.name}",
             fontScale = 1f
         )
         headerTable.add(finalScoreLabel)
@@ -124,7 +149,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
 
     private fun createButtons() {
         val backButton = getButton("BACK").apply { onTap { navigateTo(LEVEL_SELECT_SCREEN) } }
-        val retryButton = getButton("RETRY")
+        val retryButton = getButton("RETRY").apply { onTap { retryConfirmDialog.show(stage) } }
         val nextButton = getButton("NEXT")
 
         buttonTable.add(backButton).align(Align.left).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
@@ -138,4 +163,38 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game) {
         colorUp = GAME_LIGHT_GRAY_BLUE,
         colorDown = Color.WHITE
     )
+
+    private fun onRetry() {
+        playerVersusCard = VersusCard(
+            stage = stage,
+            onScreen = false,
+            isEnemy = false,
+            onFinished = {
+                stage.addActor(versusTag)
+                versusTag.addAction(Actions.sequence(
+                    Actions.alpha(0f),
+                    Actions.fadeIn(1f),
+                    Actions.delay(1f),
+                    Actions.run {
+                        val args = mapOf(ARG_BATTLE_CONFIG to config)
+                        navigateTo(BATTLE_SCREEN, args, shouldFade = false)
+                    }
+                ))
+            },
+            res = game.res,
+            player = game.player
+        )
+        enemyVersusCard = VersusCard(
+            stage = stage,
+            onScreen = false,
+            isEnemy = true,
+            onFinished = {},
+            res = game.res,
+            enemy = config.enemy
+        )
+    }
+
+    private fun dismissConfirmDialog() {
+        retryConfirmDialog.hide()
+    }
 }

@@ -35,10 +35,10 @@ class TetreaGame : Game() {
 
     fun updateScreen(screen: BaseScreen) {
         setScreen(screen)
+        screenManager.dispose()
         if (currentScreen is LateDisposable) {
             currentScreen?.let { screenManager.addLateDisposable(it) }
         } else {
-            screenManager.dispose()
             currentScreen?.dispose()
         }
         currentScreen = screen

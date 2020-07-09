@@ -18,7 +18,6 @@ const val ARG_MATCH_STATE = "ARG_MATCH_STATE"
 const val ARG_TETRIS_STATS = "ARG_TETRIS_STATS"
 const val ARG_PLAYER_SCORE = "ARG_PLAYER_SCORE"
 const val ARG_ENEMY_SCORE = "ARG_ENEMY_SCORE"
-const val ARG_ENEMY_NAME = "ARG_ENEMY_NAME"
 
 class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
@@ -112,7 +111,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
             ARG_TETRIS_STATS to tetris.stats,
             ARG_PLAYER_SCORE to playerScore,
             ARG_ENEMY_SCORE to enemyScore,
-            ARG_ENEMY_NAME to battleConfig.enemy.name
+            ARG_BATTLE_CONFIG to battleConfig
         )
         navigateTo(RESULTS_SCREEN, arguments)
     }
