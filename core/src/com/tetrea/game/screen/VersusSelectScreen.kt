@@ -3,18 +3,34 @@ package com.tetrea.game.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
+import com.tetrea.game.battle.BattleConfigFactory
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
 import com.tetrea.game.res.GAME_YELLOW
+import com.tetrea.game.scene.component.VersusCard
+import com.tetrea.game.scene.dialog.ConfirmDialog
 
-class VersusSelectScreen(game: TetreaGame) : BaseScreen(game) {
+class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
     private lateinit var parentTable: Table
+    private val confirmDialog = ConfirmDialog(
+        "MATCHMAKING",
+        "YOU WILL BE MATCHED WITH AN ENEMY OF SIMILAR RATING. ARE YOU SURE YOU WANT TO PROCEED?",
+        this::onConfirmMatchmaking,
+        {},
+        game.res
+    )
+
+    private var playerVersusCard: VersusCard? = null
+    private var enemyVersusCard: VersusCard? = null
+    private lateinit var versusTag: Image
 
     override fun show() {
         super.show()
@@ -45,7 +61,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game) {
                 ninePatchKey = "find_match_button",
                 imageKey = "find_match_button_icon",
                 colorUp = Color(216 / 255f, 206 / 255f, 1f, 1f),
-                onClick = {}
+                onClick = { confirmDialog.show(this@VersusSelectScreen.stage) }
             )).size(220f, 50f).row()
             add(getButton(
                 text = "ADVENTURE",
@@ -57,7 +73,16 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game) {
         }
         parentTable.add(bodyTable).top().padTop(24f).colspan(2).expandY()
 
+        versusTag = Image(game.res.getTexture("versus_tag")).apply {
+            setPosition(this@VersusSelectScreen.stage.width / 2 - 76f / 2, this@VersusSelectScreen.stage.height / 2 - 44f / 2)
+        }
+
         Gdx.input.inputProcessor = multiplexer
+    }
+
+    override fun update(dt: Float) {
+        playerVersusCard?.update(dt)
+        enemyVersusCard?.update(dt)
     }
 
     override fun render(dt: Float) {
@@ -98,5 +123,37 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game) {
             imageCell.padLeft(16f)
             onTap { onClick() }
         }
+    }
+
+    private fun onConfirmMatchmaking() {
+        val battleConfig = BattleConfigFactory.findMatch(game.player.rating.toFloat())
+
+        playerVersusCard = VersusCard(
+            stage = stage,
+            onScreen = false,
+            isEnemy = false,
+            onFinished = {
+                stage.addActor(versusTag)
+                versusTag.addAction(Actions.sequence(
+                    Actions.alpha(0f),
+                    Actions.fadeIn(1f),
+                    Actions.delay(1f),
+                    Actions.run {
+                        val args = mapOf(ARG_BATTLE_CONFIG to battleConfig)
+                        navigateTo(BATTLE_SCREEN, args, shouldFade = false)
+                    }
+                ))
+            },
+            res = game.res,
+            player = game.player
+        )
+        enemyVersusCard = VersusCard(
+            stage = stage,
+            onScreen = false,
+            isEnemy = true,
+            onFinished = {},
+            res = game.res,
+            enemy = battleConfig.enemy
+        )
     }
 }

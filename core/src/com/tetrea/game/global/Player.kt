@@ -6,7 +6,7 @@ import com.tetrea.game.util.Int2
 class Player {
     val name = "PLAYER"
     val avatar = "enemy_ittzzi"
-    val rating = 3333
+    val rating = 600
     val currWorldId = 0
     val currLevelId = 4
     val battleRecords = mapOf(

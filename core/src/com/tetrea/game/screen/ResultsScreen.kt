@@ -41,7 +41,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         "REMATCH",
         "ARE YOU SURE YOU WANT A REMATCH?",
         this::onRetry,
-        this::dismissConfirmDialog,
+        {},
         game.res
     )
 
@@ -148,13 +148,16 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     }
 
     private fun createButtons() {
-        val backButton = getButton("BACK").apply { onTap { navigateTo(LEVEL_SELECT_SCREEN) } }
-        val retryButton = getButton("RETRY").apply { onTap { retryConfirmDialog.show(stage) } }
-        val nextButton = getButton("NEXT")
-
+        val backButton = getButton("BACK").apply { onTap { onBackButtonClicked() } }
         buttonTable.add(backButton).align(Align.left).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
-        buttonTable.add(retryButton).align(Align.center).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
-        buttonTable.add(nextButton).align(Align.right).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
+
+        if (!config.isMatchmaking) {
+            val retryButton = getButton("RETRY").apply { onTap { retryConfirmDialog.show(stage) } }
+            val nextButton = getButton("NEXT")
+
+            buttonTable.add(retryButton).align(Align.center).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
+            buttonTable.add(nextButton).align(Align.right).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
+        }
     }
 
     private fun getButton(text: String): TextButton = game.res.getNinePatchTextButton(
@@ -163,6 +166,10 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         colorUp = GAME_LIGHT_GRAY_BLUE,
         colorDown = Color.WHITE
     )
+
+    private fun onBackButtonClicked() {
+        navigateTo(if (config.isMatchmaking) VERSUS_SELECT_SCREEN else LEVEL_SELECT_SCREEN)
+    }
 
     private fun onRetry() {
         playerVersusCard = VersusCard(
@@ -192,9 +199,5 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             res = game.res,
             enemy = config.enemy
         )
-    }
-
-    private fun dismissConfirmDialog() {
-        retryConfirmDialog.hide()
     }
 }
