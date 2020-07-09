@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.*
-import com.tetrea.game.input.TetrisAndroidInput
 import com.tetrea.game.input.TetrisInputHandler
 import com.tetrea.game.input.TetrisKeyInput
 import com.tetrea.game.global.isAndroid
@@ -83,11 +82,10 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.batch.projectionMatrix = cam.combined
         game.batch.begin()
-        game.batch.color = (Color.WHITE)
+        if (transition == Transition.None) game.batch.color = Color.WHITE
 
         game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
         scene.render(game.batch)
-        if (transition != Transition.None) fade.draw(game.batch)
 
         game.batch.end()
 

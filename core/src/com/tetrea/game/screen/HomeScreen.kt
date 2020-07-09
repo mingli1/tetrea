@@ -94,11 +94,10 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.batch.projectionMatrix = cam.combined
         game.batch.begin()
-        game.batch.color = Color.WHITE
+        if (transition == Transition.None) game.batch.color = Color.WHITE
 
         game.batch.draw(game.res.getTexture("home_screen_bg"), 0f, 0f)
         game.batch.draw(game.res.getTexture("home_screen_overlay"), 0f, 0f)
-        if (transition != Transition.None) fade.draw(game.batch)
 
         game.batch.end()
 

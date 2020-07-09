@@ -209,6 +209,7 @@ class Resources : Disposable {
         loadTexture("black")
         loadTexture("black_100_opacity")
         loadTexture("black_150_opacity")
+        loadTexture("transparent")
         loadTexture("atk")
         loadTexture("def")
         loadTexture("spd")

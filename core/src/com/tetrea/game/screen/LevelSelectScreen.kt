@@ -91,10 +91,9 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
         game.batch.projectionMatrix = cam.combined
         game.batch.begin()
-        game.batch.color = Color.WHITE
+        if (transition == Transition.None) game.batch.color = Color.WHITE
 
         game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
-        if (transition != Transition.None) fade.draw(game.batch)
 
         game.batch.end()
 
