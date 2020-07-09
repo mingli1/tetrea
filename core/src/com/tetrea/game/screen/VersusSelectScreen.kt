@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.Align
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
+import com.tetrea.game.res.GAME_YELLOW
 
 class VersusSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
@@ -23,9 +24,10 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
         val headerTable = Table().apply {
             background = NinePatchDrawable(game.res.getNinePatch("purple_bg"))
-            add(game.res.getLabel("SELECT A VERSUS MODE", fontScale = 1f))
+            add(game.res.getLabel("SELECT A VERSUS MODE", fontScale = 1f)).padBottom(2f).row()
+            add(game.res.getLabel("YOUR RATING: ${game.player.rating}", color = GAME_YELLOW))
         }
-        parentTable.add(headerTable).size(220f, 32f).top().padTop(16f).colspan(2).row()
+        parentTable.add(headerTable).size(220f, 44f).top().padTop(16f).colspan(2).row()
 
         val backButton = game.res.getNinePatchTextButton(
             text = "BACK",
