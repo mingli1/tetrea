@@ -3,11 +3,9 @@ package com.tetrea.game.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.Interpolation
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.BattleConfig
@@ -23,6 +21,7 @@ import com.tetrea.game.tetris.TetrisStats
 
 private const val BUTTON_WIDTH = 76f
 private const val BUTTON_HEIGHT = 36f
+private const val RATING_ANIMATION_TIME = 2f
 
 class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
@@ -46,6 +45,13 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         {},
         game.res
     )
+
+    private lateinit var ratingLabel: Label
+    private var oldRating = game.player.rating
+    private var newRating = 0f
+    private var currRating = 0f
+    private var ratingTimer = 0f
+    private var startRatingAnim = false
 
     override fun show() {
         super.show()
@@ -88,6 +94,17 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     override fun update(dt: Float) {
         playerVersusCard?.update(dt)
         enemyVersusCard?.update(dt)
+
+        if (startRatingAnim) {
+            ratingTimer += dt
+            currRating = Interpolation.slowFast.apply(oldRating, newRating, ratingTimer / RATING_ANIMATION_TIME)
+            ratingLabel.setText("RATING: ${currRating.toInt()}")
+            if (ratingTimer >= RATING_ANIMATION_TIME) {
+                ratingLabel.setText("RATING: ${newRating.toInt()}")
+                ratingTimer = 0f
+                startRatingAnim = false
+            }
+        }
     }
 
     override fun render(dt: Float) {
@@ -124,8 +141,11 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
         val ratingChange = Elo.getRatingChange(game.player.rating, config.enemy.rating, playerScore, enemyScore)
         val newRating = (game.player.rating + ratingChange).toInt()
+        this.newRating = game.player.rating + ratingChange
         val change = newRating - game.player.rating.toInt()
-        headerTable.add(game.res.getLabel(text = "RATING: $newRating", fontScale = 1f, color = GAME_ORANGE))
+        ratingLabel = game.res.getLabel(fontScale = 1f, color = GAME_ORANGE)
+        startRatingAnim = true
+        headerTable.add(ratingLabel).align(Align.left).padLeft(12f)
         val ratingChangeLabel = game.res.getLabel(
             text = "(${change.sign()}$change)",
             fontScale = 1f,
