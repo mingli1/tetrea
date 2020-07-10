@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.tetrea.game.res.Resources
+import com.tetrea.game.res.SaveManager
 import com.tetrea.game.screen.*
 import kotlin.math.min
 
@@ -13,6 +14,7 @@ class TetreaGame : Game() {
 
     lateinit var batch: Batch
     lateinit var res: Resources
+    lateinit var saveManager: SaveManager
     lateinit var screenManager: ScreenManager
     lateinit var player: Player
 
@@ -23,8 +25,10 @@ class TetreaGame : Game() {
     override fun create() {
         batch = SpriteBatch()
         res = Resources()
+        saveManager = SaveManager(res)
         screenManager = ScreenManager(this)
-        player = Player()
+
+        player = saveManager.saveData.player
 
         if (IS_DEBUG) {
             fpsLabel = res.getLabel().apply { setPosition(5f, 5f) }

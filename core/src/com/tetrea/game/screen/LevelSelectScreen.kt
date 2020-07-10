@@ -216,14 +216,12 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             val desc = game.res.getLabel()
             when (selectionState) {
                 SelectionState.Completed -> {
-                    game.player.battleRecords[config.compositeKey]?.bestScore?.let {
+                    game.player.getRecord(config.compositeKey).bestScore?.let {
                         desc.setText("YOU ${it.x} - ${it.y} ENEMY")
                     }
                 }
                 SelectionState.Active -> {
-                    game.player.battleRecords[config.compositeKey]?.let {
-                        desc.setText("${it.attempts} ATTEMPTS")
-                    }
+                    desc.setText("${game.player.getRecord(config.compositeKey).attempts} ATTEMPTS")
                 }
                 else -> desc.setText("LOCKED")
             }

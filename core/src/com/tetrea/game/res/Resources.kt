@@ -39,7 +39,7 @@ class Resources : Disposable {
 
     private val assetManager = AssetManager()
     private val atlas: TextureAtlas
-    private val moshi = Moshi.Builder()
+    val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
         .build()
 
@@ -162,6 +162,8 @@ class Resources : Disposable {
         }
     }
 
+    private fun fileString(path: String) = Gdx.files.internal(path).readString()
+
     private fun loadTexture(key: String) {
         texturesCache[key] = atlas.findRegion(key)
     }
@@ -169,8 +171,6 @@ class Resources : Disposable {
     private fun loadNinePatch(key: String) {
         ninePatchCache[key] = atlas.createPatch(key)
     }
-
-    private fun fileString(path: String) = Gdx.files.internal(path).readString()
 
     private fun loadTextures() {
         loadTexture("home_screen_bg")

@@ -126,14 +126,12 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
 
         when (selectionState) {
             SelectionState.Completed -> {
-                player.battleRecords[config.compositeKey]?.bestScore?.let {
+                player.getRecord(config.compositeKey).bestScore?.let {
                     desc.setText("YOU ${it.x} - ${it.y} ENEMY")
                 }
             }
             SelectionState.Active -> {
-                player.battleRecords[config.compositeKey]?.let {
-                    desc.setText("${it.attempts} ATTEMPTS")
-                }
+                desc.setText("${player.getRecord(config.compositeKey).attempts} ATTEMPTS")
             }
             else -> desc.setText("LOCKED")
         }
@@ -145,7 +143,7 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         })
 
         h2hLabel.color = labelColor
-        player.battleRecords[config.compositeKey]?.let {
+        player.getRecord(config.compositeKey).let {
             h2h.setText("YOU ${it.allTimeRecord.x} - ${it.allTimeRecord.y} ENEMY")
         }
 
