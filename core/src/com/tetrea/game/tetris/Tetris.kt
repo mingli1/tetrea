@@ -385,6 +385,8 @@ class Tetris(
 
     private fun gameOver(win: Boolean) {
         started = false
+        apm = totalAttack / clockTimer * 60
+        pps = piecesPlaced / clockTimer
         currPiece = null
         recordStats()
         screen.state.playerWonGame = win
