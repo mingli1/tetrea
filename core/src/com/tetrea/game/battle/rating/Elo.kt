@@ -16,19 +16,18 @@ object Elo {
         enemyRating: Float,
         playerScore: Int,
         enemyScore: Int
-    ): Int {
+    ): Float {
         val playerWon = playerScore > enemyScore
         val expected = 1f / (1f + 10f.pow((enemyRating - playerRating) / 400f))
         val result = 0.7f + 0.3f * min(log2(1f + playerScore - enemyScore) / log2(8f), 1f)
-        val actual = if (playerWon) result else 1 - result
-        val change = (getKFactor(playerRating) * (actual - expected)).toInt()
-        return if (playerWon && change < 0) 0 else change
+        val actual = if (playerWon) result else 0f
+        val change = getKFactor(playerRating) * (actual - expected)
+        return if (playerWon && change < 0) 0f else change
     }
 
-    fun getRating(enemy: Enemy): Int {
+    fun getRating(enemy: Enemy): Float {
         val statsPercentage = (enemy.attack + enemy.defense + enemy.speed) / 300f
-        val elo = (statsPercentage * (MAX_ENEMY_ELO - MIN_ENEMY_ELO)) + MIN_ENEMY_ELO + (ENEMY_HP_TO_ELO_PERCENT * enemy.maxHp)
-        return elo.toInt()
+        return (statsPercentage * (MAX_ENEMY_ELO - MIN_ENEMY_ELO)) + MIN_ENEMY_ELO + (ENEMY_HP_TO_ELO_PERCENT * enemy.maxHp)
     }
 
     private fun getKFactor(playerRating: Float): Int {

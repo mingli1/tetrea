@@ -1,23 +1,16 @@
 {
   "worldId": 0,
   "levelId": 0,
-  "firstTo": 3,
+  "firstTo": 1,
   "enemy": {
     "name": "ENEMY 1",
     "avatar": "enemy_ittzzi",
-    "maxHp": 1000,
+    "maxHp": 10,
     "attack": 55,
     "defense": 20,
     "speed": 40
   },
   "attackPatterns": [
     "Defensive", "Cheeser"
-  ],
-  "attackScheme": [
-    {
-      "action": "Heal",
-      "time": 3.5,
-      "heal": 5
-    }
   ]
 }

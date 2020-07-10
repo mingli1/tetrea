@@ -41,7 +41,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         val headerTable = Table().apply {
             background = NinePatchDrawable(game.res.getNinePatch("purple_bg"))
             add(game.res.getLabel("SELECT A VERSUS MODE", fontScale = 1f)).padBottom(2f).row()
-            add(game.res.getLabel("YOUR RATING: ${game.player.rating}", color = GAME_YELLOW))
+            add(game.res.getLabel("YOUR RATING: ${game.player.rating.toInt()}", color = GAME_YELLOW))
         }
         parentTable.add(headerTable).size(220f, 44f).top().padTop(16f).colspan(2).row()
 

@@ -13,7 +13,9 @@ import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.MatchState
+import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.extension.onTap
+import com.tetrea.game.extension.sign
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.VersusCard
 import com.tetrea.game.scene.dialog.ConfirmDialog
@@ -111,14 +113,38 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         val matchStateLabel = game.res.getLabel(
             text = if (playerWin) "VICTORY" else "DEFEAT",
             color = if (playerWin) GAME_YELLOW else GAME_DARK_RED,
-            fontScale = 3f
+            fontScale = 2f
         )
-        headerTable.add(matchStateLabel).row()
+        headerTable.add(matchStateLabel).colspan(2).row()
         val finalScoreLabel = game.res.getLabel(
             text = "${game.player.name} $playerScore - $enemyScore ${config.enemy.name}",
             fontScale = 1f
         )
-        headerTable.add(finalScoreLabel)
+        headerTable.add(finalScoreLabel).colspan(2).row()
+
+        val ratingChange = Elo.getRatingChange(game.player.rating, config.enemy.rating, playerScore, enemyScore)
+        val newRating = (game.player.rating + ratingChange).toInt()
+        val change = newRating - game.player.rating.toInt()
+        headerTable.add(game.res.getLabel(text = "RATING: $newRating", fontScale = 1f, color = GAME_ORANGE))
+        val ratingChangeLabel = game.res.getLabel(
+            text = "(${change.sign()}$change)",
+            fontScale = 1f,
+            color = when {
+                ratingChange < 0 -> Color.RED
+                ratingChange == 0f -> Color.WHITE
+                else -> Color.GREEN
+            }
+        )
+        headerTable.add(ratingChangeLabel).align(Align.left)
+
+        game.player.completeMatchup(
+            key = config.compositeKey,
+            won = playerWin,
+            ratingChange = ratingChange,
+            playerScore = playerScore,
+            enemyScore = enemyScore
+        )
+        game.saveManager.save()
     }
 
     private fun createBody() {

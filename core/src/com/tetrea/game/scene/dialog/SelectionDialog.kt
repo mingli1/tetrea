@@ -131,13 +131,13 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
                 }
             }
             SelectionState.Active -> {
-                desc.setText("${player.getRecord(config.compositeKey).attempts} ATTEMPTS")
+                desc.setText("${player.getRecord(config.compositeKey).attempts} ATTEMPT(S)")
             }
             else -> desc.setText("LOCKED")
         }
 
         rating.setText(if (selectionState == SelectionState.Completed || selectionState == SelectionState.Active) {
-            "RATING: ${Elo.getRating(config.enemy)}"
+            "RATING: ${config.enemy.rating.toInt()}"
         } else {
             "RATING: ???"
         })

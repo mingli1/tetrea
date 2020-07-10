@@ -6,7 +6,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.enemy.Enemy
-import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.AVATAR_SIZE
 import com.tetrea.game.res.GAME_VERSUS_BLUE
@@ -60,7 +59,7 @@ class VersusCard(
                 avatar.drawable = TextureRegionDrawable(res.getTexture(it.avatar))
                 name.setText(it.name)
                 name.setAlignment(Align.right)
-                rating.setText("RATING: ${Elo.getRating(it)}")
+                rating.setText("RATING: ${it.rating.toInt()}")
                 rating.color = GAME_VERSUS_BLUE
                 rating.setAlignment(Align.right)
             }
@@ -69,7 +68,7 @@ class VersusCard(
                 avatar.drawable = TextureRegionDrawable(res.getTexture(it.avatar))
                 name.setText(it.name)
                 name.setAlignment(Align.left)
-                rating.setText("RATING: ${it.rating}")
+                rating.setText("RATING: ${it.rating.toInt()}")
                 rating.color = GAME_VERSUS_ORANGE
                 rating.setAlignment(Align.left)
             }

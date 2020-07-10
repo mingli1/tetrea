@@ -14,6 +14,7 @@ import com.badlogic.gdx.utils.Disposable
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tetrea.game.battle.BattleConfig
+import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.PieceType
 
@@ -255,6 +256,8 @@ class Resources : Disposable {
         val world = mutableListOf<BattleConfig>()
         for (level in 0 until 8) {
             val config = adapter.fromJson(fileString("configs/battle/bc_0_$level.json")) ?: return
+            val rating = Elo.getRating(config.enemy)
+            config.enemy.rating = rating
             world.add(config)
         }
         battleConfigCache.add(world)

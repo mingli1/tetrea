@@ -48,7 +48,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         headerTable = Table().apply {
             background = NinePatchDrawable(game.res.getNinePatch("purple_bg"))
             add(game.res.getLabel("CHOOSE A MATCHUP", fontScale = 1f)).padBottom(2f).row()
-            add(game.res.getLabel("YOUR RATING: ${game.player.rating}", color = GAME_YELLOW))
+            add(game.res.getLabel("YOUR RATING: ${game.player.rating.toInt()}", color = GAME_YELLOW))
         }
 
         parentTable.add(headerTable).size(220f, 44f).top().padTop(16f).colspan(2).row()
@@ -221,7 +221,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
                     }
                 }
                 SelectionState.Active -> {
-                    desc.setText("${game.player.getRecord(config.compositeKey).attempts} ATTEMPTS")
+                    desc.setText("${game.player.getRecord(config.compositeKey).attempts} ATTEMPT(S)")
                 }
                 else -> desc.setText("LOCKED")
             }
@@ -229,7 +229,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
             val rating = game.res.getLabel(
                 text = if (selectionState == SelectionState.Completed || selectionState == SelectionState.Active)
-                    "RATING: ${Elo.getRating(config.enemy)}"
+                    "RATING: ${config.enemy.rating.toInt()}"
                     else "RATING: ???",
                 color = GAME_ORANGE
             )
