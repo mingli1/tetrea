@@ -9,25 +9,23 @@ object BattleConfigFactory {
 
     fun findMatch(rating: Float): BattleConfig {
         val elo = rating + (MathUtils.randomSign() * MathUtils.random(ELO_OFFSET))
-        val firstTo = getFirstToFromRating(elo)
+        val bestOf = getBestOfFromRating(elo)
         val enemy = EnemyFactory.getEnemy(elo)
         // todo: figure out attack patterns and ai patterns
         return BattleConfig(
-            firstTo = firstTo,
+            bestOf = bestOf,
             enemy = enemy,
             isMatchmaking = true
         )
     }
 
-    private fun getFirstToFromRating(rating: Float): Int {
+    private fun getBestOfFromRating(rating: Float): Int {
         return when {
-            rating < 800 -> 1
-            rating < 1200 -> 2
-            rating < 1500 -> 3
-            rating < 1900 -> 5
-            rating < 2600 -> 7
-            rating < 3000 -> 10
-            else -> 13
+            rating < 1000 -> 1
+            rating < 1800 -> 3
+            rating < 2400 -> 5
+            rating < 3000 -> 7
+            else -> 9
         }
     }
 }

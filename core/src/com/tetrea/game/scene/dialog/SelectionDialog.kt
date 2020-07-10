@@ -160,9 +160,9 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         battleButton.isDisabled = selectionState == SelectionState.Locked
         battleButton.touchable = if (selectionState == SelectionState.Locked) Touchable.disabled else Touchable.enabled
         battleButton.setText(if (selectionState == SelectionState.Locked) {
-            "BATTLE (FT?)"
+            "BATTLE (BO?)"
         } else {
-            "BATTLE (FT${config.firstTo})"
+            "BATTLE (BO${config.bestOf})"
         })
     }
 

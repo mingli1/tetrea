@@ -23,7 +23,7 @@ class BattleState(
     res: Resources
 ) {
 
-    val firstToText = "FT${config.firstTo}"
+    val bestOfText = "BO${config.bestOf}"
     val enemyAvatar = res.getTexture(config.enemy.avatar)
     var playerText = ""
     var enemyText = ""
@@ -79,10 +79,10 @@ class BattleState(
     }
 
     fun getMatchState() = when {
-        playerScore == config.firstTo -> MatchState.PlayerWin
-        enemyScore == config.firstTo -> MatchState.EnemyWin
-        config.firstTo > 1 && playerScore == config.firstTo - 1 && enemyScore == config.firstTo - 1 -> MatchState.Tiebreaker
-        playerScore == config.firstTo - 1 || enemyScore == config.firstTo - 1 -> MatchState.MatchPoint
+        playerScore == (config.bestOf + 1) / 2 -> MatchState.PlayerWin
+        enemyScore == (config.bestOf + 1) / 2 -> MatchState.EnemyWin
+        config.bestOf > 1 && playerScore == (config.bestOf + 1) / 2 - 1 && enemyScore == (config.bestOf + 1) / 2 - 1 -> MatchState.Tiebreaker
+        playerScore == (config.bestOf + 1) / 2 - 1 || enemyScore == (config.bestOf + 1) / 2 - 1 -> MatchState.MatchPoint
         else -> MatchState.Ongoing
     }
 

@@ -1,7 +1,7 @@
 {
   "worldId": 0,
   "levelId": 5,
-  "firstTo": 3,
+  "bestOf": 3,
   "enemy": {
     "name": "ENEMY 1",
     "avatar": "enemy_ittzzi",

@@ -136,7 +136,7 @@ class BattleScene(
 
     init {
         stage.addActor(res.getLabel(
-            screen.state.firstToText,
+            screen.state.bestOfText,
             x = 107f,
             y = stage.height - 23f,
             fontScale = 1f
