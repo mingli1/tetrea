@@ -28,6 +28,6 @@ data class Settings(
         TetrisInputType.RotateCCW to RelativePosition(RelativeValue(-100f, RelativeTo.StageWidth), RelativeValue(16f, RelativeTo.YZero)),
         TetrisInputType.Rotate180 to RelativePosition(RelativeValue(60f, RelativeTo.XZero), RelativeValue(66f, RelativeTo.YZero)),
         TetrisInputType.Hold to RelativePosition(RelativeValue(-100f, RelativeTo.StageWidth), RelativeValue(66f, RelativeTo.YZero)),
-        TetrisInputType.Left to RelativePosition(RelativeValue(-50f, RelativeTo.StageWidth), RelativeValue(-100f, RelativeTo.StageHeight))
+        TetrisInputType.Pause to RelativePosition(RelativeValue(-50f, RelativeTo.StageWidth), RelativeValue(-100f, RelativeTo.StageHeight))
     )
 )

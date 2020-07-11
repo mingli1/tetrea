@@ -1,30 +1,33 @@
 package com.tetrea.game.input
 
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.InputProcessor
+import com.tetrea.game.global.Settings
 
-class TetrisKeyInput(private val inputHandler: TetrisInputHandler) : InputProcessor {
+class TetrisKeyInput(
+    private val settings: Settings,
+    private val inputHandler: TetrisInputHandler
+) : InputProcessor {
 
     override fun keyUp(keycode: Int): Boolean {
-        when (keycode) {
-            Input.Keys.RIGHT -> inputHandler.onRight(false)
-            Input.Keys.LEFT -> inputHandler.onLeft(false)
-            Input.Keys.DOWN -> inputHandler.softDrop(false)
+        when (settings.keyBindings[keycode]) {
+            TetrisInputType.Left -> inputHandler.onLeft(false)
+            TetrisInputType.Right -> inputHandler.onRight(false)
+            TetrisInputType.SoftDrop -> inputHandler.softDrop(false)
         }
         return true
     }
 
     override fun keyDown(keycode: Int): Boolean {
-        when (keycode) {
-            Input.Keys.RIGHT -> inputHandler.onRight(true)
-            Input.Keys.LEFT -> inputHandler.onLeft(true)
-            Input.Keys.DOWN -> inputHandler.softDrop(true)
-            Input.Keys.SPACE -> inputHandler.hardDrop()
-            Input.Keys.UP -> inputHandler.rotateClockwise()
-            Input.Keys.Z -> inputHandler.rotateCounterClockwise()
-            Input.Keys.X -> inputHandler.rotate180()
-            Input.Keys.SHIFT_LEFT -> inputHandler.onHold()
-            Input.Keys.ESCAPE -> inputHandler.onPause()
+        when (settings.keyBindings[keycode]) {
+            TetrisInputType.Left -> inputHandler.onLeft(true)
+            TetrisInputType.Right -> inputHandler.onRight(true)
+            TetrisInputType.SoftDrop -> inputHandler.softDrop(true)
+            TetrisInputType.HardDrop -> inputHandler.hardDrop()
+            TetrisInputType.RotateCW -> inputHandler.rotateClockwise()
+            TetrisInputType.RotateCCW -> inputHandler.rotateCounterClockwise()
+            TetrisInputType.Rotate180 -> inputHandler.rotate180()
+            TetrisInputType.Hold -> inputHandler.onHold()
+            TetrisInputType.Pause -> inputHandler.onPause()
         }
         return true
     }

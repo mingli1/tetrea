@@ -44,7 +44,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         tetris = Tetris(boardX, boardY, tetrisConfig, this)
         inputHandler = TetrisInputHandler(tetris, this, 0.117f, 0f, 0f)
-        tetrisKeyInput = TetrisKeyInput(inputHandler)
+        tetrisKeyInput = TetrisKeyInput(game.settings, inputHandler)
         state = BattleState(battleConfig, this, game.player, game.res)
         scene = BattleScene(
             boardX,
@@ -55,7 +55,8 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
             stage,
             game.res,
             this,
-            inputHandler
+            inputHandler,
+            game.settings
         )
 
         inputMultiplexer.addProcessor(stage)

@@ -3,7 +3,10 @@ package com.tetrea.game.extension
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
+import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
+import com.tetrea.game.util.RelativePosition
+import com.tetrea.game.util.RelativeTo
 
 fun Actor.onClick(block: () -> Unit) {
     addListener(object : InputListener() {
@@ -50,4 +53,17 @@ fun Actor.onTap(block: () -> Unit) {
             block()
         }
     })
+}
+
+fun Actor.setRelativePosition(pos: RelativePosition, stage: Stage) {
+    setPosition(
+        when (pos.relX.relativeTo) {
+            RelativeTo.XZero -> pos.relX.value
+            else -> stage.width + pos.relX.value
+        },
+        when (pos.relY.relativeTo) {
+            RelativeTo.YZero -> pos.relY.value
+            else -> stage.height + pos.relY.value
+        }
+    )
 }

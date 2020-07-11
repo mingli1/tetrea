@@ -3,12 +3,15 @@ package com.tetrea.game.input
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.tetrea.game.extension.onClick
+import com.tetrea.game.extension.setRelativePosition
+import com.tetrea.game.global.Settings
 import com.tetrea.game.res.*
 
 class TetrisAndroidInput(
     stage: Stage,
     tetrisInputHandler: TetrisInputHandler,
-    res: Resources
+    res: Resources,
+    settings: Settings
 ) {
 
     init {
@@ -17,46 +20,45 @@ class TetrisAndroidInput(
                 { tetrisInputHandler.onLeft(true) },
                 { tetrisInputHandler.onLeft(false) }
             )
-            setPosition(stage.width - 150f, 16f)
-            setPosition(10f, 16f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.Left]!!, stage)
         })
         stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Right)).apply {
             onClick(
                 { tetrisInputHandler.onRight(true) },
                 { tetrisInputHandler.onRight(false) }
             )
-            setPosition(60f, 16f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.Right]!!, stage)
         })
         stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.SoftDrop)).apply {
             onClick(
                 { tetrisInputHandler.softDrop(true) },
                 { tetrisInputHandler.softDrop(false) }
             )
-            setPosition(110f, 16f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.SoftDrop]!!, stage)
         })
         stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.HardDrop)).apply {
             onClick { tetrisInputHandler.hardDrop() }
-            setPosition(stage.width - 50f, 16f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.HardDrop]!!, stage)
         })
         stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.RotateCW)).apply {
             onClick { tetrisInputHandler.rotateClockwise() }
-            setPosition(stage.width - 50f, 66f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.RotateCW]!!, stage)
         })
         stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.RotateCCW)).apply {
             onClick { tetrisInputHandler.rotateCounterClockwise() }
-            setPosition(stage.width - 100f, 16f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.RotateCCW]!!, stage)
         })
         stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Rotate180)).apply {
             onClick { tetrisInputHandler.rotate180() }
-            setPosition(60f, 66f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.Rotate180]!!, stage)
         })
         stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Hold)).apply {
             onClick { tetrisInputHandler.onHold() }
-            setPosition(stage.width - 100f, 66f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.Hold]!!, stage)
         })
         stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Pause)).apply {
             onClick { tetrisInputHandler.onPause() }
-            setPosition(stage.width - 50f, stage.height - 100f)
+            setRelativePosition(settings.androidBindings[TetrisInputType.Pause]!!, stage)
         })
     }
 }

@@ -14,6 +14,7 @@ import com.tetrea.game.battle.enemy.Enemy
 import com.tetrea.game.battle.MatchState
 import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.global.Player
+import com.tetrea.game.global.Settings
 import com.tetrea.game.global.isAndroid
 import com.tetrea.game.input.TetrisAndroidInput
 import com.tetrea.game.input.TetrisInputHandler
@@ -40,7 +41,8 @@ class BattleScene(
     private val stage: Stage,
     private val res: Resources,
     private val screen: BattleScreen,
-    inputHandler: TetrisInputHandler
+    inputHandler: TetrisInputHandler,
+    settings: Settings
 ) {
 
     private val playerHeaderLabel = res.getLabel(fontScale = 1f).apply {
@@ -203,7 +205,7 @@ class BattleScene(
 
         textParticleSpawner = TextParticleSpawner(res, stage)
 
-        if (isAndroid()) TetrisAndroidInput(stage, inputHandler, res)
+        if (isAndroid()) TetrisAndroidInput(stage, inputHandler, res, settings)
 
         playerVersusCard = VersusCard(
             stage = stage,
