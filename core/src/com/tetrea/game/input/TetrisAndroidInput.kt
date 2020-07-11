@@ -12,7 +12,7 @@ class TetrisAndroidInput(
 ) {
 
     init {
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_LEFT)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Left)).apply {
             onClick(
                 { tetrisInputHandler.onLeft(true) },
                 { tetrisInputHandler.onLeft(false) }
@@ -20,41 +20,41 @@ class TetrisAndroidInput(
             setPosition(stage.width - 150f, 16f)
             setPosition(10f, 16f)
         })
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_RIGHT)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Right)).apply {
             onClick(
                 { tetrisInputHandler.onRight(true) },
                 { tetrisInputHandler.onRight(false) }
             )
             setPosition(60f, 16f)
         })
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_SOFTDROP)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.SoftDrop)).apply {
             onClick(
                 { tetrisInputHandler.softDrop(true) },
                 { tetrisInputHandler.softDrop(false) }
             )
             setPosition(110f, 16f)
         })
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_HARDDROP)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.HardDrop)).apply {
             onClick { tetrisInputHandler.hardDrop() }
             setPosition(stage.width - 50f, 16f)
         })
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_ROTATE_CW)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.RotateCW)).apply {
             onClick { tetrisInputHandler.rotateClockwise() }
             setPosition(stage.width - 50f, 66f)
         })
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_ROTATE_CCW)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.RotateCCW)).apply {
             onClick { tetrisInputHandler.rotateCounterClockwise() }
             setPosition(stage.width - 100f, 16f)
         })
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_ROTATE_180)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Rotate180)).apply {
             onClick { tetrisInputHandler.rotate180() }
             setPosition(60f, 66f)
         })
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_HOLD)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Hold)).apply {
             onClick { tetrisInputHandler.onHold() }
             setPosition(stage.width - 100f, 66f)
         })
-        stage.addActor(ImageButton(res.getTetrisButtonStyle(TETRIS_BUTTON_PAUSE)).apply {
+        stage.addActor(ImageButton(res.getTetrisButtonStyle(TetrisInputType.Pause)).apply {
             onClick { tetrisInputHandler.onPause() }
             setPosition(stage.width - 50f, stage.height - 100f)
         })

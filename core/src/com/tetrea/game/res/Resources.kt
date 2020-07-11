@@ -15,6 +15,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.battle.rating.Elo
+import com.tetrea.game.input.TetrisInputType
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.PieceType
 
@@ -23,15 +24,6 @@ const val AVATAR_SIZE = 26f
 const val TITLE_LETTER_WIDTH = 36
 
 const val TETRIS_BUTTON_SIZE = 40
-const val TETRIS_BUTTON_LEFT = 0
-const val TETRIS_BUTTON_RIGHT = 1
-const val TETRIS_BUTTON_SOFTDROP = 2
-const val TETRIS_BUTTON_HARDDROP = 3
-const val TETRIS_BUTTON_ROTATE_CW = 4
-const val TETRIS_BUTTON_ROTATE_CCW = 5
-const val TETRIS_BUTTON_ROTATE_180 = 6
-const val TETRIS_BUTTON_HOLD = 7
-const val TETRIS_BUTTON_PAUSE = 8
 
 private const val BUTTON_UP_KEY = "_up"
 private const val BUTTON_DOWN_KEY = "_down"
@@ -155,11 +147,11 @@ class Resources : Disposable {
 
     fun getBoardUnit() = tetrisSheet[2][0]
 
-    fun getTetrisButtonStyle(index: Int): ImageButton.ImageButtonStyle {
+    fun getTetrisButtonStyle(type: TetrisInputType): ImageButton.ImageButtonStyle {
         return ImageButton.ImageButtonStyle().apply {
-            imageUp = TextureRegionDrawable(tetrisButtons[0][index])
-            imageDown = TextureRegionDrawable(tetrisButtons[1][index])
-            imageOver = TextureRegionDrawable(tetrisButtons[1][index])
+            imageUp = TextureRegionDrawable(tetrisButtons[0][type.buttonIndex])
+            imageDown = TextureRegionDrawable(tetrisButtons[1][type.buttonIndex])
+            imageOver = TextureRegionDrawable(tetrisButtons[1][type.buttonIndex])
         }
     }
 
@@ -177,6 +169,7 @@ class Resources : Disposable {
         loadTexture("home_screen_bg")
         loadTexture("home_screen_overlay")
         loadTexture("versus_select_overlay")
+        loadTexture("settings_screen_overlay")
         loadTexture("title_letters")
 
         loadTexture("tetris")

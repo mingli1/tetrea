@@ -3,6 +3,7 @@ package com.tetrea.game.res
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.utils.Base64Coder
 import com.tetrea.game.global.Player
+import com.tetrea.game.global.Settings
 
 private const val SAVE_EXTENSION = ".tetr"
 private const val SAVE_FILE_PATH = "save$SAVE_EXTENSION"
@@ -19,7 +20,7 @@ class SaveManager(res: Resources) {
                 Base64Coder.decodeString(saveFile.readString())
             ))
         } else {
-            saveData = SaveData(Player())
+            saveData = SaveData(Player(), Settings())
             save()
         }
     }

@@ -17,6 +17,7 @@ class TetreaGame : Game() {
     lateinit var saveManager: SaveManager
     lateinit var screenManager: ScreenManager
     lateinit var player: Player
+    lateinit var settings: Settings
 
     lateinit var fpsLabel: Label
 
@@ -29,6 +30,7 @@ class TetreaGame : Game() {
         screenManager = ScreenManager(this)
 
         player = saveManager.saveData.player
+        settings = saveManager.saveData.settings
 
         if (IS_DEBUG) {
             fpsLabel = res.getLabel().apply { setPosition(5f, 5f) }
