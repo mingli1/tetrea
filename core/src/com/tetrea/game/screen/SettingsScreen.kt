@@ -43,7 +43,7 @@ class SettingsScreen(game: TetreaGame) : BaseScreen(game) {
             fadeScrollBars = false
             layout()
         }
-        parentTable.add(scrollPane).height(stage.height * 0.78f).colspan(2)
+        parentTable.add(scrollPane).expandY().colspan(2).top().padTop(24f)
 
         Gdx.input.inputProcessor = multiplexer
     }

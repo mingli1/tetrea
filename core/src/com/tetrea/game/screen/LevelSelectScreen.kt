@@ -16,7 +16,6 @@ import com.tetrea.game.res.*
 import com.tetrea.game.scene.dialog.SelectionDialog
 import com.tetrea.game.scene.component.VersusCard
 
-private const val SELECTION_SCROLL_HEIGHT_PERCENT = 0.77f
 private const val BUTTON_WIDTH = 76f
 private const val BUTTON_HEIGHT = 28f
 private const val DIALOG_FADE_DURATION = 0.4f
@@ -143,7 +142,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             onTap { navigateTo(VERSUS_SELECT_SCREEN) }
         }
 
-        parentTable.add(backButton).top().left().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).expandY()
+        parentTable.add(backButton).top().left().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f)
     }
 
     private fun createHelpButton() {
@@ -154,7 +153,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             colorDown = Color.WHITE
         )
 
-        parentTable.add(helpButton).top().right().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).expandY().row()
+        parentTable.add(helpButton).top().right().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).row()
     }
 
     private fun populateSelections() {
@@ -246,7 +245,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             layout()
         }
         scrollPane.scrollTo(0f, 72f * (configs.size - game.player.currLevelId), 195f, 60f)
-        parentTable.add(scrollPane).height(stage.height * SELECTION_SCROLL_HEIGHT_PERCENT).colspan(2)
+        parentTable.add(scrollPane).expandY().colspan(2).top().padTop(16f)
     }
 
     private fun showSelectionDialog(config: BattleConfig, selectionState: SelectionState) {

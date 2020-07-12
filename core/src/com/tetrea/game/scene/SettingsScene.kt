@@ -43,6 +43,13 @@ class SettingsScene(
             addKeyBinding(TetrisInputType.Rotate180)
             addKeyBinding(TetrisInputType.Hold)
             addKeyBinding(TetrisInputType.Pause)
+        } else {
+            controlsTable.add(res.getNinePatchTextButton(
+                text = "MOVE BUTTONS",
+                key = "gray_blue_button",
+                colorUp = Color.WHITE,
+                colorDown = Color.WHITE
+            )).expandX().size(204f, 36f).padLeft(8f).padRight(8f).padBottom(8f)
         }
 
         add(controlsTable).width(220f).row()
