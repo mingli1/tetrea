@@ -19,6 +19,17 @@ data class Settings(
         Input.Keys.SHIFT_LEFT to TetrisInputType.Hold,
         Input.Keys.ESCAPE to TetrisInputType.Pause
     ),
+    @Json(name = "keyBindingsInverse") val keyBindingsInverse: MutableMap<TetrisInputType, Int> = mutableMapOf(
+        TetrisInputType.Left to Input.Keys.LEFT,
+        TetrisInputType.Right to Input.Keys.RIGHT,
+        TetrisInputType.SoftDrop to Input.Keys.DOWN,
+        TetrisInputType.HardDrop to Input.Keys.SPACE,
+        TetrisInputType.RotateCW to Input.Keys.UP,
+        TetrisInputType.RotateCCW to Input.Keys.Z,
+        TetrisInputType.Rotate180 to Input.Keys.X,
+        TetrisInputType.Hold to Input.Keys.SHIFT_LEFT,
+        TetrisInputType.Pause to Input.Keys.ESCAPE
+    ),
     @Json(name = "androidBindings") val androidBindings: MutableMap<TetrisInputType, RelativePosition> = mutableMapOf(
         TetrisInputType.Left to RelativePosition(RelativeValue(10f, RelativeTo.XZero), RelativeValue(16f, RelativeTo.YZero)),
         TetrisInputType.Right to RelativePosition(RelativeValue(60f, RelativeTo.XZero), RelativeValue(16f, RelativeTo.YZero)),
