@@ -7,7 +7,7 @@ private const val WIDTH = 200f
 private const val BUTTON_WIDTH = 176f
 private const val BUTTON_HEIGHT = 30f
 
-class MessageDialog(
+open class MessageDialog(
     message: String,
     private val dismiss: () -> Unit,
     res: Resources,

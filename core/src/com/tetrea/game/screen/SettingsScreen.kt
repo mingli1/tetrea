@@ -25,7 +25,7 @@ class SettingsScreen(game: TetreaGame) : BaseScreen(game) {
             background = NinePatchDrawable(game.res.getNinePatch("gray_blue_bg"))
             add(game.res.getLabel("SETTINGS", fontScale = 1f)).padBottom(2f).row()
         }
-        parentTable.add(headerTable).size(220f, 36f).top().padTop(16f).colspan(2).row()
+        parentTable.add(headerTable).size(220f, 30f).top().padTop(16f).colspan(2).row()
 
         val backButton = game.res.getNinePatchTextButton(
             text = "BACK",
@@ -37,7 +37,7 @@ class SettingsScreen(game: TetreaGame) : BaseScreen(game) {
         }
         parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f).row()
 
-        val settingsTable = SettingsScene(game.res, game.settings, stage)
+        val settingsTable = SettingsScene(game.res, game.settings, game.saveManager, stage)
         val scrollPane = ScrollPane(settingsTable).apply {
             setOverscroll(false, false)
             fadeScrollBars = false
