@@ -8,8 +8,8 @@ data class RelativePosition(
 )
 
 data class RelativeValue(
-    @Json(name = "value") val value: Float,
-    @Json(name = "relativeTo") val relativeTo: RelativeTo
+    @Json(name = "value") var value: Float,
+    @Json(name = "relativeTo") var relativeTo: RelativeTo
 )
 
 enum class RelativeTo {
