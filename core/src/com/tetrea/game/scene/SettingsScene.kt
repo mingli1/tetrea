@@ -186,6 +186,12 @@ class SettingsScene(
 
         val dasLabel = res.getLabel(text = "DAS: ${settings.das.toMillis()}ms", fontScale = 1f)
         tuningTable.add(dasLabel).expandX().left().padLeft(8f).row()
+        val dasDesc = res.getLabel(
+            text = "THE DELAY BEFORE A PIECE STARTS MOVING",
+            fontScale = 0.5f,
+            color = GAME_LIGHT_GRAY_BLUE
+        )
+        tuningTable.add(dasDesc).expand().left().padLeft(8f).padTop(2f).row()
 
         val dasSlider = res.getSlider(16f, 333f, 1f, "settings_slider_bg").apply {
             value = settings.das * 1000f
@@ -199,6 +205,12 @@ class SettingsScene(
 
         val arrLabel = res.getLabel(text = "ARR: ${settings.arr.toMillis()}ms", fontScale = 1f)
         tuningTable.add(arrLabel).expandX().left().padLeft(8f).row()
+        val arrDesc = res.getLabel(
+            text = "HOW FAST A PIECE MOVES LEFT OR RIGHT",
+            fontScale = 0.5f,
+            color = GAME_LIGHT_GRAY_BLUE
+        )
+        tuningTable.add(arrDesc).expand().left().padLeft(8f).padTop(2f).row()
 
         val arrSlider = res.getSlider(0f, 83f, 1f, "settings_slider_bg").apply {
             value = settings.arr * 1000f
@@ -212,6 +224,12 @@ class SettingsScene(
 
         val sdsLabel = res.getLabel(text = "SDS: ${settings.sds.toMillis()}ms", fontScale = 1f)
         tuningTable.add(sdsLabel).expandX().left().padLeft(8f).row()
+        val sdsDesc = res.getLabel(
+            text = "HOW FAST A PIECE IS SOFT DROPPED",
+            fontScale = 0.5f,
+            color = GAME_LIGHT_GRAY_BLUE
+        )
+        tuningTable.add(sdsDesc).expand().left().padLeft(8f).padTop(2f).row()
 
         val sdsSlider = res.getSlider(0f, 100f, 1f, "settings_slider_bg").apply {
             value = settings.sds * 1000f
