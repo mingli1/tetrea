@@ -203,11 +203,10 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
         if (!config.isMatchmaking) {
             val retryButton = getButton("RETRY").apply { onTap { retryConfirmDialog.show(stage) } }
-            val nextButton = getButton("NEXT")
-
             buttonTable.add(retryButton).align(Align.center).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
-            buttonTable.add(nextButton).align(Align.right).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
         }
+        val homeButton = getButton("HOME").apply { onTap { navigateTo(HOME_SCREEN) } }
+        buttonTable.add(homeButton).align(Align.right).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
     }
 
     private fun getButton(text: String): TextButton = game.res.getNinePatchTextButton(
