@@ -223,7 +223,7 @@ class SettingsScene(
         }
         tuningTable.add(sdsSlider).size(204f, 24f).padTop(4f).padBottom(4f).row()
 
-        add(tuningTable).width(220f).padBottom(16f).row()
+        add(tuningTable).width(220f).padBottom(24f).row()
     }
 
     private fun addKeyBinding(type: TetrisInputType) {
