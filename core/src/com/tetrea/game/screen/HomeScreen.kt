@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.TITLE_LETTER_WIDTH
+import com.tetrea.game.scene.dialog.MessageDialog
 
 private const val TITLE_TOTAL_WIDTH = 216f
 private const val TITLE_LETTER_DELAY = 0.2f
@@ -82,6 +83,18 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
             onClick = { navigateTo(SETTINGS_SCREEN) }
         )
         stage.addActor(settingsButton)
+
+        if (game.player.quitDuringBattle) {
+            MessageDialog(
+                title = "MATCH EXITED",
+                message = "YOU CLOSED THE APP DURING A BATTLE SO THE MATCH WILL COUNT AS A LOSS.",
+                res = game.res,
+                dismiss = {
+                    game.player.quitDuringBattle = false
+                    game.saveManager.save()
+                }
+            ).show(stage)
+        }
 
         Gdx.input.inputProcessor = multiplexer
     }

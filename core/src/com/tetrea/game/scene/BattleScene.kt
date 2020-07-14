@@ -510,6 +510,9 @@ class BattleScene(
     }
 
     fun startGameOverSequence() {
+        screen.state.updateCurrScores()
+        screen.isMatchFinished = screen.state.playerWonMatch()
+
         gameNumberLabel.isVisible = true
         gameNumberLabel.setText("GAME ${screen.state.gameNumber}")
         resultsLabel.isVisible = true

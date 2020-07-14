@@ -10,7 +10,8 @@ data class Player(
     @Json(name = "rating") var rating: Float = 800f,
     @Json(name = "currWorldId") var currWorldId: Int = 0,
     @Json(name = "currLevelId") var currLevelId: Int = 0,
-    @Json(name = "battleRecords") private val battleRecords: MutableMap<String, BattleRecord> = mutableMapOf()
+    @Json(name = "battleRecords") private val battleRecords: MutableMap<String, BattleRecord> = mutableMapOf(),
+    @Json(name = "quitDuringBattle") var quitDuringBattle: Boolean = false
 ) {
 
     fun getRecord(key: String) = battleRecords[key] ?: BattleRecord()

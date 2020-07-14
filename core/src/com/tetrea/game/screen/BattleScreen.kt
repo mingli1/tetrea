@@ -32,6 +32,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var tetrisKeyInput: TetrisKeyInput
 
     lateinit var battleConfig: BattleConfig
+    var isMatchFinished = false
 
     override fun show() {
         super.show()
@@ -106,6 +107,24 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         if (!isAndroid() && !inputMultiplexer.processors.contains(tetrisKeyInput)) {
             inputMultiplexer.addProcessor(tetrisKeyInput)
         }
+    }
+
+    fun finishBattlePrematurely() {
+        val ratingChange = Elo.getRatingChange(
+            game.player.rating,
+            battleConfig.enemy.rating,
+            if (isMatchFinished) state.currPlayerScore else 0,
+            if (isMatchFinished) state.currEnemyScore else (battleConfig.bestOf + 1) / 2
+        )
+        game.player.completeMatchup(
+            battleConfig.compositeKey,
+            if (isMatchFinished) state.playerWonGame else false,
+            ratingChange,
+            if (isMatchFinished) state.currPlayerScore else 0,
+            if (isMatchFinished) state.currEnemyScore else (battleConfig.bestOf + 1) / 2,
+            battleConfig.isMatchmaking
+        )
+        game.saveManager.save()
     }
 
     fun onBattleEnd(matchState: MatchState, playerScore: Int, enemyScore: Int) {

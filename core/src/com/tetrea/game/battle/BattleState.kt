@@ -31,6 +31,8 @@ class BattleState(
     var enemyHp = config.enemy.maxHp
     val enemyMaxHp = config.enemy.maxHp
 
+    var currPlayerScore = 0
+    var currEnemyScore = 0
     var playerScore = 0
     var enemyScore = 0
     var gameNumber = 0
@@ -78,6 +80,11 @@ class BattleState(
         enemyScore += if (playerWonGame) 0 else 1
     }
 
+    fun updateCurrScores() {
+        currPlayerScore += if (playerWonGame) 1 else 0
+        currEnemyScore += if (playerWonGame) 0 else 1
+    }
+
     fun getMatchState() = when {
         playerScore == (config.bestOf + 1) / 2 -> MatchState.PlayerWin
         enemyScore == (config.bestOf + 1) / 2 -> MatchState.EnemyWin
@@ -85,6 +92,8 @@ class BattleState(
         playerScore == (config.bestOf + 1) / 2 - 1 || enemyScore == (config.bestOf + 1) / 2 - 1 -> MatchState.MatchPoint
         else -> MatchState.Ongoing
     }
+
+    fun playerWonMatch() = playerWonGame && playerScore + 1 == (config.bestOf + 1) / 2
 
     private fun healEnemy(heal: Int) {
         enemyHp += heal

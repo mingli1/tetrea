@@ -63,6 +63,14 @@ class TetreaGame : Game() {
     }
 
     override fun dispose() {
+        if (currentScreen is BattleScreen) {
+            val screen = currentScreen as BattleScreen
+            if (!screen.isMatchFinished) {
+                player.quitDuringBattle = true
+            }
+            screen.finishBattlePrematurely()
+        }
+
         batch.dispose()
         res.dispose()
         screenManager.dispose()
