@@ -133,6 +133,9 @@ class BattleScene(
     private val versusTag = Image(res.getTexture("versus_tag")).apply {
         setPosition(this@BattleScene.stage.width / 2 - 76f / 2, this@BattleScene.stage.height / 2 - 44f / 2)
     }
+    private val bestOfText = res.getLabel("BEST OF ${screen.battleConfig.bestOf}", fontScale = 1f).apply {
+        setPosition(this@BattleScene.stage.width / 2 - width / 2, versusTag.y + 52f)
+    }
 
     private val pauseDialog = PauseDialog(res, screen, windowStyleKey = "purple_bg", buttonStyleKey = "purple_button")
 
@@ -224,6 +227,9 @@ class BattleScene(
             enemy = enemy
         )
         stage.addActor(versusTag)
+        stage.addActor(bestOfText)
+
+        bestOfText.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(1f)))
 
         versusTag.addAction(Actions.sequence(
             Actions.alpha(1f),

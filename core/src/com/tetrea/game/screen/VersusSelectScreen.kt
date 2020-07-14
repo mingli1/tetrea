@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
@@ -33,6 +34,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     private var playerVersusCard: VersusCard? = null
     private var enemyVersusCard: VersusCard? = null
     private lateinit var versusTag: Image
+    private lateinit var bestOfText: Label
 
     override fun show() {
         super.show()
@@ -128,7 +130,10 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     }
 
     private fun onConfirmMatchmaking() {
-        val battleConfig = BattleConfigFactory.findMatch(game.player.rating.toFloat())
+        val battleConfig = BattleConfigFactory.findMatch(game.player.rating)
+
+        bestOfText = game.res.getLabel("BEST OF ${battleConfig.bestOf}", fontScale = 1f)
+        bestOfText.setPosition(stage.width / 2 - bestOfText.width / 2, versusTag.y + 52f)
 
         playerVersusCard = VersusCard(
             stage = stage,
@@ -136,6 +141,10 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             isEnemy = false,
             onFinished = {
                 stage.addActor(versusTag)
+                stage.addActor(bestOfText)
+
+                bestOfText.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(1f)))
+
                 versusTag.addAction(Actions.sequence(
                     Actions.alpha(0f),
                     Actions.fadeIn(1f),

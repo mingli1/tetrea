@@ -29,7 +29,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var inputHandler: TetrisInputHandler
     private lateinit var tetrisKeyInput: TetrisKeyInput
 
-    private lateinit var battleConfig: BattleConfig
+    lateinit var battleConfig: BattleConfig
 
     override fun show() {
         super.show()

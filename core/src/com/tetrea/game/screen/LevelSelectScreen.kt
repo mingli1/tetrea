@@ -37,6 +37,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     private var playerVersusCard: VersusCard? = null
     private var enemyVersusCard: VersusCard? = null
     private lateinit var versusTag: Image
+    private lateinit var bestOfText: Label
 
     override fun show() {
         super.show()
@@ -120,7 +121,14 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     }
 
     private fun onVersusCardFinished(battleConfig: BattleConfig) {
+        bestOfText = game.res.getLabel("BEST OF ${battleConfig.bestOf}", fontScale = 1f)
+        bestOfText.setPosition(stage.width / 2 - bestOfText.width / 2, versusTag.y + 52f)
+
         stage.addActor(versusTag)
+        stage.addActor(bestOfText)
+
+        bestOfText.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(1f)))
+
         versusTag.addAction(Actions.sequence(
             Actions.alpha(0f),
             Actions.fadeIn(1f),

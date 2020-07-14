@@ -38,12 +38,15 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     private var playerVersusCard: VersusCard? = null
     private var enemyVersusCard: VersusCard? = null
     private lateinit var versusTag: Image
+    private lateinit var bestOfText: Label
     private val retryConfirmDialog = ConfirmDialog(
         "REMATCH",
         "ARE YOU SURE YOU WANT A REMATCH?",
         this::onRetry,
         {},
-        game.res
+        game.res,
+        windowStyleKey = "purple_bg",
+        buttonStyleKey = "purple_button"
     )
 
     private lateinit var ratingLabel: Label
@@ -218,12 +221,18 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     }
 
     private fun onRetry() {
+        bestOfText = game.res.getLabel("BEST OF ${config.bestOf}", fontScale = 1f)
+        bestOfText.setPosition(stage.width / 2 - bestOfText.width / 2, versusTag.y + 52f)
+
         playerVersusCard = VersusCard(
             stage = stage,
             onScreen = false,
             isEnemy = false,
             onFinished = {
                 stage.addActor(versusTag)
+                stage.addActor(bestOfText)
+
+                bestOfText.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(1f)))
                 versusTag.addAction(Actions.sequence(
                     Actions.alpha(0f),
                     Actions.fadeIn(1f),
