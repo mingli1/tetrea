@@ -9,12 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.BattleConfig
-import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.extension.onClick
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.dialog.SelectionDialog
 import com.tetrea.game.scene.component.VersusCard
+import com.tetrea.game.scene.dialog.MessageDialog
+import kotlin.math.abs
 
 private const val BUTTON_WIDTH = 76f
 private const val BUTTON_HEIGHT = 28f
@@ -71,6 +72,20 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
         versusTag = Image(game.res.getTexture("versus_tag")).apply {
             setPosition(this@LevelSelectScreen.stage.width / 2 - 76f / 2, this@LevelSelectScreen.stage.height / 2 - 44f / 2)
+        }
+
+        arguments?.let {
+            if (it.containsKey(ARG_MATCH_QUIT)) {
+                val ratingLost = abs((it[ARG_MATCH_QUIT] as Float).toInt())
+                MessageDialog(
+                    title = "MATCH QUIT",
+                    message = "YOU LOST $ratingLost RATING FOR ABANDONING A MATCH.",
+                    res = game.res,
+                    dismiss = {},
+                    windowStyleKey = "purple_bg",
+                    buttonStyleKey = "purple_button"
+                ).show(stage)
+            }
         }
 
         Gdx.input.inputProcessor = multiplexer

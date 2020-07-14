@@ -11,26 +11,29 @@ open class MessageDialog(
     message: String,
     private val dismiss: () -> Unit,
     res: Resources,
-    buttonText: String = "OK"
+    buttonText: String = "OK",
+    title: String = "",
+    windowStyleKey: String = "gray_blue_bg",
+    buttonStyleKey: String = "gray_blue_button"
 ) : BaseModalDialog(
-    "",
-    res.getNinePatchWindowStyle("gray_blue_bg"),
+    title,
+    res.getNinePatchWindowStyle(windowStyleKey),
     res
 ) {
 
-    val messageLabel = res.getLabel(text = message, fontScale = 1f).apply {
+    val messageLabel = res.getLabel(text = message, fontScale = if (title.isEmpty()) 1f else 0.75f).apply {
         setWrap(true)
         setAlignment(Align.center)
     }
 
     init {
-        titleTable.remove()
+        if (title.isEmpty()) titleTable.remove()
         buttonTable.defaults().width(BUTTON_WIDTH)
         buttonTable.defaults().height(BUTTON_HEIGHT)
 
-        contentTable.add(messageLabel).width(WIDTH).padBottom(12f).padLeft(12f).padRight(8f).align(Align.center)
+        contentTable.add(messageLabel).width(WIDTH).padLeft(12f).padRight(8f).align(Align.center)
 
-        button(getButton(buttonText), "")
+        button(getButton(buttonText, key = buttonStyleKey), "")
         buttonTable.pad(16f, 4f, 8f, 4f)
     }
 

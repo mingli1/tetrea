@@ -17,6 +17,8 @@ import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
 import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.scene.component.VersusCard
 import com.tetrea.game.scene.dialog.ConfirmDialog
+import com.tetrea.game.scene.dialog.MessageDialog
+import kotlin.math.abs
 
 class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
@@ -79,6 +81,20 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
 
         versusTag = Image(game.res.getTexture("versus_tag")).apply {
             setPosition(this@VersusSelectScreen.stage.width / 2 - 76f / 2, this@VersusSelectScreen.stage.height / 2 - 44f / 2)
+        }
+
+        arguments?.let {
+            if (it.containsKey(ARG_MATCH_QUIT)) {
+                val ratingLost = abs((it[ARG_MATCH_QUIT] as Float).toInt())
+                MessageDialog(
+                    title = "MATCH QUIT",
+                    message = "YOU LOST $ratingLost RATING FOR ABANDONING A MATCH.",
+                    res = game.res,
+                    dismiss = {},
+                    windowStyleKey = "purple_bg",
+                    buttonStyleKey = "purple_button"
+                ).show(stage)
+            }
         }
 
         Gdx.input.inputProcessor = multiplexer

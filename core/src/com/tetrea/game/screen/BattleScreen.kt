@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.*
+import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.input.TetrisInputHandler
 import com.tetrea.game.input.TetrisKeyInput
 import com.tetrea.game.global.isAndroid
@@ -18,6 +19,7 @@ const val ARG_MATCH_STATE = "ARG_MATCH_STATE"
 const val ARG_TETRIS_STATS = "ARG_TETRIS_STATS"
 const val ARG_PLAYER_SCORE = "ARG_PLAYER_SCORE"
 const val ARG_ENEMY_SCORE = "ARG_ENEMY_SCORE"
+const val ARG_MATCH_QUIT = "ARG_MATCH_QUIT"
 
 class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
@@ -115,5 +117,27 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
             ARG_BATTLE_CONFIG to battleConfig
         )
         navigateTo(RESULTS_SCREEN, arguments)
+    }
+
+    fun onBattleQuit() {
+        val enemyScore = (battleConfig.bestOf + 1) / 2
+        val ratingLost = Elo.getRatingChange(
+            game.player.rating,
+            battleConfig.enemy.rating,
+            0,
+            enemyScore
+        )
+        game.player.completeMatchup(
+            battleConfig.compositeKey,
+            false,
+            ratingLost,
+            0,
+            enemyScore,
+            battleConfig.isMatchmaking
+        )
+        game.saveManager.save()
+
+        val args = mapOf(ARG_MATCH_QUIT to ratingLost)
+        navigateTo(if (battleConfig.isMatchmaking) VERSUS_SELECT_SCREEN else LEVEL_SELECT_SCREEN, args)
     }
 }

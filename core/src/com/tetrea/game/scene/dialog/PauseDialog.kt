@@ -4,7 +4,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BaseScreen
-import com.tetrea.game.screen.LEVEL_SELECT_SCREEN
+import com.tetrea.game.screen.BattleScreen
 
 private const val WINDOW_MIN_HEIGHT = 180f
 private const val BUTTON_WIDTH = 150f
@@ -78,6 +78,9 @@ class PauseDialog(
         screen.notifyResume()
         confirmDialog.hide(null)
         hide(null)
-        screen.navigateTo(LEVEL_SELECT_SCREEN)
+
+        if (screen is BattleScreen) {
+            screen.onBattleQuit()
+        }
     }
 }

@@ -20,24 +20,30 @@ data class Player(
         won: Boolean,
         ratingChange: Float,
         playerScore: Int,
-        enemyScore: Int
+        enemyScore: Int,
+        isMatchmaking: Boolean
     ) {
         if (rating + ratingChange < 0f) rating = 0f
         rating += ratingChange
+
+        if (isMatchmaking) return
 
         if (!battleRecords.containsKey(key)) battleRecords[key] = BattleRecord()
 
         battleRecords[key]?.let {
             if (won) {
                 it.defeated = true
-                if (it.bestScore == null) {
-                    it.bestScore = Int2(playerScore, enemyScore)
-                    currLevelId++
-                }
-                else if (enemyScore < it.bestScore!!.y) it.bestScore!!.y = enemyScore
+                if (it.bestScore == null) currLevelId++
                 it.allTimeRecord.x++
             } else {
                 it.allTimeRecord.y++
+            }
+
+            if (it.bestScore == null) {
+                it.bestScore = Int2(playerScore, enemyScore)
+            } else {
+                if (playerScore > it.bestScore!!.x) it.bestScore!!.x = playerScore
+                if (enemyScore < it.bestScore!!.y) it.bestScore!!.y = enemyScore
             }
             it.attempts++
         }

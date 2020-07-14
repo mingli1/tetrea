@@ -165,7 +165,8 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             won = playerWin,
             ratingChange = ratingChange,
             playerScore = playerScore,
-            enemyScore = enemyScore
+            enemyScore = enemyScore,
+            isMatchmaking = config.isMatchmaking
         )
         game.saveManager.save()
     }
