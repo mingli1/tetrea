@@ -17,10 +17,12 @@ class ConfirmDialog(
     private val dismissive: () -> Unit,
     res: Resources,
     affirmativeText: String = "YES",
-    dismissiveText: String = "NO"
+    dismissiveText: String = "NO",
+    windowStyleKey: String = "gray_blue_bg",
+    buttonStyleKey: String = "gray_blue_button"
 ) : BaseModalDialog(
     title,
-    res.getNinePatchWindowStyle("gray_blue_bg"),
+    res.getNinePatchWindowStyle(windowStyleKey),
     res
 ) {
 
@@ -37,8 +39,8 @@ class ConfirmDialog(
         }
         contentTable.add(messageLabel).width(WIDTH).fill().space(8f).padLeft(12f).padRight(8f).align(Align.center)
 
-        button(getButton(affirmativeText), AFFIRMATIVE_TAG)
-        button(getButton(dismissiveText), DISMISSIVE_TAG)
+        button(getButton(affirmativeText, key = buttonStyleKey), AFFIRMATIVE_TAG)
+        button(getButton(dismissiveText, key = buttonStyleKey), DISMISSIVE_TAG)
 
         buttonTable.pad(16f, 4f, 8f, 4f)
     }

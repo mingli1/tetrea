@@ -18,10 +18,12 @@ private const val QUIT = "QUIT"
 
 class PauseDialog(
     res: Resources,
-    private val screen: BaseScreen
+    private val screen: BaseScreen,
+    windowStyleKey: String = "gray_blue_bg",
+    buttonStyleKey: String = "gray_blue_button"
 ) : BaseModalDialog(
     "PAUSED",
-    res.getNinePatchWindowStyle("gray_blue_bg"),
+    res.getNinePatchWindowStyle(windowStyleKey),
     res
 ) {
 
@@ -33,18 +35,20 @@ class PauseDialog(
         buttonTable.defaults().width(BUTTON_WIDTH).padLeft(BUTTON_PADDING).padBottom(TOP_BOTTOM_PADDING)
         buttonTable.defaults().height(BUTTON_HEIGHT).padRight(BUTTON_PADDING)
 
-        button(getButton(RESUME), RESUME)
+        button(getButton(RESUME, key = buttonStyleKey), RESUME)
         buttonTable.row()
-        button(getButton(SETTINGS), SETTINGS)
+        button(getButton(SETTINGS, key = buttonStyleKey), SETTINGS)
         buttonTable.row()
-        button(getButton(QUIT), QUIT)
+        button(getButton(QUIT, key = buttonStyleKey), QUIT)
 
         confirmDialog = ConfirmDialog(
             "QUIT MATCH",
             "ARE YOU SURE YOU WANT TO QUIT THIS MATCH? THIS WILL COUNT AS A LOSS.",
             this::exit,
             this::dismissConfirmDialog,
-            res
+            res,
+            windowStyleKey = windowStyleKey,
+            buttonStyleKey = buttonStyleKey
         )
 
         buttonTable.padBottom(16f)

@@ -25,7 +25,9 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         "YOU WILL BE MATCHED WITH AN ENEMY OF SIMILAR RATING. ARE YOU SURE YOU WANT TO PROCEED?",
         this::onConfirmMatchmaking,
         {},
-        game.res
+        game.res,
+        windowStyleKey = "purple_bg",
+        buttonStyleKey = "purple_button"
     )
 
     private var playerVersusCard: VersusCard? = null

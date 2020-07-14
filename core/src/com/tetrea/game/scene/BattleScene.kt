@@ -134,7 +134,7 @@ class BattleScene(
         setPosition(this@BattleScene.stage.width / 2 - 76f / 2, this@BattleScene.stage.height / 2 - 44f / 2)
     }
 
-    private val pauseDialog = PauseDialog(res, screen)
+    private val pauseDialog = PauseDialog(res, screen, windowStyleKey = "purple_bg", buttonStyleKey = "purple_button")
 
     init {
         stage.addActor(res.getLabel(
