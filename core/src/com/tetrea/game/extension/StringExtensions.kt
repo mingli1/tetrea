@@ -7,3 +7,5 @@ fun Float.formatMMSS(): String {
 }
 
 fun Int.sign() = if (this > 0) "+" else ""
+
+fun Float.toMillis() = (this * 1000).toInt().toString()

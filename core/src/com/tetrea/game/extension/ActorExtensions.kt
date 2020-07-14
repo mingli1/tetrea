@@ -4,6 +4,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
+import com.badlogic.gdx.scenes.scene2d.ui.Slider
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
 import com.tetrea.game.util.RelativePosition
 import com.tetrea.game.util.RelativeTo
@@ -66,4 +68,12 @@ fun Actor.setRelativePosition(pos: RelativePosition, stage: Stage) {
             else -> stage.height + pos.relY.value
         }
     )
+}
+
+fun Slider.onChange(block: () -> Unit) {
+    addListener(object : ChangeListener() {
+        override fun changed(event: ChangeEvent?, actor: Actor?) {
+            block()
+        }
+    })
 }

@@ -141,6 +141,24 @@ class Resources : Disposable {
         return Window.WindowStyle(font, fontColor, NinePatchDrawable(getNinePatch(key)))
     }
 
+    fun getSlider(
+        min: Float,
+        max: Float,
+        stepSize: Float,
+        backgroundKey: String,
+        vertical: Boolean = false
+    ): Slider {
+        val style = Slider.SliderStyle().apply {
+            background = NinePatchDrawable(getNinePatch(backgroundKey))
+            knob = NinePatchDrawable(getNinePatch("gray_blue_bg"))
+        }
+        return Slider(min, max, stepSize, vertical, style).apply {
+            style.background.minHeight = 8f
+            style.knob.minHeight = 18f
+            style.knob.minWidth = 14f
+        }
+    }
+
     fun getSquare(pieceType: PieceType) = tetrisSheet[0][pieceType.index]
 
     fun getGhost(pieceType: PieceType) = tetrisSheet[1][pieceType.index - 2]
@@ -237,6 +255,7 @@ class Resources : Disposable {
         loadNinePatch("find_match_button_down")
         loadNinePatch("adventure_button_up")
         loadNinePatch("adventure_button_down")
+        loadNinePatch("settings_slider_bg")
     }
 
     private fun loadTetrisConfigs() {

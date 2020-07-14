@@ -40,6 +40,7 @@ class SettingsScreen(game: TetreaGame) : BaseScreen(game) {
         val settingsTable = SettingsScene(game.res, game.settings, game.saveManager, stage)
         val scrollPane = ScrollPane(settingsTable).apply {
             setOverscroll(false, false)
+            setCancelTouchFocus(false)
             fadeScrollBars = false
             layout()
         }

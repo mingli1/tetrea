@@ -40,5 +40,8 @@ data class Settings(
         TetrisInputType.Rotate180 to RelativePosition(RelativeValue(60f, RelativeTo.XZero), RelativeValue(66f, RelativeTo.YZero)),
         TetrisInputType.Hold to RelativePosition(RelativeValue(-100f, RelativeTo.StageWidth), RelativeValue(66f, RelativeTo.YZero)),
         TetrisInputType.Pause to RelativePosition(RelativeValue(-50f, RelativeTo.StageWidth), RelativeValue(-100f, RelativeTo.StageHeight))
-    )
+    ),
+    @Json(name = "das") var das: Float = 0.167f,
+    @Json(name = "arr") var arr: Float = 0.033f,
+    @Json(name = "sds") var sds: Float = 0.075f
 )

@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.InputListener
 import com.badlogic.gdx.scenes.scene2d.Stage
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
-import com.badlogic.gdx.scenes.scene2d.ui.Table
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.tetrea.game.extension.onChange
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.extension.setRelativePosition
+import com.tetrea.game.extension.toMillis
 import com.tetrea.game.global.Settings
 import com.tetrea.game.global.isAndroid
 import com.tetrea.game.input.TetrisInputType
@@ -173,11 +172,58 @@ class SettingsScene(
                 .expandX().size(204f, 36f).padLeft(8f).padRight(8f).padBottom(8f)
         }
 
-        add(controlsTable).width(220f).row()
+        add(controlsTable).width(220f).padBottom(16f).row()
     }
 
     private fun createTuningSection() {
+        val tuningTable = Table().apply {
+            background = NinePatchDrawable(res.getNinePatch("gray_blue_bg"))
+        }
 
+        tuningTable.add(
+            res.getLabel(text = "TUNING", color = GAME_DARK_GRAY_BLUE, fontScale = 1f)
+        ).expand().top().left().padTop(8f).padLeft(8f).padBottom(4f).row()
+
+        val dasLabel = res.getLabel(text = "DAS: ${settings.das.toMillis()}ms", fontScale = 1f)
+        tuningTable.add(dasLabel).expandX().left().padLeft(8f).row()
+
+        val dasSlider = res.getSlider(16f, 333f, 1f, "settings_slider_bg").apply {
+            value = settings.das * 1000f
+            onChange {
+                dasLabel.setText("DAS: ${value.toInt()}ms")
+                settings.das = value / 1000f
+                if (!isDragging) saveManager.save()
+            }
+        }
+        tuningTable.add(dasSlider).size(204f, 24f).padTop(4f).padBottom(4f).row()
+
+        val arrLabel = res.getLabel(text = "ARR: ${settings.arr.toMillis()}ms", fontScale = 1f)
+        tuningTable.add(arrLabel).expandX().left().padLeft(8f).row()
+
+        val arrSlider = res.getSlider(0f, 83f, 1f, "settings_slider_bg").apply {
+            value = settings.arr * 1000f
+            onChange {
+                arrLabel.setText("ARR: ${value.toInt()}ms")
+                settings.arr = value / 1000f
+                if (!isDragging) saveManager.save()
+            }
+        }
+        tuningTable.add(arrSlider).size(204f, 24f).padTop(4f).padBottom(4f).row()
+
+        val sdsLabel = res.getLabel(text = "SDS: ${settings.sds.toMillis()}ms", fontScale = 1f)
+        tuningTable.add(sdsLabel).expandX().left().padLeft(8f).row()
+
+        val sdsSlider = res.getSlider(0f, 100f, 1f, "settings_slider_bg").apply {
+            value = settings.sds * 1000f
+            onChange {
+                sdsLabel.setText("SDS: ${value.toInt()}ms")
+                settings.sds = value / 1000f
+                if (!isDragging) saveManager.save()
+            }
+        }
+        tuningTable.add(sdsSlider).size(204f, 24f).padTop(4f).padBottom(4f).row()
+
+        add(tuningTable).width(220f).padBottom(16f).row()
     }
 
     private fun addKeyBinding(type: TetrisInputType) {
