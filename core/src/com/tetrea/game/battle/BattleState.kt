@@ -6,14 +6,14 @@ import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BattleScreen
 import kotlin.math.max
 
-private const val MIN_ATTACK_DELAY = 0.3f
-private const val MAX_ATTACK_DELAY = 12f
+private const val MIN_ATTACK_DELAY = 2.3f
+private const val MAX_ATTACK_DELAY = 15f
 private const val SPEED_RANGE = 5f
-private const val MAX_ATTACK = 8
+private const val MAX_ATTACK = 6
 private const val ATTACK_OFFSET = 2
-private const val HEAL_CHANCE_MULTIPLIER = 0.4f
-private const val MIN_HEAL_PERCENTAGE = 0.1f
-private const val MAX_HEAL_PERCENTAGE = 0.3f
+private const val HEAL_CHANCE_MULTIPLIER = 0.35f
+private const val MIN_HEAL_PERCENTAGE = 0.05f
+private const val MAX_HEAL_PERCENTAGE = 0.2f
 private const val CHEESE_PERCENTAGE = 0.2f
 
 class BattleState(
@@ -161,7 +161,7 @@ class BattleState(
     private fun getAttackDelay(): Float {
         val minAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MIN_ATTACK_DELAY + 3f else MIN_ATTACK_DELAY
         val maxAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MAX_ATTACK_DELAY + 3f else MAX_ATTACK_DELAY
-        val minDelay = (1f - (config.enemy.speed / 100f)) * (maxAttackDelay - minAttackDelay)
+        val minDelay = (1f - (config.enemy.speed / 100f)) * (minAttackDelay + (maxAttackDelay - minAttackDelay))
         val maxDelay = minDelay + SPEED_RANGE
         return MathUtils.random(minDelay, maxDelay)
     }

@@ -8,7 +8,7 @@ import kotlin.math.min
 import kotlin.math.pow
 
 private const val MIN_HP = 4f
-private const val MAX_HP = 340f
+private const val MAX_HP = 300f
 
 object EnemyFactory {
 
@@ -26,11 +26,12 @@ object EnemyFactory {
             r < 0.97f -> StatPriority.SpeedDefense
             else -> StatPriority.DefenseSpeed
         }
+        statPriority.reset()
         repeat(totalStats) {
             val p = MathUtils.random()
             when {
-                p < 0.5f -> statPriority.increment(0)
-                p < 0.85f -> statPriority.increment(1)
+                p < 0.45f -> statPriority.increment(0)
+                p < 0.75f -> statPriority.increment(1)
                 else -> statPriority.increment(2)
             }
         }
@@ -62,6 +63,12 @@ enum class StatPriority {
     private var first = 0
     private var second = 0
     private var third = 0
+
+    fun reset() {
+        first = 0
+        second = 0
+        third = 0
+    }
 
     fun increment(split: Int) {
         when (split) {
