@@ -383,6 +383,17 @@ class Tetris(
         return y
     }
 
+    fun topOfStack(): Int {
+        var topOfStack = 0
+        for (y in config.height - 1 downTo solidGarbageRow) {
+            if (content[y].any { it.filled }) {
+                topOfStack = y
+                break
+            }
+        }
+        return topOfStack
+    }
+
     private fun gameOver(win: Boolean) {
         started = false
         apm = totalAttack / clockTimer * 60
@@ -471,13 +482,7 @@ class Tetris(
 
     private fun offsetStack(lines: Int) {
         if (lines == 0) return
-        var topOfStack = 0
-        for (y in config.height - 1 downTo solidGarbageRow) {
-            if (content[y].any { it.filled }) {
-                topOfStack = y
-                break
-            }
-        }
+        val topOfStack = topOfStack()
 
         for (y in topOfStack downTo solidGarbageRow) {
             for (x in 0 until config.width) {

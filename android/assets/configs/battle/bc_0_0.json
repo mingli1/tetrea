@@ -3,7 +3,7 @@
   "levelId": 0,
   "bestOf": 1,
   "enemy": {
-    "name": "ENEMY 1",
+    "name": "ABC",
     "avatar": "enemy_ittzzi",
     "maxHp": 10,
     "attack": 55,

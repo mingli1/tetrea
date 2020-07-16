@@ -16,6 +16,12 @@ private const val MIN_HEAL_PERCENTAGE = 0.05f
 private const val MAX_HEAL_PERCENTAGE = 0.2f
 private const val CHEESE_PERCENTAGE = 0.2f
 
+private const val PERCENT_HP_SHOULD_NOT_HEAL = 0.8f
+private const val PERCENT_HP_SHOULD_HEAL = 0.15f
+private const val LOW_HP_HEAL_PRIORITY = 0.8f
+private const val HIGH_STACK = 14
+private const val PERCENT_HP_SHOULD_CHEESE = 0.3f
+
 class BattleState(
     private val config: BattleConfig,
     private val screen: BattleScreen,
@@ -177,6 +183,31 @@ class BattleState(
     }
 
     private fun shouldHeal(): Boolean {
+        return when (config.aiLevel) {
+            AILevel.None -> shouldHealDefault()
+            AILevel.Simple -> {
+                if (enemyHp >= enemyMaxHp * PERCENT_HP_SHOULD_NOT_HEAL) false
+                else shouldHealDefault()
+            }
+            AILevel.Intermediate -> {
+                when {
+                    enemyHp >= enemyMaxHp * PERCENT_HP_SHOULD_NOT_HEAL -> false
+                    enemyHp <= enemyMaxHp * PERCENT_HP_SHOULD_HEAL -> MathUtils.random() < LOW_HP_HEAL_PRIORITY
+                    else -> shouldHealDefault()
+                }
+            }
+            else -> {
+                when {
+                    enemyHp <= enemyMaxHp * PERCENT_HP_SHOULD_HEAL -> MathUtils.random() < LOW_HP_HEAL_PRIORITY
+                    screen.tetris.topOfStack() >= HIGH_STACK -> false
+                    enemyHp >= enemyMaxHp * PERCENT_HP_SHOULD_NOT_HEAL -> false
+                    else -> shouldHealDefault()
+                }
+            }
+        }
+    }
+
+    private fun shouldHealDefault(): Boolean {
         val chance = MathUtils.random()
         val multiplier = if (config.hasPattern(AttackPattern.Defensive)) HEAL_CHANCE_MULTIPLIER + 0.2f else HEAL_CHANCE_MULTIPLIER
         return chance <= (config.enemy.defense / 100f) * multiplier
@@ -189,7 +220,8 @@ class BattleState(
     }
 
     private fun sendAttack(attack: Int) {
-        if (config.hasPattern(AttackPattern.Cheeser) || MathUtils.random() < CHEESE_PERCENTAGE) {
+        if (config.hasPattern(AttackPattern.Cheeser) || MathUtils.random() < CHEESE_PERCENTAGE ||
+            (config.aiLevel == AILevel.Genius && enemyHp <= enemyMaxHp * PERCENT_HP_SHOULD_CHEESE)) {
             var att = attack
             var split = MathUtils.random(1, 3)
             while (att - split >= 0) {

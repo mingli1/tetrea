@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.MatchState
+import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.extension.sign
 import com.tetrea.game.res.*
@@ -141,8 +142,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         )
         headerTable.add(finalScoreLabel).colspan(2).row()
 
-        //val ratingChange = Elo.getRatingChange(game.player.rating, config.enemy.rating, playerScore, enemyScore)
-        val ratingChange = 100f
+        val ratingChange = Elo.getRatingChange(game.player.rating, config.enemy.rating, playerScore, enemyScore)
         val newRating = (game.player.rating + ratingChange).toInt()
         this.newRating = game.player.rating + ratingChange
         val change = newRating - game.player.rating.toInt()
@@ -158,7 +158,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
                 else -> Color.GREEN
             }
         )
-        headerTable.add(ratingChangeLabel).align(Align.left)
+        headerTable.add(ratingChangeLabel).align(Align.left).padLeft(4f)
 
         game.player.completeMatchup(
             key = config.compositeKey,

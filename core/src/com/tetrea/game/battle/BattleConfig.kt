@@ -11,6 +11,7 @@ data class BattleConfig(
     @Json(name = "attackPatterns") val attackPatterns: List<AttackPattern> = emptyList(),
     @Json(name = "attackScheme") val attackScheme: List<Attack>? = null,
     @Json(name = "tetrisConfig") val tetrisConfig: String = "default",
+    @Json(name = "aiLevel") val aiLevel: AILevel = AILevel.None,
     val isMatchmaking: Boolean = false
 ) {
     val compositeKey = "$worldId-$levelId"

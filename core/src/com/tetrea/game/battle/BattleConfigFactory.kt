@@ -11,11 +11,12 @@ object BattleConfigFactory {
         val elo = rating + (MathUtils.randomSign() * MathUtils.random(ELO_OFFSET))
         val bestOf = getBestOfFromRating(elo)
         val enemy = EnemyFactory.getEnemy(elo)
-        // todo: figure out attack patterns and ai patterns
+        // todo: figure out attack patterns
         return BattleConfig(
             bestOf = bestOf,
             enemy = enemy,
-            isMatchmaking = true
+            isMatchmaking = true,
+            aiLevel = getAiLevelFromRating(elo)
         )
     }
 
@@ -26,6 +27,16 @@ object BattleConfigFactory {
             rating < 2400 -> 5
             rating < 3000 -> 7
             else -> 9
+        }
+    }
+
+    private fun getAiLevelFromRating(rating: Float): AILevel {
+        return when {
+            rating < 1000 -> AILevel.None
+            rating < 1400 -> AILevel.Simple
+            rating < 2000 -> AILevel.Intermediate
+            rating < 2400 -> AILevel.Expert
+            else -> AILevel.Genius
         }
     }
 }
