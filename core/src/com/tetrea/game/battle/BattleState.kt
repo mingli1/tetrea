@@ -168,8 +168,14 @@ class BattleState(
     }
 
     private fun getAttackDelay(): Float {
-        val minAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MIN_ATTACK_DELAY + 3f else MIN_ATTACK_DELAY
-        val maxAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MAX_ATTACK_DELAY + 3f else MAX_ATTACK_DELAY
+        var minAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MIN_ATTACK_DELAY + 3f else MIN_ATTACK_DELAY
+        var maxAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MAX_ATTACK_DELAY + 3f else MAX_ATTACK_DELAY
+
+        if (config.aiLevel.level >= 3 && screen.tetris.topOfStack() >= HIGH_STACK) {
+            minAttackDelay -= 1f
+            maxAttackDelay -= 1f
+        }
+
         val minDelay = (1f - (config.enemy.speed / 100f)) * (minAttackDelay + (maxAttackDelay - minAttackDelay))
         val maxDelay = minDelay + SPEED_RANGE
         return MathUtils.random(minDelay, maxDelay)

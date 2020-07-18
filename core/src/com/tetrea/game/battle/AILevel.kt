@@ -7,7 +7,7 @@ enum class AILevel(val level: Int) {
     Simple(1),
     // will prioritize healing when low
     Intermediate(2),
-    // will prioritize attacking the player if their stack is high
+    // will prioritize attacking the player if their stack is high and speed up
     Expert(3),
     // will send cheese when low in hp
     Genius(4)
