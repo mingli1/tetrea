@@ -302,10 +302,7 @@ class BattleScene(
 
     fun startEnemyCharge(delay: Float, action: Action) {
         enemyChargeDelay = delay
-        enemyChargeBarTexture = when (action) {
-            Action.Heal -> res.getTexture("bar_restore")
-            else -> res.getTexture("yellow")
-        }
+        enemyChargeBarTexture = res.getTexture(action.barColor)
     }
 
     fun spawnNumberParticle(lines: Int, x: Float, y: Float, crit: Boolean) {

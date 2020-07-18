@@ -43,7 +43,8 @@ object EnemyFactory {
             attack = min(statPriority.getAtk(), 100),
             defense = min(statPriority.getDef(), 100),
             speed = min(statPriority.getSpd(), 100),
-            rating = rating
+            rating = rating,
+            statPriority = statPriority
         )
     }
 

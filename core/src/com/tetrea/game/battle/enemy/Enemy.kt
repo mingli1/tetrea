@@ -9,5 +9,6 @@ data class Enemy(
     @Json(name = "attack") val attack: Int,
     @Json(name = "defense") val defense: Int,
     @Json(name = "speed") val speed: Int,
-    var rating: Float = 0f
+    var rating: Float = 0f,
+    var statPriority: StatPriority = StatPriority.AttackSpeed
 )
