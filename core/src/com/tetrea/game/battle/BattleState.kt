@@ -2,6 +2,7 @@ package com.tetrea.game.battle
 
 import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.global.Player
+import com.tetrea.game.res.GAME_GRAVITY_PURPLE
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BattleScreen
 import kotlin.math.max
@@ -21,6 +22,10 @@ private const val PERCENT_HP_SHOULD_HEAL = 0.15f
 private const val LOW_HP_HEAL_PRIORITY = 0.8f
 private const val HIGH_STACK = 14
 private const val PERCENT_HP_SHOULD_CHEESE = 0.3f
+
+private const val MIN_ABILITY_PERCENT = 0.15f
+private const val MAX_ABILITY_PERCENT = 0.35f
+private const val NUM_SOLID_GARBAGE = 4
 
 class BattleState(
     private val config: BattleConfig,
@@ -51,6 +56,7 @@ class BattleState(
     private var futureAction: () -> Unit = {}
     private var randomMoveCount = 0
     private var canHeal = true
+    private val enemyAbilities = config.abilities.toMutableList()
 
     fun update(dt: Float) {
         if (screen.tetris.started) {
@@ -110,15 +116,23 @@ class BattleState(
 
     private fun handleRandomScheme(dt: Float, stopAfter: Int = 0): Boolean {
         if (!initAction) {
-            futureAction = if (canHeal && shouldHeal()) {
-                canHeal = false
-                screen.scene.startEnemyCharge(attackDelay, Action.Heal)
-                ({ healEnemy(getHeal()) })
-            } else {
-                canHeal = true
-                val attack = getAttack()
-                screen.scene.startEnemyCharge(attackDelay, Action.SendLines)
-                ({ sendAttack(attack) })
+            futureAction = when {
+                canHeal && shouldHeal() -> {
+                    canHeal = false
+                    screen.scene.startEnemyCharge(attackDelay, Action.Heal)
+                    ({ healEnemy(getHeal()) })
+                }
+                else -> {
+                    canHeal = true
+
+                    if (shouldUseAbility()) {
+                        getAbility()
+                    } else {
+                        val attack = getAttack()
+                        screen.scene.startEnemyCharge(attackDelay, Action.SendLines)
+                        ({ sendAttack(attack) })
+                    }
+                }
             }
             initAction = true
         }
@@ -150,7 +164,7 @@ class BattleState(
                     }
                 }
             }
-            Action.SendLines, Action.Heal -> screen.scene.startEnemyCharge(attack.time, attack.action)
+            else -> screen.scene.startEnemyCharge(attack.time, attack.action)
         }
         if (attack.action != Action.Random) {
             attackTimer += dt
@@ -158,6 +172,9 @@ class BattleState(
                 when (attack.action) {
                     Action.SendLines -> attack.lines?.let { screen.tetris.queueGarbage(it) }
                     Action.Heal -> attack.heal?.let { healEnemy(it) }
+                    Action.Gravity -> applyGravity()
+                    Action.SolidGarbage -> screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE)
+                    else -> {}
                 }
 
                 attackTimer = 0f
@@ -189,6 +206,12 @@ class BattleState(
             return MathUtils.random(minAttack, maxAttack)
         }
         return MathUtils.random(1, 4)
+    }
+
+    private fun shouldUseAbility(): Boolean {
+        if (enemyAbilities.isEmpty()) return false
+        val chance = ((1f - (enemyHp.toFloat() / enemyMaxHp.toFloat())) * (MAX_ABILITY_PERCENT - MIN_ABILITY_PERCENT)) + MIN_ABILITY_PERCENT
+        return MathUtils.random() <= chance
     }
 
     private fun shouldHeal(): Boolean {
@@ -242,5 +265,22 @@ class BattleState(
         } else {
             screen.tetris.queueGarbage(attack)
         }
+    }
+
+    private fun getAbility(): () -> Unit {
+        val ability = enemyAbilities.random()
+        enemyAbilities.remove(ability)
+
+        screen.scene.startEnemyCharge(attackDelay, ability)
+        return when (ability) {
+            Action.Gravity -> this::applyGravity
+            Action.SolidGarbage -> ({ screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE) })
+            else -> ({})
+        }
+    }
+
+    private fun applyGravity() {
+        screen.scene.spawnCenterParticle(Action.Gravity.text, GAME_GRAVITY_PURPLE, true)
+        screen.tetris.increaseGravity()
     }
 }

@@ -1,7 +1,7 @@
 package com.tetrea.game.util
 
 class Timer(
-    private val delay: Float,
+    var delay: Float,
     private val onComplete: () -> Unit,
     private val continuous: Boolean = false
 ) {

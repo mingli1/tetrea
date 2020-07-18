@@ -309,8 +309,8 @@ class BattleScene(
         textParticleSpawner.spawn(
             if (crit) "$lines CRIT" else lines.toString(),
             if (crit) GAME_YELLOW else
-            when (lines) {
-                1, 2, 3, 4, 5, 6 -> Color.WHITE
+            when {
+                lines < 7 -> Color.WHITE
                 else -> GAME_LIGHT_BLUE
             },
             x, y
@@ -354,15 +354,15 @@ class BattleScene(
         )
     }
 
-    fun spawnPerfectClearParticle() {
+    fun spawnCenterParticle(text: String, color: Color, ability: Boolean = false) {
         textParticleSpawner.spawn(
-            LineClearType.PerfectClear.desc,
-            LineClearType.PerfectClear.color,
+            text,
+            color,
             boardX + (config.width / 2) * SQUARE_SIZE,
             boardY + (config.height / 2) * SQUARE_SIZE,
             zi = 0f,
             vxScale = 0f,
-            vyScale = 0.7f,
+            vyScale = if (ability) 0.4f else 0.7f,
             vzScale = 0f,
             zNegVxScale = 0f,
             zNegVyScale = 0f,

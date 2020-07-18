@@ -12,5 +12,19 @@
   },
   "attackPatterns": [
     "Defensive", "Cheeser"
+  ],
+  "attackScheme": [
+    {
+      "action": "SolidGarbage",
+      "time": 3.5
+    },
+    {
+      "action": "Gravity",
+      "time": 3.5
+    },
+    {
+      "action": "Random",
+      "numMoves": 4
+    }
   ]
 }

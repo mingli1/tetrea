@@ -159,6 +159,14 @@ class Tetris(
         content[y][x].filled = true
     }
 
+    fun increaseGravity() {
+        if (gravityTimer.delay < config.gravity) {
+            gravityTimer.delay -= 0.1f
+        } else {
+            gravityTimer.delay -= 0.8f
+        }
+    }
+
     fun addSolidGarbage(numLines: Int) {
         offsetStack(numLines)
         solidGarbageRow = numLines
@@ -287,7 +295,7 @@ class Tetris(
         if (content.all { row -> row.all { !it.filled } }) {
             stats.numPC++
             attack += config.attackPC
-            screen.scene.spawnPerfectClearParticle()
+            screen.scene.spawnCenterParticle(LineClearType.PerfectClear.desc, LineClearType.PerfectClear.color)
         }
 
         var crit = false
@@ -350,6 +358,7 @@ class Tetris(
         canHold = true
         piecesPlaced = 0
         garbage.clear()
+        gravityTimer.delay = config.gravity
 
         combo = 0
         totalB2b = 0

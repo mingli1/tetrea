@@ -70,9 +70,7 @@ object BattleConfigFactory {
 
     private fun getAttackPatterns(rating: Float): List<AttackPattern> {
         val attackPatterns = mutableListOf<AttackPattern>()
-        val pool = mutableListOf<AttackPattern>().apply {
-            addAll(AttackPattern.values())
-        }
+        val pool = AttackPattern.values().toMutableList()
         return when {
             rating < ONE_ATTACK_PATTERN_ELO -> attackPatterns
             rating < TWO_ATTACK_PATTERN_ELO -> {
