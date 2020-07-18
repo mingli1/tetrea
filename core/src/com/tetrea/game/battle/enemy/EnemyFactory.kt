@@ -8,7 +8,7 @@ import kotlin.math.min
 import kotlin.math.pow
 
 private const val MIN_HP = 4f
-private const val MAX_HP = 300f
+private const val MAX_HP = 200f
 
 object EnemyFactory {
 

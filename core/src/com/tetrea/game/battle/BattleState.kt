@@ -50,6 +50,7 @@ class BattleState(
     private var initAction = false
     private var futureAction: () -> Unit = {}
     private var randomMoveCount = 0
+    private var canHeal = true
 
     fun update(dt: Float) {
         if (screen.tetris.started) {
@@ -109,10 +110,12 @@ class BattleState(
 
     private fun handleRandomScheme(dt: Float, stopAfter: Int = 0): Boolean {
         if (!initAction) {
-            futureAction = if (shouldHeal()) {
+            futureAction = if (canHeal && shouldHeal()) {
+                canHeal = false
                 screen.scene.startEnemyCharge(attackDelay, Action.Heal)
                 ({ healEnemy(getHeal()) })
             } else {
+                canHeal = true
                 val attack = getAttack()
                 screen.scene.startEnemyCharge(attackDelay, Action.SendLines)
                 ({ sendAttack(attack) })
