@@ -491,6 +491,7 @@ class BattleScene(
 
     private fun startCountdown() {
         screen.tetris.generateQueue()
+        screen.tetris.resetVisibleStats()
         screen.state.updateGameNumber()
         screen.state.resetState()
         enemyHpBar.reset()

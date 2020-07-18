@@ -6,6 +6,6 @@ fun Float.formatMMSS(): String {
     return String.format("%02d:%02d", minutes, seconds)
 }
 
-fun Int.sign() = if (this > 0) "+" else ""
+fun Int.sign() = if (this >= 0) "+" else ""
 
 fun Float.toMillis() = (this * 1000).toInt().toString()

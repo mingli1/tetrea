@@ -329,6 +329,12 @@ class Tetris(
         repeat(2) { addToBag() }
     }
 
+    fun resetVisibleStats() {
+        clockTimer = 0f
+        apm = 0f
+        pps = 0f
+    }
+
     fun reset(resetGarbage: Boolean = true) {
         started = false
 
@@ -350,9 +356,6 @@ class Tetris(
         b2b = 0
         totalAttack = 0
         linesSent = 0
-        clockTimer = 0f
-        apm = 0f
-        pps = 0f
         currLineClearType = LineClearType.None
 
         solidGarbageRow = 0
