@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.GAME_GRAVITY_PURPLE
+import com.tetrea.game.res.GAME_LIGHT_GREEN
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BattleScreen
 import com.tetrea.game.util.Timer
@@ -69,6 +70,11 @@ class BattleState(
         },
         { damageReductionActive = false }
     )
+    var immuneActive = false
+    private val immuneTimer = Timer(
+        8f,
+        { immuneActive = false }
+    )
 
     fun update(dt: Float) {
         if (screen.tetris.started) {
@@ -79,9 +85,11 @@ class BattleState(
         enemyText = "$enemyScore ${config.enemy.name}"
 
         damageReductionTimer.update(dt)
+        immuneTimer.update(dt)
     }
 
     fun attackEnemy(attack: Int): Boolean {
+        if (immuneActive) return false
         val att = if (damageReductionActive) max(1, attack / 2) else attack
         enemyHp -= att
         screen.scene.attackEnemyHp(att)
@@ -190,6 +198,7 @@ class BattleState(
                     Action.Gravity -> applyGravity()
                     Action.SolidGarbage -> screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE)
                     Action.DamageReduction -> applyDamageReduction()
+                    Action.Immune -> applyImmunity()
                     else -> {}
                 }
 
@@ -292,6 +301,7 @@ class BattleState(
             Action.Gravity -> this::applyGravity
             Action.SolidGarbage -> ({ screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE) })
             Action.DamageReduction -> this::applyDamageReduction
+            Action.Immune -> this::applyImmunity
             else -> ({})
         }
     }
@@ -305,5 +315,11 @@ class BattleState(
         screen.scene.spawnCenterParticle(Action.DamageReduction.text, Color(1f, 93 / 255f, 0f, 1f), true)
         damageReductionActive = true
         damageReductionTimer.start()
+    }
+
+    private fun applyImmunity() {
+        screen.scene.spawnCenterParticle(Action.Immune.text, GAME_LIGHT_GREEN, true)
+        immuneActive = true
+        immuneTimer.start()
     }
 }

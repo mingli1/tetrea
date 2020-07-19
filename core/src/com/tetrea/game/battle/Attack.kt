@@ -21,6 +21,6 @@ enum class Action(
     @Json(name = "Shield") Shield("yellow", 2000f),
     @Json(name = "SolidGarbage") SolidGarbage("solid_garbage_bar", 1400f),
     @Json(name = "Gravity") Gravity("gravity_bar", 1000f, "GRAVITY\nINCREASED"),
-    @Json(name = "Immune") Immune("yellow", 2400f, "ENEMY\nIMMUNE"),
+    @Json(name = "Immune") Immune("immune_bar", 2400f, "ENEMY\nIMMUNE"),
     @Json(name = "DamageReduction") DamageReduction("damage_reduction_bar", 1200f, "ATTACK\nREDUCED")
 }

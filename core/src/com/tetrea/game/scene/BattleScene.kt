@@ -299,6 +299,7 @@ class BattleScene(
         batch.draw(screen.state.enemyAvatar, 6f, stage.height - 55f)
 
         enemyHpBar.render(batch)
+        if (screen.state.immuneActive) batch.draw(res.getTexture("immune_hp_bar"), 37f, stage.height - 44f)
         renderTetris(batch)
     }
 
@@ -308,7 +309,11 @@ class BattleScene(
     }
 
     fun spawnNumberParticle(lines: Int, x: Float, y: Float, crit: Boolean) {
-        val l = if (screen.state.damageReductionActive) max(1, lines / 2) else lines
+        val l = when {
+            screen.state.immuneActive -> 0
+            screen.state.damageReductionActive -> max(1, lines / 2)
+            else -> lines
+        }
         textParticleSpawner.spawn(
             if (crit) "$l CRIT" else l.toString(),
             if (crit) GAME_YELLOW else

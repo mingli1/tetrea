@@ -214,6 +214,7 @@ class Resources : Disposable {
         loadTexture("settings_button_icon")
         loadTexture("find_match_button_icon")
         loadTexture("adventure_button_icon")
+        loadTexture("immune_hp_bar")
 
         loadTexture("enemy_ittzzi")
 
@@ -228,6 +229,7 @@ class Resources : Disposable {
         loadTexture("gravity_bar")
         loadTexture("solid_garbage_bar")
         loadTexture("damage_reduction_bar")
+        loadTexture("immune_bar")
 
         loadNinePatch("dark_gray_bg")
         loadNinePatch("light_gray_bg")
