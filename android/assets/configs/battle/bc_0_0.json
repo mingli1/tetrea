@@ -15,11 +15,11 @@
   ],
   "attackScheme": [
     {
-      "action": "Gravity",
+      "action": "Immune",
       "time": 3.5
     },
     {
-      "action": "Immune",
+      "action": "SolidGarbage",
       "time": 3.5
     },
     {

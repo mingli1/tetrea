@@ -169,9 +169,9 @@ class Tetris(
 
     fun addSolidGarbage(numLines: Int) {
         offsetStack(numLines)
-        solidGarbageRow = numLines
+        solidGarbageRow += numLines
 
-        for (y in 0 until numLines) {
+        for (y in 0 until solidGarbageRow) {
             for (x in 0 until config.width) {
                 content[y][x].run {
                     filled = true
@@ -180,7 +180,7 @@ class Tetris(
             }
         }
         // top out
-        if (numLines >= config.height) gameOver(false)
+        if (solidGarbageRow >= config.height) gameOver(false)
         if (!currPiece?.canMove(0, -1).default(true)) gameOver(false)
     }
 

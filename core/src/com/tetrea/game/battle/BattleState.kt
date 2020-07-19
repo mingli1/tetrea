@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.GAME_GRAVITY_PURPLE
+import com.tetrea.game.res.GAME_LIGHT_GRAY
 import com.tetrea.game.res.GAME_LIGHT_GREEN
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BattleScreen
@@ -196,7 +197,7 @@ class BattleState(
                     Action.SendLines -> attack.lines?.let { screen.tetris.queueGarbage(it) }
                     Action.Heal -> attack.heal?.let { healEnemy(it) }
                     Action.Gravity -> applyGravity()
-                    Action.SolidGarbage -> screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE)
+                    Action.SolidGarbage -> applySolidGarbage()
                     Action.DamageReduction -> applyDamageReduction()
                     Action.Immune -> applyImmunity()
                     else -> {}
@@ -299,7 +300,7 @@ class BattleState(
         screen.scene.startEnemyCharge(attackDelay, ability)
         return when (ability) {
             Action.Gravity -> this::applyGravity
-            Action.SolidGarbage -> ({ screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE) })
+            Action.SolidGarbage -> this::applySolidGarbage
             Action.DamageReduction -> this::applyDamageReduction
             Action.Immune -> this::applyImmunity
             else -> ({})
@@ -309,6 +310,11 @@ class BattleState(
     private fun applyGravity() {
         screen.scene.spawnCenterParticle(Action.Gravity.text, GAME_GRAVITY_PURPLE, true)
         screen.tetris.increaseGravity()
+    }
+
+    private fun applySolidGarbage() {
+        screen.scene.spawnCenterParticle(Action.SolidGarbage.text, GAME_LIGHT_GRAY, true)
+        screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE)
     }
 
     private fun applyDamageReduction() {

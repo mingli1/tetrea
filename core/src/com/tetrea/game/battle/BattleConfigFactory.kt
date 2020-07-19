@@ -54,10 +54,10 @@ object BattleConfigFactory {
         when (statPriority) {
             StatPriority.AttackSpeed, StatPriority.AttackDefense -> {
                 if (rating >= Action.SolidGarbage.ratingThreshold) abilities.add(Action.SolidGarbage)
-                if (rating >= Action.Shield.ratingThreshold) abilities.add(Action.Shield)
+                if (rating >= Action.Gravity.ratingThreshold) abilities.add(Action.Gravity)
             }
             StatPriority.DefenseSpeed, StatPriority.DefenseAttack -> {
-                if (rating >= Action.Shield.ratingThreshold) abilities.add(Action.Shield)
+                if (rating >= Action.DamageReduction.ratingThreshold) abilities.add(Action.DamageReduction)
                 if (rating >= Action.Immune.ratingThreshold) abilities.add(Action.Immune)
             }
             else -> {

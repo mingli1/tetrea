@@ -18,9 +18,8 @@ enum class Action(
     @Json(name = "SendLines") SendLines("yellow", 0f),
     @Json(name = "Random") Random("yellow", 0f),
     @Json(name = "Heal") Heal("bar_restore", 0f),
-    @Json(name = "Shield") Shield("yellow", 2000f),
-    @Json(name = "SolidGarbage") SolidGarbage("solid_garbage_bar", 1400f),
+    @Json(name = "SolidGarbage") SolidGarbage("solid_garbage_bar", 1200f, "SOLID\nGARBAGE"),
     @Json(name = "Gravity") Gravity("gravity_bar", 1000f, "GRAVITY\nINCREASED"),
-    @Json(name = "Immune") Immune("immune_bar", 2400f, "ENEMY\nIMMUNE"),
-    @Json(name = "DamageReduction") DamageReduction("damage_reduction_bar", 1200f, "ATTACK\nREDUCED")
+    @Json(name = "Immune") Immune("immune_bar", 2000f, "ENEMY\nIMMUNE"),
+    @Json(name = "DamageReduction") DamageReduction("damage_reduction_bar", 1500f, "ATTACK\nREDUCED")
 }
