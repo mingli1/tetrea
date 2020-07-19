@@ -13,7 +13,7 @@ class HealthBar(
     private val maxValue: Float,
     private val maxWidth: Float,
     private val height: Float,
-    private val barTexture: TextureRegion,
+    var barTexture: TextureRegion,
     private val decayTexture: TextureRegion,
     private val restoreTexture: TextureRegion,
     private val interpolator: Interpolation = Interpolation.linear

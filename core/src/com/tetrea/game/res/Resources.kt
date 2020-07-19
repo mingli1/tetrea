@@ -227,6 +227,7 @@ class Resources : Disposable {
         loadTexture("spd")
         loadTexture("gravity_bar")
         loadTexture("solid_garbage_bar")
+        loadTexture("damage_reduction_bar")
 
         loadNinePatch("dark_gray_bg")
         loadNinePatch("light_gray_bg")

@@ -1,10 +1,12 @@
 package com.tetrea.game.battle
 
+import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.GAME_GRAVITY_PURPLE
 import com.tetrea.game.res.Resources
 import com.tetrea.game.screen.BattleScreen
+import com.tetrea.game.util.Timer
 import kotlin.math.max
 
 private const val MIN_ATTACK_DELAY = 2.3f
@@ -56,7 +58,17 @@ class BattleState(
     private var futureAction: () -> Unit = {}
     private var randomMoveCount = 0
     private var canHeal = true
+
     private val enemyAbilities = config.abilities.toMutableList()
+    var damageReductionActive = false
+    private val damageReductionTimer = Timer(
+        when {
+            config.enemy.rating <= 1800 -> 8f
+            config.enemy.rating <= 2300 -> 10f
+            else -> 12f
+        },
+        { damageReductionActive = false }
+    )
 
     fun update(dt: Float) {
         if (screen.tetris.started) {
@@ -65,11 +77,14 @@ class BattleState(
 
         playerText = "${player.name} $playerScore"
         enemyText = "$enemyScore ${config.enemy.name}"
+
+        damageReductionTimer.update(dt)
     }
 
     fun attackEnemy(attack: Int): Boolean {
-        enemyHp -= attack
-        screen.scene.attackEnemyHp(attack)
+        val att = if (damageReductionActive) max(1, attack / 2) else attack
+        enemyHp -= att
+        screen.scene.attackEnemyHp(att)
         if (enemyHp <= 0) {
             enemyHp = 0
             return true
@@ -174,6 +189,7 @@ class BattleState(
                     Action.Heal -> attack.heal?.let { healEnemy(it) }
                     Action.Gravity -> applyGravity()
                     Action.SolidGarbage -> screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE)
+                    Action.DamageReduction -> applyDamageReduction()
                     else -> {}
                 }
 
@@ -275,6 +291,7 @@ class BattleState(
         return when (ability) {
             Action.Gravity -> this::applyGravity
             Action.SolidGarbage -> ({ screen.tetris.addSolidGarbage(NUM_SOLID_GARBAGE) })
+            Action.DamageReduction -> this::applyDamageReduction
             else -> ({})
         }
     }
@@ -282,5 +299,11 @@ class BattleState(
     private fun applyGravity() {
         screen.scene.spawnCenterParticle(Action.Gravity.text, GAME_GRAVITY_PURPLE, true)
         screen.tetris.increaseGravity()
+    }
+
+    private fun applyDamageReduction() {
+        screen.scene.spawnCenterParticle(Action.DamageReduction.text, Color(1f, 93 / 255f, 0f, 1f), true)
+        damageReductionActive = true
+        damageReductionTimer.start()
     }
 }

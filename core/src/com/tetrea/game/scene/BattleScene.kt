@@ -29,6 +29,7 @@ import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.LineClearType
 import com.tetrea.game.tetris.util.PieceType
 import com.tetrea.game.util.Timer
+import kotlin.math.max
 
 private const val END_SEQUENCE_DELAY = 2f
 
@@ -274,6 +275,7 @@ class BattleScene(
         }
         textParticleSpawner.update(dt)
 
+        enemyHpBar.barTexture = if (screen.state.damageReductionActive) res.getTexture("damage_reduction_bar") else res.getTexture("red")
         enemyHpBar.update(dt)
         enemyHpLabel.setText("${screen.state.enemyHp}/${screen.state.enemyMaxHp}")
 
@@ -306,11 +308,12 @@ class BattleScene(
     }
 
     fun spawnNumberParticle(lines: Int, x: Float, y: Float, crit: Boolean) {
+        val l = if (screen.state.damageReductionActive) max(1, lines / 2) else lines
         textParticleSpawner.spawn(
-            if (crit) "$lines CRIT" else lines.toString(),
+            if (crit) "$l CRIT" else l.toString(),
             if (crit) GAME_YELLOW else
             when {
-                lines < 7 -> Color.WHITE
+                l < 7 -> Color.WHITE
                 else -> GAME_LIGHT_BLUE
             },
             x, y
