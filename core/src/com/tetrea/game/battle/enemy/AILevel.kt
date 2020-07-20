@@ -1,4 +1,4 @@
-package com.tetrea.game.battle
+package com.tetrea.game.battle.enemy
 
 enum class AILevel(val level: Int) {
     // completely random

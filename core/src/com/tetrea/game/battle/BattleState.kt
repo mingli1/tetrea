@@ -2,6 +2,10 @@ package com.tetrea.game.battle
 
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.MathUtils
+import com.tetrea.game.battle.attack.Action
+import com.tetrea.game.battle.attack.Attack
+import com.tetrea.game.battle.attack.AttackPattern
+import com.tetrea.game.battle.enemy.AILevel
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.GAME_GRAVITY_PURPLE
 import com.tetrea.game.res.GAME_LIGHT_GRAY
@@ -29,7 +33,7 @@ private const val PERCENT_HP_SHOULD_CHEESE = 0.3f
 
 private const val MIN_ABILITY_PERCENT = 0.15f
 private const val MAX_ABILITY_PERCENT = 0.35f
-private const val NUM_SOLID_GARBAGE = 4
+private const val NUM_SOLID_GARBAGE = 3
 
 class BattleState(
     private val config: BattleConfig,
@@ -54,6 +58,7 @@ class BattleState(
     var playerWonGame = false
 
     var attackTimer = 0f
+    private var opening = config.opening != null
     private var attackIndex = 0
     private var attackDelay = getAttackDelay()
     private var initAction = false
@@ -79,7 +84,8 @@ class BattleState(
 
     fun update(dt: Float) {
         if (screen.tetris.started) {
-            config.attackScheme?.let { handleAttackScheme(dt, it) } ?: handleRandomScheme(dt)
+            if (!opening) config.attackScheme?.let { handleAttackScheme(dt, it) } ?: handleRandomScheme(dt)
+            else config.opening?.let { handleAttackScheme(dt, it) }
         }
 
         playerText = "${player.name} $playerScore"
@@ -108,6 +114,7 @@ class BattleState(
         initAction = false
         attackDelay = getAttackDelay()
         randomMoveCount = 0
+        opening = config.opening != null
     }
 
     fun updateGameNumber() = gameNumber++
@@ -204,7 +211,10 @@ class BattleState(
                 }
 
                 attackTimer = 0f
-                if (attackIndex == attackScheme.size - 1) attackIndex = 0
+                if (attackIndex == attackScheme.size - 1) {
+                    attackIndex = 0
+                    opening = false
+                }
                 else attackIndex++
             }
         }

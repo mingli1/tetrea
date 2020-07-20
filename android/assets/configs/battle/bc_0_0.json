@@ -13,6 +13,18 @@
   "attackPatterns": [
     "Defensive", "Cheeser"
   ],
+  "opening": [
+    {
+      "action": "SendLines",
+      "time": 1.5,
+      "lines": 4
+    },
+    {
+      "action": "SendLines",
+      "time": 2.5,
+      "lines": 2
+    }
+  ],
   "attackScheme": [
     {
       "action": "Immune",
