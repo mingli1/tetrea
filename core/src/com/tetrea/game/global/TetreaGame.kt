@@ -70,6 +70,13 @@ class TetreaGame : Game() {
             }
             screen.finishBattlePrematurely()
         }
+        else if (currentScreen is VersusSelectScreen) {
+            val screen = currentScreen as VersusSelectScreen
+            if (screen.matchMade) {
+                player.dodgedBattle = true
+                screen.onDodge()
+            }
+        }
 
         batch.dispose()
         res.dispose()

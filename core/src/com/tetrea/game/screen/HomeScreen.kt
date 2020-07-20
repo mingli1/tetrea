@@ -95,6 +95,17 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
                 }
             ).show(stage)
         }
+        if (game.player.dodgedBattle) {
+            MessageDialog(
+                title = "MATCH DODGED",
+                message = "YOU DODGED A BATTLE BEFORE IT STARTED SO YOU WILL LOSE A BIT OF RATING.",
+                res = game.res,
+                dismiss = {
+                    game.player.dodgedBattle = false
+                    game.saveManager.save()
+                }
+            ).show(stage)
+        }
 
         Gdx.input.inputProcessor = multiplexer
     }

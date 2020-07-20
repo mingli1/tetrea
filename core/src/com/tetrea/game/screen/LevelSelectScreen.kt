@@ -15,6 +15,7 @@ import com.tetrea.game.res.*
 import com.tetrea.game.scene.dialog.SelectionDialog
 import com.tetrea.game.scene.component.VersusCard
 import com.tetrea.game.scene.dialog.MessageDialog
+import com.tetrea.game.scene.dialog.SelectionDialogCallback
 import kotlin.math.abs
 
 private const val BUTTON_WIDTH = 76f
@@ -27,14 +28,14 @@ enum class SelectionState {
     Locked
 }
 
-class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
+class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, SelectionDialogCallback {
 
     private lateinit var parentTable: Table
     private lateinit var headerTable: Table
     private lateinit var scrollPane: ScrollPane
     private lateinit var selectionTable: Table
     private lateinit var selectionBg: Image
-    private val selectionDialog = SelectionDialog(game.res, this)
+    private val selectionDialog = SelectionDialog(game.res, this, false)
     private var playerVersusCard: VersusCard? = null
     private var enemyVersusCard: VersusCard? = null
     private lateinit var versusTag: Image
@@ -116,7 +117,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         stage.draw()
     }
 
-    fun onBattleButtonClicked(battleConfig: BattleConfig) {
+    override fun onBattleButtonClicked(battleConfig: BattleConfig) {
         playerVersusCard = VersusCard(
             stage = stage,
             onScreen = false,

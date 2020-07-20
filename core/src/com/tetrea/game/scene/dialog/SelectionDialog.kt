@@ -16,7 +16,15 @@ import com.tetrea.game.scene.component.AnimatedImageBar
 import com.tetrea.game.screen.LevelSelectScreen
 import com.tetrea.game.screen.SelectionState
 
-class SelectionDialog(private val res: Resources, private val screen: LevelSelectScreen) : Table() {
+interface SelectionDialogCallback {
+    fun onBattleButtonClicked(battleConfig: BattleConfig)
+}
+
+class SelectionDialog(
+    private val res: Resources,
+    private val callback: SelectionDialogCallback,
+    isMatchmaking: Boolean
+) : Table() {
 
     private val avatar = Image()
     private val title = res.getLabel(fontScale = 1f)
@@ -42,14 +50,16 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         add(avatar).padTop(6f).padLeft(10f)
         val textTable = Table().apply {
             add(title).top().left().expandX().padBottom(2f).row()
-            add(desc).top().left().expandX().padBottom(2f).row()
+            if (!isMatchmaking) add(desc).top().left().expandX().padBottom(2f).row()
             add(rating).top().left().expandX().padBottom(2f)
         }
         add(textTable).width(112f).padTop(6f).padLeft(10f).top().left().row()
         add(Image(res.getTexture("white"))).width(170f).padTop(4f).colspan(2).row()
 
-        add(h2hLabel).padLeft(12f).padTop(8f).top().left().colspan(2).row()
-        add(h2h).padLeft(12f).padTop(4f).top().left().colspan(2).row()
+        if (!isMatchmaking) {
+            add(h2hLabel).padLeft(12f).padTop(8f).top().left().colspan(2).row()
+            add(h2h).padLeft(12f).padTop(4f).top().left().colspan(2).row()
+        }
 
         add(attackPatternLabel).padLeft(12f).padTop(8f).top().left().colspan(2).row()
         add(attackPatterns).padLeft(12f).padTop(4f).top().left().colspan(2).row()
@@ -89,7 +99,7 @@ class SelectionDialog(private val res: Resources, private val screen: LevelSelec
         add(battleButton).padTop(6f).size(170f, 35f).colspan(2).expand()
         battleButton.onTap {
             battleButton.touchable = Touchable.disabled
-            screen.onBattleButtonClicked(battleConfig)
+            callback.onBattleButtonClicked(battleConfig)
         }
     }
 

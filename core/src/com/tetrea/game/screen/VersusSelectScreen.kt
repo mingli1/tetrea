@@ -10,7 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
+import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.battle.BattleConfigFactory
+import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
@@ -18,15 +20,19 @@ import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.scene.component.VersusCard
 import com.tetrea.game.scene.dialog.ConfirmDialog
 import com.tetrea.game.scene.dialog.MessageDialog
+import com.tetrea.game.scene.dialog.SelectionDialog
+import com.tetrea.game.scene.dialog.SelectionDialogCallback
 import kotlin.math.abs
 
-class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
+private const val DIALOG_FADE_DURATION = 0.4f
+
+class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, SelectionDialogCallback {
 
     private lateinit var parentTable: Table
     private val confirmDialog = ConfirmDialog(
         "MATCHMAKING",
         "YOU WILL BE MATCHED WITH AN ENEMY OF SIMILAR RATING. ARE YOU SURE YOU WANT TO PROCEED?",
-        this::onConfirmMatchmaking,
+        this::showSelectionDialog,
         {},
         game.res,
         windowStyleKey = "purple_bg",
@@ -37,6 +43,12 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     private var enemyVersusCard: VersusCard? = null
     private lateinit var versusTag: Image
     private lateinit var bestOfText: Label
+
+    private lateinit var selectionTable: Table
+    private lateinit var selectionBg: Image
+    private val selectionDialog = SelectionDialog(game.res, this, true)
+    private lateinit var battleConfig: BattleConfig
+    var matchMade = false
 
     override fun show() {
         super.show()
@@ -83,6 +95,18 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             setPosition(this@VersusSelectScreen.stage.width / 2 - 76f / 2, this@VersusSelectScreen.stage.height / 2 - 44f / 2)
         }
 
+        selectionBg = Image(game.res.getTexture("black_150_opacity")).apply {
+            setSize(this@VersusSelectScreen.stage.width, this@VersusSelectScreen.stage.height)
+            isVisible = false
+        }
+        stage.addActor(selectionBg)
+        selectionTable = Table().apply {
+            setFillParent(true)
+            isVisible = false
+        }
+        selectionTable.add(selectionDialog).size(196f, 220f)
+        stage.addActor(selectionTable)
+
         arguments?.let {
             if (it.containsKey(ARG_MATCH_QUIT)) {
                 val ratingLost = abs((it[ARG_MATCH_QUIT] as Float).toInt())
@@ -101,6 +125,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     }
 
     override fun update(dt: Float) {
+        selectionDialog.update(dt)
         playerVersusCard?.update(dt)
         enemyVersusCard?.update(dt)
     }
@@ -145,9 +170,24 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         }
     }
 
-    private fun onConfirmMatchmaking() {
-        val battleConfig = BattleConfigFactory.findMatch(game.player.rating)
+    private fun showSelectionDialog() {
+        matchMade = true
+        battleConfig = BattleConfigFactory.findMatch(game.player.rating)
 
+        selectionDialog.resetBarAnimations()
+        selectionDialog.setConfig(battleConfig, SelectionState.Active, game.player)
+
+        selectionBg.isVisible = true
+        selectionBg.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION)))
+
+        selectionTable.isVisible = true
+        selectionTable.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION),
+            Actions.run {
+                selectionDialog.startBarAnimations(battleConfig)
+            }))
+    }
+
+    override fun onBattleButtonClicked(battleConfig: BattleConfig) {
         bestOfText = game.res.getLabel("BEST OF ${battleConfig.bestOf}", fontScale = 1f)
         bestOfText.setPosition(stage.width / 2 - bestOfText.width / 2, versusTag.y + 52f)
 
@@ -182,5 +222,11 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             res = game.res,
             enemy = battleConfig.enemy
         )
+    }
+
+    fun onDodge() {
+        val ratingLoss = Elo.getDodgeLoss(game.player.rating)
+        game.player.rating -= ratingLoss
+        game.saveManager.save()
     }
 }

@@ -30,6 +30,8 @@ object Elo {
         return (statsPercentage * (MAX_ENEMY_ELO - MIN_ENEMY_ELO)) + MIN_ENEMY_ELO + (ENEMY_HP_TO_ELO_PERCENT * enemy.maxHp)
     }
 
+    fun getDodgeLoss(rating: Float): Int = getKFactor(rating) / 6
+
     private fun getKFactor(playerRating: Float): Int {
         return when {
             playerRating < 400 -> 340
