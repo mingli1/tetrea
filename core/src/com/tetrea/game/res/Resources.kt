@@ -188,6 +188,7 @@ class Resources : Disposable {
         loadTexture("home_screen_overlay")
         loadTexture("versus_select_overlay")
         loadTexture("settings_screen_overlay")
+        loadTexture("profile_screen_overlay")
         loadTexture("title_letters")
 
         loadTexture("tetris")
@@ -243,6 +244,7 @@ class Resources : Disposable {
         loadNinePatch("red_button_up")
         loadNinePatch("red_button_down")
         loadNinePatch("purple_bg")
+        loadNinePatch("orange_bg")
         loadNinePatch("light_purple_bg")
         loadNinePatch("orange_button_up")
         loadNinePatch("orange_button_down")
@@ -261,6 +263,8 @@ class Resources : Disposable {
         loadNinePatch("adventure_button_up")
         loadNinePatch("adventure_button_down")
         loadNinePatch("settings_slider_bg")
+        loadNinePatch("profile_orange_button_up")
+        loadNinePatch("profile_orange_button_down")
     }
 
     private fun loadTetrisConfigs() {

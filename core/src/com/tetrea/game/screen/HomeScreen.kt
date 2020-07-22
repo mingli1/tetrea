@@ -70,7 +70,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
             imageKey = "profile_button_icon",
             colorUp = Color(234 / 255f, 211 / 255f, 204 / 255f, 1f),
             y = buttonTableY - 2 * (BUTTON_HEIGHT + BUTTON_PADDING),
-            onClick = {}
+            onClick = { navigateTo(PROFILE_SCREEN) }
         )
         stage.addActor(profileButton)
 
