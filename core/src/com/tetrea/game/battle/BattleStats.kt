@@ -12,9 +12,9 @@ data class BattleStats(
     @Json(name = "averagePps") val averagePps: MutableList<Float> = mutableListOf()
 ) {
 
-    fun getApm() = averageApm.sum() / averageApm.size
+    fun getApm() = if (averageApm.isEmpty()) 0f else averageApm.sum() / averageApm.size
 
-    fun getPps() = averagePps.sum() / averagePps.size
+    fun getPps() = if (averagePps.isEmpty()) 0f else averagePps.sum() / averagePps.size
 
     fun addApm(apm: Float) {
         if (averageApm.size == MAX_GAMES_SAVED) {

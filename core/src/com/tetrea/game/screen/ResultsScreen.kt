@@ -255,7 +255,9 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             ratingChange = ratingChange,
             playerScore = playerScore,
             enemyScore = enemyScore,
-            isMatchmaking = config.isMatchmaking
+            isMatchmaking = config.isMatchmaking,
+            enemyName = config.enemy.name,
+            enemyRating = config.enemy.rating
         )
         game.player.battleStats.totalMatches++
         if (playerWin) {

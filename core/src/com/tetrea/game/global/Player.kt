@@ -3,7 +3,10 @@ package com.tetrea.game.global
 import com.squareup.moshi.Json
 import com.tetrea.game.battle.BattleRecord
 import com.tetrea.game.battle.BattleStats
+import com.tetrea.game.battle.MatchHistory
 import com.tetrea.game.util.Int2
+
+private const val MAX_MATCH_HISTORY_SAVED = 10
 
 data class Player(
     @Json(name = "name") val name: String = "PLAYER",
@@ -12,6 +15,7 @@ data class Player(
     @Json(name = "currWorldId") var currWorldId: Int = 0,
     @Json(name = "currLevelId") var currLevelId: Int = 0,
     @Json(name = "battleRecords") private val battleRecords: MutableMap<String, BattleRecord> = mutableMapOf(),
+    @Json(name = "matchHistory") val matchHistory: MutableList<MatchHistory> = mutableListOf(),
     @Json(name = "battleStats") val battleStats: BattleStats = BattleStats(),
     @Json(name = "quitDuringBattle") var quitDuringBattle: Boolean = false,
     @Json(name = "dodgedBattle") var dodgedBattle: Boolean = false
@@ -25,8 +29,24 @@ data class Player(
         ratingChange: Float,
         playerScore: Int,
         enemyScore: Int,
-        isMatchmaking: Boolean
+        isMatchmaking: Boolean,
+        enemyName: String,
+        enemyRating: Float
     ) {
+        if (isMatchmaking) {
+            val history = MatchHistory(
+                playerRating = rating.toInt(),
+                enemyRating = enemyRating.toInt(),
+                enemyName = enemyName,
+                playerScore = playerScore,
+                enemyScore = enemyScore
+            )
+            if (matchHistory.size == MAX_MATCH_HISTORY_SAVED) {
+                matchHistory.removeAt(matchHistory.lastIndex)
+            }
+            matchHistory.add(0, history)
+        }
+
         if (rating + ratingChange < 0f) rating = 0f
         rating += ratingChange
 

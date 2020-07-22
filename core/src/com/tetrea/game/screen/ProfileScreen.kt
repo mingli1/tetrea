@@ -11,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.GAME_LIGHT_ORANGE
+import com.tetrea.game.res.GAME_LOSS_RED
+import com.tetrea.game.res.GAME_VICTORY_GREEN
 import com.tetrea.game.scene.component.AnimatedImageBar
 
 class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
@@ -52,6 +54,7 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
 
         contentTable = Table()
         createOverviewTable()
+        if (game.player.matchHistory.isNotEmpty()) createMatchHistoryTable()
 
         val scrollPane = ScrollPane(contentTable).apply {
             setOverscroll(false, false)
@@ -136,11 +139,50 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             add(game.res.getLabel("ALL TIME RECORD", color = GAME_LIGHT_ORANGE)).expandX().left()
             add(game.res.getLabel("${game.player.battleStats.wins}W - ${game.player.battleStats.losses}L")).expandX().right()
         }
-        overviewTable.add(allTimeRecordTable).colspan(2).padTop(4f).padBottom(8f).width(200f)
+        overviewTable.add(allTimeRecordTable).colspan(2).padTop(4f).width(200f).row()
+
+        val winrate = String.format("%.2f", game.player.battleStats.wins.toFloat() / game.player.battleStats.totalMatches * 100)
+        val winrateTable = Table().apply {
+            add(game.res.getLabel("WINRATE", color = GAME_LIGHT_ORANGE)).expandX().left()
+            add(game.res.getLabel("$winrate%")).expandX().right()
+        }
+        overviewTable.add(winrateTable).colspan(2).padTop(4f).padBottom(8f).width(200f)
 
         contentTable.add(overviewTable).width(220f).padBottom(16f).row()
 
         apmBar.applyChange(game.player.battleStats.getApm(), false)
         ppsBar.applyChange(game.player.battleStats.getPps(), false)
+    }
+
+    private fun createMatchHistoryTable() {
+        val historyTable = Table().apply {
+            background = NinePatchDrawable(game.res.getNinePatch("orange_bg"))
+        }
+
+        historyTable.add(game.res.getLabel("MATCH HISTORY", color = GAME_LIGHT_ORANGE, fontScale = 1f))
+            .expand().top().left().padTop(8f).padLeft(8f).padBottom(4f).row()
+
+        game.player.matchHistory.forEach {
+            val recordTable = Table()
+            val playerTable = Table().apply {
+                add(game.res.getLabel("YOU")).row()
+                add(game.res.getLabel(it.playerRating.toString(), fontScale = 0.5f, color = GAME_LIGHT_ORANGE))
+            }
+            val enemyTable = Table().apply {
+                add(game.res.getLabel(it.enemyName)).row()
+                add(game.res.getLabel(it.enemyRating.toString(), fontScale = 0.5f, color = GAME_LIGHT_ORANGE))
+            }
+            recordTable.add(playerTable).width(30f).left()
+            recordTable.add(game.res.getLabel(
+                "${it.playerScore} - ${it.enemyScore}",
+                fontScale = 1f,
+                color = if (it.playerScore > it.enemyScore) GAME_VICTORY_GREEN else GAME_LOSS_RED
+            )).expandX()
+            recordTable.add(enemyTable).width(40f).right()
+
+            historyTable.add(recordTable).width(200f).padBottom(6f).row()
+        }
+
+        contentTable.add(historyTable).width(220f).padBottom(16f).row()
     }
 }
