@@ -142,33 +142,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         )
         headerTable.add(finalScoreLabel).colspan(2).row()
 
-        val ratingChange = Elo.getRatingChange(game.player.rating, config.enemy.rating, playerScore, enemyScore)
-        val newRating = (game.player.rating + ratingChange).toInt()
-        this.newRating = game.player.rating + ratingChange
-        val change = newRating - game.player.rating.toInt()
-        ratingLabel = game.res.getLabel(fontScale = 1f, color = GAME_ORANGE)
-        startRatingAnim = true
-        headerTable.add(ratingLabel).align(Align.left).padLeft(12f)
-        val ratingChangeLabel = game.res.getLabel(
-            text = "(${change.sign()}$change)",
-            fontScale = 1f,
-            color = when {
-                ratingChange < 0 -> Color.RED
-                ratingChange == 0f -> Color.WHITE
-                else -> Color.GREEN
-            }
-        )
-        headerTable.add(ratingChangeLabel).align(Align.left).padLeft(4f)
-
-        game.player.completeMatchup(
-            key = config.compositeKey,
-            won = playerWin,
-            ratingChange = ratingChange,
-            playerScore = playerScore,
-            enemyScore = enemyScore,
-            isMatchmaking = config.isMatchmaking
-        )
-        game.saveManager.save()
+        recordStats()
     }
 
     private fun createBody() {
@@ -254,5 +228,44 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             res = game.res,
             enemy = config.enemy
         )
+    }
+
+    private fun recordStats() {
+        val ratingChange = Elo.getRatingChange(game.player.rating, config.enemy.rating, playerScore, enemyScore)
+        val newRating = (game.player.rating + ratingChange).toInt()
+        this.newRating = game.player.rating + ratingChange
+        val change = newRating - game.player.rating.toInt()
+        ratingLabel = game.res.getLabel(fontScale = 1f, color = GAME_ORANGE)
+        startRatingAnim = true
+        headerTable.add(ratingLabel).align(Align.left).padLeft(12f)
+        val ratingChangeLabel = game.res.getLabel(
+            text = "(${change.sign()}$change)",
+            fontScale = 1f,
+            color = when {
+                ratingChange < 0 -> Color.RED
+                ratingChange == 0f -> Color.WHITE
+                else -> Color.GREEN
+            }
+        )
+        headerTable.add(ratingChangeLabel).align(Align.left).padLeft(4f)
+
+        game.player.completeMatchup(
+            key = config.compositeKey,
+            won = playerWin,
+            ratingChange = ratingChange,
+            playerScore = playerScore,
+            enemyScore = enemyScore,
+            isMatchmaking = config.isMatchmaking
+        )
+        game.player.battleStats.totalMatches++
+        if (playerWin) {
+            game.player.battleStats.wins++
+        } else {
+            game.player.battleStats.losses++
+        }
+        stats.apmList.forEach { game.player.battleStats.addApm(it) }
+        stats.ppsList.forEach { game.player.battleStats.addPps(it) }
+
+        game.saveManager.save()
     }
 }

@@ -5,16 +5,21 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.GAME_LIGHT_ORANGE
+import com.tetrea.game.scene.component.AnimatedImageBar
 
 class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
 
     private lateinit var parentTable: Table
     private lateinit var contentTable: Table
+
+    private val apmBar = AnimatedImageBar(1f, 1f, 0.5f, false, 150f, 200f, 8f, game.res.getTexture("atk"))
+    private val ppsBar = AnimatedImageBar(1f, 1f, 0.5f, false, 4f, 200f, 8f, game.res.getTexture("spd"))
 
     override fun show() {
         super.show()
@@ -59,6 +64,11 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         Gdx.input.inputProcessor = multiplexer
     }
 
+    override fun update(dt: Float) {
+        apmBar.update(dt)
+        ppsBar.update(dt)
+    }
+
     override fun render(dt: Float) {
         super.render(dt)
 
@@ -90,14 +100,47 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             color = GAME_LIGHT_ORANGE
         )
 
-        overviewTable.add(avatar).padTop(6f).padLeft(4f)
+        overviewTable.add(avatar).padTop(6f).padLeft(4f).expandX()
         val textTable = Table().apply {
             add(name).top().left().expandX().padBottom(2f).row()
             add(rating).top().left().expandX().padBottom(2f)
         }
-        overviewTable.add(textTable).width(160f).padTop(6f).padLeft(14f).top().left().row()
+        overviewTable.add(textTable).width(160f).padTop(6f).padLeft(10f).top().left().row()
         overviewTable.add(Image(game.res.getTexture("white"))).width(200f).padTop(4f).colspan(2).row()
+        overviewTable.add(game.res.getLabel("MATCHMAKING", color = GAME_LIGHT_ORANGE)).padLeft(8f).padTop(8f).top().left().colspan(2).row()
+
+        val apm = String.format("%.2f", game.player.battleStats.getApm())
+        val pps = String.format("%.2f", game.player.battleStats.getPps())
+
+        overviewTable.add(game.res.getLabel("$apm AVERAGE APM")).padLeft(8f).padTop(6f).top().left().colspan(2).row()
+        val apmStack = Stack().apply {
+            add(Image(game.res.getNinePatch("dark_gray_bg")))
+            add(Table().apply { addActor(apmBar.image) })
+        }
+        overviewTable.add(apmStack).size(200f, 10f).padLeft(8f).padTop(4f).top().left().colspan(2).row()
+
+        overviewTable.add(game.res.getLabel("$pps AVERAGE PPS")).padLeft(8f).padTop(8f).top().left().colspan(2).row()
+        val ppsStack = Stack().apply {
+            add(Image(game.res.getNinePatch("dark_gray_bg")))
+            add(Table().apply { addActor(ppsBar.image) })
+        }
+        overviewTable.add(ppsStack).size(200f, 10f).padLeft(8f).padTop(4f).top().left().colspan(2).row()
+
+        val matchesTable = Table().apply {
+            add(game.res.getLabel("MATCHES PLAYED", color = GAME_LIGHT_ORANGE)).expandX().left()
+            add(game.res.getLabel(game.player.battleStats.totalMatches.toString())).expandX().right()
+        }
+        overviewTable.add(matchesTable).colspan(2).width(200f).padTop(8f).row()
+
+        val allTimeRecordTable = Table().apply {
+            add(game.res.getLabel("ALL TIME RECORD", color = GAME_LIGHT_ORANGE)).expandX().left()
+            add(game.res.getLabel("${game.player.battleStats.wins}W - ${game.player.battleStats.losses}L")).expandX().right()
+        }
+        overviewTable.add(allTimeRecordTable).colspan(2).padTop(4f).padBottom(8f).width(200f)
 
         contentTable.add(overviewTable).width(220f).padBottom(16f).row()
+
+        apmBar.applyChange(game.player.battleStats.getApm(), false)
+        ppsBar.applyChange(game.player.battleStats.getPps(), false)
     }
 }

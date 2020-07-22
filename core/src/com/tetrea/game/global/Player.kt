@@ -2,6 +2,7 @@ package com.tetrea.game.global
 
 import com.squareup.moshi.Json
 import com.tetrea.game.battle.BattleRecord
+import com.tetrea.game.battle.BattleStats
 import com.tetrea.game.util.Int2
 
 data class Player(
@@ -11,6 +12,7 @@ data class Player(
     @Json(name = "currWorldId") var currWorldId: Int = 0,
     @Json(name = "currLevelId") var currLevelId: Int = 0,
     @Json(name = "battleRecords") private val battleRecords: MutableMap<String, BattleRecord> = mutableMapOf(),
+    @Json(name = "battleStats") val battleStats: BattleStats = BattleStats(),
     @Json(name = "quitDuringBattle") var quitDuringBattle: Boolean = false,
     @Json(name = "dodgedBattle") var dodgedBattle: Boolean = false
 ) {

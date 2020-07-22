@@ -584,5 +584,7 @@ class Tetris(
         stats.numB2B += totalB2b
         stats.attack += totalAttack
         stats.linesSent += linesSent
+        stats.apmList.add(apm)
+        stats.ppsList.add(pps)
     }
 }

@@ -20,6 +20,8 @@ class TetrisStats {
     var maxCombo = 0
     var numPiecesPlaced = 0
     var numInputs = 0
+    val apmList = mutableListOf<Float>()
+    val ppsList = mutableListOf<Float>()
 
     fun getLabeledPairs(): Map<String, String> {
         return mapOf(
