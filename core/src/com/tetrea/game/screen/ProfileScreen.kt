@@ -15,13 +15,16 @@ import com.tetrea.game.res.GAME_LOSS_RED
 import com.tetrea.game.res.GAME_VICTORY_GREEN
 import com.tetrea.game.scene.component.AnimatedImageBar
 
+private const val MAX_APM = 150f
+private const val MAX_PPS = 4f
+
 class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
 
     private lateinit var parentTable: Table
     private lateinit var contentTable: Table
 
-    private val apmBar = AnimatedImageBar(1f, 1f, 0.5f, false, 150f, 200f, 8f, game.res.getTexture("atk"))
-    private val ppsBar = AnimatedImageBar(1f, 1f, 0.5f, false, 4f, 200f, 8f, game.res.getTexture("spd"))
+    private val apmBar = AnimatedImageBar(1f, 1f, 0.5f, false, MAX_APM, 200f, 8f, game.res.getTexture("atk"))
+    private val ppsBar = AnimatedImageBar(1f, 1f, 0.5f, false, MAX_PPS, 200f, 8f, game.res.getTexture("spd"))
 
     override fun show() {
         super.show()
@@ -112,8 +115,10 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         overviewTable.add(Image(game.res.getTexture("white"))).width(200f).padTop(4f).colspan(2).row()
         overviewTable.add(game.res.getLabel("MATCHMAKING", color = GAME_LIGHT_ORANGE)).padLeft(8f).padTop(8f).top().left().colspan(2).row()
 
-        val apm = String.format("%.2f", game.player.battleStats.getApm())
-        val pps = String.format("%.2f", game.player.battleStats.getPps())
+        val apm = String.format("%.2f", if (game.player.battleStats.getApm() > MAX_APM) MAX_APM else
+            game.player.battleStats.getApm())
+        val pps = String.format("%.2f", if (game.player.battleStats.getPps() > MAX_PPS) MAX_PPS else
+            game.player.battleStats.getPps())
 
         overviewTable.add(game.res.getLabel("$apm AVERAGE APM")).padLeft(8f).padTop(6f).top().left().colspan(2).row()
         val apmStack = Stack().apply {
@@ -141,7 +146,8 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         }
         overviewTable.add(allTimeRecordTable).colspan(2).padTop(4f).width(200f).row()
 
-        val winrate = String.format("%.2f", game.player.battleStats.wins.toFloat() / game.player.battleStats.totalMatches * 100)
+        val winrate = String.format("%.2f", if (game.player.battleStats.totalMatches == 0) 0f else
+            game.player.battleStats.wins.toFloat() / game.player.battleStats.totalMatches * 100)
         val winrateTable = Table().apply {
             add(game.res.getLabel("WINRATE", color = GAME_LIGHT_ORANGE)).expandX().left()
             add(game.res.getLabel("$winrate%")).expandX().right()

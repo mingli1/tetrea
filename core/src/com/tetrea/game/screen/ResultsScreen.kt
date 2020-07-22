@@ -20,7 +20,7 @@ import com.tetrea.game.scene.dialog.ConfirmDialog
 import com.tetrea.game.tetris.TetrisStats
 
 private const val BUTTON_WIDTH = 76f
-private const val BUTTON_HEIGHT = 36f
+private const val BUTTON_HEIGHT = 28f
 private const val RATING_ANIMATION_TIME = 2f
 
 class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
