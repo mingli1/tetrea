@@ -20,6 +20,7 @@ class TetrisStats {
     var maxCombo = 0
     var numPiecesPlaced = 0
     var numInputs = 0
+    val attackList = mutableListOf<Int>()
     val apmList = mutableListOf<Float>()
     val ppsList = mutableListOf<Float>()
 

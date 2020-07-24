@@ -10,9 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
-import com.tetrea.game.res.GAME_LIGHT_ORANGE
-import com.tetrea.game.res.GAME_LOSS_RED
-import com.tetrea.game.res.GAME_VICTORY_GREEN
+import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.AnimatedImageBar
 
 private const val MAX_APM = 150f
@@ -58,6 +56,7 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         contentTable = Table()
         createOverviewTable()
         if (game.player.matchHistory.isNotEmpty()) createMatchHistoryTable()
+        createStatsTable()
 
         val scrollPane = ScrollPane(contentTable).apply {
             setOverscroll(false, false)
@@ -190,5 +189,25 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         }
 
         contentTable.add(historyTable).width(220f).padBottom(16f).row()
+    }
+
+    private fun createStatsTable() {
+        val statsTable = Table().apply {
+            background = NinePatchDrawable(game.res.getNinePatch("orange_bg"))
+        }
+        statsTable.add(game.res.getLabel("MATCHMAKING STATS", color = GAME_LIGHT_ORANGE, fontScale = 1f))
+            .expand().top().left().padTop(8f).padLeft(8f).padBottom(4f).row()
+
+        val statsMap = game.player.battleStats.getLabeledPairs()
+        statsMap.forEach { (label, value) ->
+            val labelText = game.res.getLabel(text = label, color = GAME_LIGHT_ORANGE)
+            val statText = game.res.getLabel(text = value)
+            statsTable.add(labelText).expandX().left().padLeft(8f).padTop(4f)
+                .padBottom(if (label == "PERFECT CLEARS") 8f else 0f)
+            statsTable.add(statText).expandX().right().padRight(8f)
+                .padBottom(if (label == "PERFECT CLEARS") 8f else 0f).row()
+        }
+
+        contentTable.add(statsTable).width(220f).padBottom(16f).row()
     }
 }

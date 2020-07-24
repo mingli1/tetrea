@@ -156,9 +156,9 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         val statsTable = Table()
         val statsMap = stats.getLabeledPairs()
         statsMap.forEach { (label, value) ->
-            val labelText = game.res.getLabel(text = label, color = if (playerWin) GAME_LIGHT_GRAY_BLUE else GAME_LIGHT_RED, fontScale = 1f)
-            val statText = game.res.getLabel(text = value, fontScale = 1f)
-            statsTable.add(labelText).expandX().left()
+            val labelText = game.res.getLabel(text = label, color = if (playerWin) GAME_LIGHT_GRAY_BLUE else GAME_LIGHT_RED)
+            val statText = game.res.getLabel(text = value)
+            statsTable.add(labelText).expandX().left().padTop(4f)
             statsTable.add(statText).expandX().right().row()
         }
 
@@ -168,7 +168,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             layout()
         }
 
-        bodyTable.add(scrollPane).width(231f).padTop(8f).padBottom(8f)
+        bodyTable.add(scrollPane).width(231f).padTop(4f).padBottom(8f)
     }
 
     private fun createButtons() {
@@ -259,14 +259,17 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             enemyName = config.enemy.name,
             enemyRating = config.enemy.rating
         )
-        game.player.battleStats.totalMatches++
-        if (playerWin) {
-            game.player.battleStats.wins++
-        } else {
-            game.player.battleStats.losses++
+        if (config.isMatchmaking) {
+            game.player.battleStats.totalMatches++
+            if (playerWin) {
+                game.player.battleStats.wins++
+            } else {
+                game.player.battleStats.losses++
+            }
+            stats.apmList.forEach { game.player.battleStats.addApm(it) }
+            stats.ppsList.forEach { game.player.battleStats.addPps(it) }
+            game.player.battleStats.updateMatchmakingStats(stats)
         }
-        stats.apmList.forEach { game.player.battleStats.addApm(it) }
-        stats.ppsList.forEach { game.player.battleStats.addPps(it) }
 
         game.saveManager.save()
     }

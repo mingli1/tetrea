@@ -6,6 +6,11 @@ fun Float.formatMMSS(): String {
     return String.format("%02d:%02d", minutes, seconds)
 }
 
+fun Float.formatHours(): String {
+    val hours = this / 3600f
+    return String.format("%.2f H", hours)
+}
+
 fun Int.sign() = if (this >= 0) "+" else ""
 
 fun Float.toMillis() = (this * 1000).toInt().toString()

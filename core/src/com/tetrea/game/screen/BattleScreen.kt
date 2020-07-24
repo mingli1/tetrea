@@ -126,11 +126,13 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
             battleConfig.enemy.name,
             battleConfig.enemy.rating
         )
-        game.player.battleStats.totalMatches++
-        if (if (isMatchFinished) state.playerWonGame else false) {
-            game.player.battleStats.wins++
-        } else {
-            game.player.battleStats.losses++
+        if (battleConfig.isMatchmaking) {
+            game.player.battleStats.totalMatches++
+            if (if (isMatchFinished) state.playerWonGame else false) {
+                game.player.battleStats.wins++
+            } else {
+                game.player.battleStats.losses++
+            }
         }
         game.saveManager.save()
     }
@@ -164,8 +166,10 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
             battleConfig.enemy.name,
             battleConfig.enemy.rating
         )
-        game.player.battleStats.totalMatches++
-        game.player.battleStats.losses++
+        if (battleConfig.isMatchmaking) {
+            game.player.battleStats.totalMatches++
+            game.player.battleStats.losses++
+        }
         game.saveManager.save()
 
         val args = mapOf(ARG_MATCH_QUIT to ratingLost)
