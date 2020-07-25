@@ -208,6 +208,6 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
                 .padBottom(if (label == "PERFECT CLEARS") 8f else 0f).row()
         }
 
-        contentTable.add(statsTable).width(220f).padBottom(16f).row()
+        contentTable.add(statsTable).width(220f).padBottom(24f).row()
     }
 }
