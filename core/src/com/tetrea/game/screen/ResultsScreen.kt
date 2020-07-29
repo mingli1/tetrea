@@ -79,9 +79,9 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         }
         buttonTable = Table()
 
-        bgTable.add(headerTable).size(247f, 80f).expandY().row()
-        bgTable.add(bodyTable).size(247f, 260f).expandY().row()
-        bgTable.add(buttonTable).width(247f).expandY()
+        bgTable.add(headerTable).size(247f, 80f).expandY().padTop(16f).row()
+        bgTable.add(bodyTable).width(247f).expandY().padTop(16f).padBottom(16f).row()
+        bgTable.add(buttonTable).width(247f).expandY().padBottom(16f)
 
         createHeader()
         createBody()

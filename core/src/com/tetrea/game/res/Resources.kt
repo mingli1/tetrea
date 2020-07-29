@@ -196,7 +196,7 @@ class Resources : Disposable {
         loadTexture("yellow")
         loadTexture("tetris_buttons")
         loadTexture("tetris_board_bg")
-        loadTexture("item_slots_bg")
+        loadTexture("skill_slots_bg")
         loadTexture("apm_icon")
         loadTexture("pps_icon")
         loadTexture("battle_bg_sky")
@@ -216,6 +216,7 @@ class Resources : Disposable {
         loadTexture("find_match_button_icon")
         loadTexture("adventure_button_icon")
         loadTexture("immune_hp_bar")
+        loadTexture("skill_slot")
 
         loadTexture("enemy_ittzzi")
 
