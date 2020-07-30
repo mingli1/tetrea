@@ -292,7 +292,7 @@ class Tetris(
             }
         }
 
-        if (content.all { row -> row.all { !it.filled } }) {
+        if (content.all { row -> row.all { !it.filled || it.square.pieceType == PieceType.Solid } }) {
             stats.numPC++
             attack += config.attackPC
             screen.scene.spawnCenterParticle(LineClearType.PerfectClear.desc, LineClearType.PerfectClear.color)

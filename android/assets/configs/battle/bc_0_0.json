@@ -13,26 +13,14 @@
   "attackPatterns": [
     "Defensive", "Cheeser"
   ],
-  "opening": [
-    {
-      "action": "SendLines",
-      "time": 1.5,
-      "lines": 4
-    },
-    {
-      "action": "SendLines",
-      "time": 2.5,
-      "lines": 2
-    }
-  ],
   "attackScheme": [
     {
-      "action": "Immune",
+      "action": "SolidGarbage",
       "time": 3.5
     },
     {
       "action": "SolidGarbage",
-      "time": 3.5
+      "time": 13.0
     },
     {
       "action": "Random",
