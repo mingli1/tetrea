@@ -21,7 +21,7 @@ data class Player(
     @Json(name = "battleStats") val battleStats: BattleStats = BattleStats(),
     @Json(name = "quitDuringBattle") var quitDuringBattle: Boolean = false,
     @Json(name = "dodgedBattle") var dodgedBattle: Boolean = false,
-    @Json(name = "skills") val skills: MutableList<String> = mutableListOf()
+    @Json(name = "skills") val skills: MutableList<String> = mutableListOf("", "", "")
 ) {
 
     fun getRecord(key: String) = battleRecords[key] ?: BattleRecord()

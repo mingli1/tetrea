@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.scenes.scene2d.ui.Stack
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
@@ -24,12 +25,18 @@ class SkillSelectScreen(game: TetreaGame) : BaseScreen(game) {
     private val skillSlots = Array(NUM_SKILLS) {
         Image(game.res.getTexture("skill_slot"))
     }
+    private val skillSlotSelects = Array(NUM_SKILLS) {
+        Image(game.res.getTexture("skill_slot_select")).apply { isVisible = false }
+    }
+    private var currSelectedIndex = -1
 
     override fun show() {
         super.show()
 
         parentTable = Table().apply { setFillParent(true) }
         stage.addActor(parentTable)
+
+        updateSkillIcons()
 
         val headerTable = Table().apply {
             background = NinePatchDrawable(game.res.getNinePatch("purple_bg"))
@@ -75,16 +82,30 @@ class SkillSelectScreen(game: TetreaGame) : BaseScreen(game) {
 
     private fun createSkillSlotsTable() {
         game.player.skills.forEachIndexed { index, key ->
-            val skill = game.res.getSkill(key)
-            skillSlots[index].drawable = TextureRegionDrawable(game.res.getTexture(skill.avatar))
+            if (key.isNotEmpty()) {
+                val skill = game.res.getSkill(key)
+                skillSlots[index].drawable = TextureRegionDrawable(game.res.getTexture(skill.avatar))
+            }
         }
 
         val table = Table().apply {
-            add(skillSlots[0]).left()
-            add(skillSlots[1]).padLeft(40f).padRight(40f)
-            add(skillSlots[2]).right()
+            add(Stack().apply {
+                add(skillSlots[0])
+                add(skillSlotSelects[0])
+                onTap { selectSlot(0) }
+            }).left()
+            add(Stack().apply {
+                add(skillSlots[1])
+                add(skillSlotSelects[1])
+                onTap { selectSlot(1) }
+            }).padLeft(40f).padRight(40f)
+            add(Stack().apply {
+                add(skillSlots[2])
+                add(skillSlotSelects[2])
+                onTap { selectSlot(2) }
+            }).right()
         }
-        parentTable.add(table).size(220f, 40f).padTop(16f).padBottom(16f).colspan(2).row()
+        parentTable.add(table).size(220f, 44f).padTop(16f).padBottom(16f).colspan(2).row()
     }
 
     private fun createSkillsTable() {
@@ -93,7 +114,7 @@ class SkillSelectScreen(game: TetreaGame) : BaseScreen(game) {
         }
         table.add(game.res.getLabel("SKILLS", fontScale = 1f))
             .top().left().padTop(8f).padLeft(8f).row()
-        table.add(game.res.getLabel("DRAG AND DROP TO EDIT SKILLS", color = GAME_LIGHT_PURPLE))
+        table.add(game.res.getLabel("SELECT SLOT TO EDIT", color = GAME_LIGHT_PURPLE))
             .expand().top().left().padTop(4f).padLeft(8f).padBottom(8f).row()
 
         val skillContainer = Table()
@@ -115,6 +136,7 @@ class SkillSelectScreen(game: TetreaGame) : BaseScreen(game) {
                     enter = { background = enteredBg },
                     exit = { background = exitedBg }
                 )
+                onTap { updateSkills(skill.id) }
             }
 
             val avatar = Image(game.res.getTexture(skill.avatar))
@@ -141,5 +163,39 @@ class SkillSelectScreen(game: TetreaGame) : BaseScreen(game) {
         table.add(scrollPane)
 
         parentTable.add(table).width(220f).expandY().colspan(2).padBottom(16f)
+    }
+
+    private fun selectSlot(index: Int) {
+        currSelectedIndex = index
+        skillSlotSelects[index].isVisible = true
+        skillSlotSelects.forEachIndexed { i, image ->
+            if (i != index) {
+                image.isVisible = false
+            }
+        }
+    }
+
+    private fun updateSkills(skillId: String) {
+        if (currSelectedIndex == -1) return
+        if (game.player.skills.contains(skillId) && game.player.skills[currSelectedIndex] != skillId) {
+            val prev = game.player.skills[currSelectedIndex]
+            val index = game.player.skills.indexOf(skillId)
+            game.player.skills[currSelectedIndex] = skillId
+            game.player.skills[index] = prev
+        } else {
+            game.player.skills[currSelectedIndex] = skillId
+        }
+        game.saveManager.save()
+
+        updateSkillIcons()
+    }
+
+    private fun updateSkillIcons() {
+        skillSlots.forEachIndexed { index, image ->
+            if (game.player.skills[index].isNotEmpty()) {
+                val skill = game.res.getSkill(game.player.skills[index])
+                image.drawable = TextureRegionDrawable(game.res.getTexture(skill.avatar))
+            }
+        }
     }
 }

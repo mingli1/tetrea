@@ -224,6 +224,7 @@ class Resources : Disposable {
         loadTexture("adventure_button_icon")
         loadTexture("immune_hp_bar")
         loadTexture("skill_slot")
+        loadTexture("skill_slot_select")
 
         loadTexture("enemy_ittzzi")
 
