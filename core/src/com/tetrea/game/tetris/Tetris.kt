@@ -258,13 +258,13 @@ class Tetris(
         }
 
         if (currPiece?.pieceType == PieceType.T && currPiece?.isTwist().default(false)) {
-            applyTSpin(numLinesToClear, b2bBonus)
+            applyTSpin(numLinesToClear, b2bBonus, combo)
             b2b++
             totalB2b++
             if (b2b > 1) screen.scene.spawnB2BParticle(b2b)
             return
         }
-        applyLineClears(numLinesToClear, b2bBonus)
+        applyLineClears(numLinesToClear, b2bBonus, combo)
 
         if (numLinesToClear < 4) b2b = 0
         else {
@@ -533,7 +533,7 @@ class Tetris(
         longRotationTimer = 0f
     }
 
-    private fun applyLineClears(lines: Int, b2b: Int) {
+    private fun applyLineClears(lines: Int, b2b: Int, combo: Int) {
         when (lines) {
             1 -> {
                 stats.numSingle++
@@ -553,12 +553,13 @@ class Tetris(
             4 -> {
                 stats.numQuad++
                 attack += config.attackQuad + b2b
+                if (combo >= 3) attack += (config.attackQuad - 1) * (combo - 1)
                 currLineClearType = LineClearType.Quad
             }
         }
     }
 
-    private fun applyTSpin(lines: Int, b2b: Int) {
+    private fun applyTSpin(lines: Int, b2b: Int, combo: Int) {
         when (lines) {
             1 -> {
                 stats.numTSS++
@@ -568,11 +569,13 @@ class Tetris(
             2 -> {
                 stats.numTSD++
                 attack += config.attackTSD + b2b
+                if (combo >= 3) attack += (config.attackTSD - 1) * (combo - 1)
                 currLineClearType = LineClearType.TSD
             }
             3 -> {
                 stats.numTST++
                 attack += config.attackTST + b2b
+                if (combo >= 3) attack += (config.attackTST - 1) * (combo - 1)
                 currLineClearType = LineClearType.TST
             }
         }

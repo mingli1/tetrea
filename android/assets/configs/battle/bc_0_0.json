@@ -5,26 +5,12 @@
   "enemy": {
     "name": "ABC",
     "avatar": "enemy_ittzzi",
-    "maxHp": 10,
+    "maxHp": 500,
     "attack": 55,
     "defense": 20,
     "speed": 40
   },
   "attackPatterns": [
-    "Defensive", "Cheeser"
-  ],
-  "attackScheme": [
-    {
-      "action": "SolidGarbage",
-      "time": 3.5
-    },
-    {
-      "action": "SolidGarbage",
-      "time": 13.0
-    },
-    {
-      "action": "Random",
-      "numMoves": 4
-    }
+    "Spiker"
   ]
 }
