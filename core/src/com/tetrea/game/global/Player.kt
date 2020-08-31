@@ -6,7 +6,6 @@ import com.tetrea.game.battle.BattleStats
 import com.tetrea.game.battle.MatchHistory
 import com.tetrea.game.util.Int2
 
-const val NUM_SKILLS = 3
 private const val MAX_MATCH_HISTORY_SAVED = 10
 
 data class Player(
@@ -20,8 +19,7 @@ data class Player(
     @Json(name = "matchHistory") val matchHistory: MutableList<MatchHistory> = mutableListOf(),
     @Json(name = "battleStats") val battleStats: BattleStats = BattleStats(),
     @Json(name = "quitDuringBattle") var quitDuringBattle: Boolean = false,
-    @Json(name = "dodgedBattle") var dodgedBattle: Boolean = false,
-    @Json(name = "skills") val skills: MutableList<String> = mutableListOf("", "", "")
+    @Json(name = "dodgedBattle") var dodgedBattle: Boolean = false
 ) {
 
     fun getRecord(key: String) = battleRecords[key] ?: BattleRecord()

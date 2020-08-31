@@ -11,13 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Disposable
-import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.battle.rating.Elo
-import com.tetrea.game.battle.skill.Skill
 import com.tetrea.game.input.TetrisInputType
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.PieceType
@@ -43,7 +40,6 @@ class Resources : Disposable {
     private val ninePatchCache = mutableMapOf<String, NinePatch>()
     private val tetrisConfigCache = mutableMapOf<String, TetrisConfig>()
     private val battleConfigCache = mutableListOf<MutableList<BattleConfig>>()
-    val skillsCache = mutableMapOf<String, Skill>()
     private val tetrisSheet: Array<Array<TextureRegion>>
     private val tetrisButtons: Array<Array<TextureRegion>>
     val titleLetters: Array<TextureRegion>
@@ -63,7 +59,6 @@ class Resources : Disposable {
         loadTextures()
         loadTetrisConfigs()
         loadBattleConfigs()
-        loadSkills()
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)
@@ -77,8 +72,6 @@ class Resources : Disposable {
     fun getTetrisConfig(key: String): TetrisConfig = checkNotNull(tetrisConfigCache[key])
 
     fun getBattleConfigs(worldId: Int): List<BattleConfig> = battleConfigCache[worldId]
-
-    fun getSkill(key: String): Skill = checkNotNull(skillsCache[key])
 
     fun getLabelStyle(color: Color = Color.WHITE) = Label.LabelStyle(font, color)
 
@@ -203,7 +196,6 @@ class Resources : Disposable {
         loadTexture("yellow")
         loadTexture("tetris_buttons")
         loadTexture("tetris_board_bg")
-        loadTexture("skill_slots_bg")
         loadTexture("apm_icon")
         loadTexture("pps_icon")
         loadTexture("battle_bg_sky")
@@ -223,8 +215,6 @@ class Resources : Disposable {
         loadTexture("find_match_button_icon")
         loadTexture("adventure_button_icon")
         loadTexture("immune_hp_bar")
-        loadTexture("skill_slot")
-        loadTexture("skill_slot_select")
 
         loadTexture("enemy_ittzzi")
 
@@ -291,15 +281,6 @@ class Resources : Disposable {
             world.add(config)
         }
         battleConfigCache.add(world)
-    }
-
-    private fun loadSkills() {
-        val listType = Types.newParameterizedType(List::class.java, Skill::class.java)
-        val adapter: JsonAdapter<List<Skill>> = moshi.adapter(listType)
-        val skills = adapter.fromJson(fileString("configs/skill/skills.json")) ?: return
-        skills.forEach {
-            skillsCache[it.id] = it
-        }
     }
 
     override fun dispose() {

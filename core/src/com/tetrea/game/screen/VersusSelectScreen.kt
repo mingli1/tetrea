@@ -71,17 +71,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
         ).apply {
             onTap { navigateTo(HOME_SCREEN) }
         }
-        parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f)
-
-        val skillsButton = game.res.getNinePatchTextButton(
-            text = "SKILLS",
-            key = "purple_button",
-            colorUp = GAME_LIGHT_GRAY_BLUE,
-            colorDown = Color.WHITE
-        ).apply {
-            onTap { navigateTo(SKILL_SELECT_SCREEN) }
-        }
-        parentTable.add(skillsButton).top().right().size(76f, 28f).padTop(6f).row()
+        parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f).row()
 
         val bodyTable = Table().apply {
             add(getButton(

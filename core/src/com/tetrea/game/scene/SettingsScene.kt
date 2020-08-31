@@ -79,7 +79,6 @@ class SettingsScene(
             androidBg = Image(res.getTexture("home_screen_bg")).apply { setPosition(0f, 0f) }
             scoreHeader = Image(res.getTexture("score_header")).apply { setPosition(6f, parentStage.height - 24f) }
             tetrisBoard = Image(res.getTexture("tetris_board_bg")).apply { setPosition(boardX - 66, boardY -1) }
-            tetrisItemSlots = Image(res.getTexture("skill_slots_bg")).apply { setPosition(boardX - 66, boardY - 1) }
             enemyHpBar = Image(res.getTexture("enemy_hp_bar")).apply { setPosition(36f, parentStage.height - 54f) }
 
             TetrisInputType.values().forEach {
