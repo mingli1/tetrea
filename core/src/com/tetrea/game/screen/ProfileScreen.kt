@@ -101,7 +101,7 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         val avatar = Image(game.res.getTexture(game.player.avatar))
         val name = game.res.getLabel(text = game.player.name,fontScale = 1f)
         val rating = game.res.getLabel(
-            text = "RATING: ${game.player.rating.toInt()}",
+            text = "RATING: ${game.player.rating.toInt()} (${game.player.maxRating.toInt()} PEAK)",
             color = GAME_LIGHT_ORANGE
         )
 

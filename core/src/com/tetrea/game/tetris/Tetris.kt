@@ -301,6 +301,7 @@ class Tetris(
         var crit = false
         if (MathUtils.random() <= config.critChance) {
             attack = (attack * config.critMultiplier).toInt()
+            stats.numCrits++
             crit = true
         }
 

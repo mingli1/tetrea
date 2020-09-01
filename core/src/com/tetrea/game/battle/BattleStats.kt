@@ -27,7 +27,8 @@ data class BattleStats(
     @Json(name = "totalDouble") var totalDouble: Int = 0,
     @Json(name = "totalTriple") var totalTriple: Int = 0,
     @Json(name = "totalQuad") var totalQuad: Int = 0,
-    @Json(name = "totalPC") var totalPC: Int = 0
+    @Json(name = "totalPC") var totalPC: Int = 0,
+    @Json(name = "totalCrits") var totalCrits: Int = 0
 ) {
 
     fun getApm() = if (averageApm.isEmpty()) 0f else averageApm.sum() / averageApm.size
@@ -70,6 +71,7 @@ data class BattleStats(
         totalTriple += stats.numTriple
         totalQuad += stats.numQuad
         totalPC += stats.numPC
+        totalCrits += stats.numCrits
     }
 
     fun getLabeledPairs(): Map<String, String> {
@@ -82,6 +84,7 @@ data class BattleStats(
             "TOTAL LINES SENT" to totalLinesSent.toString(),
             "TOTAL ATTACK" to totalAttack.toString(),
             "TOTAL B2B" to totalB2b.toString(),
+            "TOTAL CRITS" to totalCrits.toString(),
             "T-SPIN SINGLES" to totalTSS.toString(),
             "T-SPIN DOUBLES" to totalTSD.toString(),
             "T-SPIN TRIPLES" to totalTST.toString(),

@@ -20,6 +20,7 @@ class TetrisStats {
     var maxCombo = 0
     var numPiecesPlaced = 0
     var numInputs = 0
+    var numCrits = 0
     val attackList = mutableListOf<Int>()
     val apmList = mutableListOf<Float>()
     val ppsList = mutableListOf<Float>()
@@ -35,6 +36,7 @@ class TetrisStats {
             "MAX SPIKE" to maxSpike.toString(),
             "MAX COMBO" to maxCombo.toString(),
             "BACK TO BACKS" to numB2B.toString(),
+            "CRITS" to numCrits.toString(),
             "SINGLES" to numSingle.toString(),
             "DOUBLES" to numDouble.toString(),
             "TRIPLES" to numTriple.toString(),
