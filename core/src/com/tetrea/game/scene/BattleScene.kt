@@ -169,36 +169,28 @@ class BattleScene(
         )
         stage.addActor(timeLabel)
 
-        stage.addActor(Image(res.getTexture("apm_icon")).apply {
-            x = boardX - 6f
-            y = boardY - 26f
-        })
         stage.addActor(res.getLabel(
             "APM",
-            x = boardX + 16f,
-            y = boardY - 18f,
+            x = boardX - 62f,
+            y = boardY + 168f,
             fontScale = 0.5f
         ))
         apmLabel = res.getLabel(
-            x = boardX + 16f,
-            y = boardY - 22f,
+            x = boardX - 62f,
+            y = boardY + 164,
             fontScale = 1f
         )
         stage.addActor(apmLabel)
 
-        stage.addActor(Image(res.getTexture("pps_icon")).apply {
-            x = boardX + 72f
-            y = boardY - 26f
-        })
         stage.addActor(res.getLabel(
             "PPS",
-            x = boardX + 90f,
-            y = boardY - 18f,
+            x = boardX - 62f,
+            y = boardY + 134f,
             fontScale = 0.5f
         ))
         ppsLabel = res.getLabel(
-            x = boardX + 90f,
-            y = boardY - 22f,
+            x = boardX - 62f,
+            y = boardY + 130f,
             fontScale = 1f
         )
         stage.addActor(ppsLabel)
