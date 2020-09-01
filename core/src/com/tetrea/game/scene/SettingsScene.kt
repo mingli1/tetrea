@@ -71,6 +71,7 @@ class SettingsScene(
     init {
         createControlsSection()
         createTuningSection()
+        createMiscSection()
 
         if (isAndroid()) {
             val boardX = parentStage.width / 2 - (10 * SQUARE_SIZE) / 2f + 3
@@ -240,7 +241,30 @@ class SettingsScene(
         }
         tuningTable.add(sdsSlider).size(204f, 24f).padTop(4f).padBottom(4f).row()
 
-        add(tuningTable).width(220f).padBottom(24f).row()
+        add(tuningTable).width(220f).padBottom(16f).row()
+    }
+
+    private fun createMiscSection() {
+        val miscTable = Table().apply {
+            background = NinePatchDrawable(res.getNinePatch("gray_blue_bg"))
+        }
+
+        miscTable.add(
+            res.getLabel(text = "MISC", color = GAME_DARK_GRAY_BLUE, fontScale = 1f)
+        ).expand().top().left().padTop(8f).padLeft(8f).padBottom(4f).row()
+
+        val showFpsLabel = res.getLabel("SHOW FPS", color = GAME_LIGHT_GRAY_BLUE)
+        val showFpsCheckBox = res.getCheckBox().apply {
+            isChecked = settings.showFps
+            onChange {
+                settings.showFps = this.isChecked
+                saveManager.save()
+            }
+        }
+        miscTable.add(showFpsLabel).expandX().padLeft(8f).left()
+        miscTable.add(showFpsCheckBox).expandX().padRight(8f).padBottom(4f).right()
+
+        add(miscTable).width(220f).padBottom(24f).row()
     }
 
     private fun addKeyBinding(type: TetrisInputType) {

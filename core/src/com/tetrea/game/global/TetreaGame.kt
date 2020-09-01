@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
+import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SaveManager
@@ -32,8 +33,9 @@ class TetreaGame : Game() {
         player = saveManager.saveData.player
         settings = saveManager.saveData.settings
 
-        if (IS_DEBUG) {
-            fpsLabel = res.getLabel().apply { setPosition(5f, 5f) }
+        fpsLabel = res.getLabel().apply {
+            setPosition(5f, 5f)
+            touchable = Touchable.disabled
         }
 
         updateScreen(screenManager.getScreen(HOME_SCREEN))
@@ -57,9 +59,8 @@ class TetreaGame : Game() {
 
     override fun render() {
         screen.render(min(DELTA_TIME_BOUND, Gdx.graphics.deltaTime))
-        if (IS_DEBUG) {
-            fpsLabel.setText("${Gdx.graphics.framesPerSecond} fps")
-        }
+        if (settings.showFps) fpsLabel.setText("${Gdx.graphics.framesPerSecond} fps")
+        fpsLabel.isVisible = settings.showFps
     }
 
     override fun dispose() {

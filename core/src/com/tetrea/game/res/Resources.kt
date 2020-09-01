@@ -159,6 +159,15 @@ class Resources : Disposable {
         }
     }
 
+    fun getCheckBox(): CheckBox {
+        val style = CheckBox.CheckBoxStyle().apply {
+            checkboxOn = TextureRegionDrawable(getTexture("settings_checkbox_on"))
+            checkboxOff = TextureRegionDrawable(getTexture("settings_checkbox_off"))
+            font = this@Resources.font
+        }
+        return CheckBox("", style)
+    }
+
     fun getSquare(pieceType: PieceType) = tetrisSheet[0][pieceType.index]
 
     fun getGhost(pieceType: PieceType) = tetrisSheet[1][pieceType.index - 2]
@@ -215,6 +224,8 @@ class Resources : Disposable {
         loadTexture("find_match_button_icon")
         loadTexture("adventure_button_icon")
         loadTexture("immune_hp_bar")
+        loadTexture("settings_checkbox_off")
+        loadTexture("settings_checkbox_on")
 
         loadTexture("enemy_ittzzi")
 

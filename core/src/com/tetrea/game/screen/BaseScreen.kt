@@ -8,7 +8,6 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Disposable
 import com.badlogic.gdx.utils.viewport.ExtendViewport
 import com.badlogic.gdx.utils.viewport.Viewport
-import com.tetrea.game.global.IS_DEBUG
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.global.V_HEIGHT
 import com.tetrea.game.global.V_WIDTH
@@ -63,7 +62,7 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
     fun isPaused() = gameState == GameState.Pause
 
     override fun show() {
-        if (IS_DEBUG) stage.addActor(game.fpsLabel)
+        stage.addActor(game.fpsLabel)
 
         if (shouldFade) {
             transition = Transition.FadeIn

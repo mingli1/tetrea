@@ -43,5 +43,6 @@ data class Settings(
     ),
     @Json(name = "das") var das: Float = 0.167f,
     @Json(name = "arr") var arr: Float = 0.033f,
-    @Json(name = "sds") var sds: Float = 0.045f
+    @Json(name = "sds") var sds: Float = 0.045f,
+    @Json(name = "showFps") var showFps: Boolean = false
 )

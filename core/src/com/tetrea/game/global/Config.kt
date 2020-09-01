@@ -17,6 +17,4 @@ const val BG_FPS = 10
 const val FG_FPS = 60
 const val DELTA_TIME_BOUND = 1 / 30f
 
-const val IS_DEBUG = true
-
 fun isAndroid() = Gdx.app.type == Application.ApplicationType.Android
