@@ -31,17 +31,17 @@ class TetreaGame : Game() {
         res = Resources()
         saveManager = SaveManager(res)
         screenManager = ScreenManager(this)
-        musicManager = MusicManager(res)
 
         player = saveManager.saveData.player
         settings = saveManager.saveData.settings
+
+        musicManager = MusicManager(res, settings)
+        musicManager.startBackgroundMusic()
 
         fpsLabel = res.getLabel().apply {
             setPosition(5f, 5f)
             touchable = Touchable.disabled
         }
-
-        musicManager.startBackgroundMusic()
 
         updateScreen(screenManager.getScreen(HOME_SCREEN))
     }
@@ -60,6 +60,11 @@ class TetreaGame : Game() {
 
     override fun pause() {
         currentScreen?.notifyPause()
+        musicManager.pauseBackgroundMusic()
+    }
+
+    override fun resume() {
+        musicManager.resumeBackgroundMusic()
     }
 
     override fun render() {

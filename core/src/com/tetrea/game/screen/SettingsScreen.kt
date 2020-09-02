@@ -37,7 +37,7 @@ class SettingsScreen(game: TetreaGame) : BaseScreen(game) {
         }
         parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f).row()
 
-        val settingsTable = SettingsScene(game.res, game.settings, game.saveManager, stage)
+        val settingsTable = SettingsScene(game.res, game.settings, game.saveManager, game.musicManager, stage)
         val scrollPane = ScrollPane(settingsTable).apply {
             setOverscroll(false, false)
             setCancelTouchFocus(false)

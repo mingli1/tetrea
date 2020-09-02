@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.DragListener
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
-import com.tetrea.game.extension.onChange
-import com.tetrea.game.extension.onTap
-import com.tetrea.game.extension.setRelativePosition
-import com.tetrea.game.extension.toMillis
+import com.tetrea.game.extension.*
 import com.tetrea.game.global.Settings
 import com.tetrea.game.global.isAndroid
 import com.tetrea.game.input.TetrisInputType
@@ -25,6 +22,7 @@ class SettingsScene(
     private val res: Resources,
     private val settings: Settings,
     private val saveManager: SaveManager,
+    private val musicManager: MusicManager,
     private val parentStage: Stage
 ) : Table() {
 
@@ -71,6 +69,7 @@ class SettingsScene(
     init {
         createControlsSection()
         createTuningSection()
+        createAudioSection()
         createMiscSection()
 
         if (isAndroid()) {
@@ -244,6 +243,69 @@ class SettingsScene(
         add(tuningTable).width(220f).padBottom(16f).row()
     }
 
+    private fun createAudioSection() {
+        val audioTable = Table().apply {
+            background = NinePatchDrawable(res.getNinePatch("gray_blue_bg"))
+        }
+
+        audioTable.add(
+            res.getLabel(text = "AUDIO", color = GAME_DARK_GRAY_BLUE, fontScale = 1f)
+        ).expand().top().left().padTop(8f).padLeft(8f).padBottom(4f).row()
+
+        val musicLabel = res.getLabel(text = "MUSIC VOLUME: ${settings.musicVolume.formatPercent()}")
+        audioTable.add(musicLabel).expandX().left().padLeft(8f).row()
+        val musicSlider = res.getSlider(0f, 100f, 1f, "settings_slider_bg").apply {
+            value = settings.musicVolume * 100f
+            onChange {
+                musicLabel.setText("MUSIC VOLUME: ${(value / 100f).formatPercent()}")
+                settings.musicVolume = value / 100f
+                if (!isDragging) {
+                    saveManager.save()
+                    musicManager.setVolume(settings.musicVolume)
+                }
+            }
+        }
+        audioTable.add(musicSlider).size(204f, 24f).padTop(4f).padBottom(4f).colspan(2).row()
+
+        val soundLabel = res.getLabel(text = "SOUND VOLUME: ${settings.soundVolume.formatPercent()}")
+        audioTable.add(soundLabel).expandX().left().padLeft(8f).row()
+        val soundSlider = res.getSlider(0f, 100f, 1f, "settings_slider_bg").apply {
+            value = settings.soundVolume * 100f
+            onChange {
+                soundLabel.setText("SOUND VOLUME: ${(value / 100f).formatPercent()}")
+                settings.soundVolume = value / 100f
+                if (!isDragging) saveManager.save()
+            }
+        }
+        audioTable.add(soundSlider).size(204f, 24f).padTop(4f).padBottom(4f).colspan(2).row()
+
+        val muteMusicLabel = res.getLabel("MUTE MUSIC", color = GAME_LIGHT_GRAY_BLUE)
+        val muteMusicCheckBox = res.getCheckBox().apply {
+            isChecked = settings.muteMusic
+            onChange {
+                settings.muteMusic = this.isChecked
+                saveManager.save()
+                if (settings.muteMusic) musicManager.mute()
+                else musicManager.unmute()
+            }
+        }
+        audioTable.add(muteMusicLabel).expandX().padLeft(8f).left()
+        audioTable.add(muteMusicCheckBox).expandX().padRight(8f).padBottom(4f).right().row()
+
+        val muteSoundLabel = res.getLabel("MUTE SOUND", color = GAME_LIGHT_GRAY_BLUE)
+        val muteSoundCheckBox = res.getCheckBox().apply {
+            isChecked = settings.muteSound
+            onChange {
+                settings.muteSound = this.isChecked
+                saveManager.save()
+            }
+        }
+        audioTable.add(muteSoundLabel).expandX().padLeft(8f).left()
+        audioTable.add(muteSoundCheckBox).expandX().padRight(8f).padBottom(4f).right().row()
+
+        add(audioTable).width(220f).padBottom(16f).row()
+    }
+
     private fun createMiscSection() {
         val miscTable = Table().apply {
             background = NinePatchDrawable(res.getNinePatch("gray_blue_bg"))
@@ -268,7 +330,7 @@ class SettingsScene(
     }
 
     private fun addKeyBinding(type: TetrisInputType) {
-        val label = res.getLabel(text = type.str, color = GAME_LIGHT_GRAY_BLUE, fontScale = 1f)
+        val label = res.getLabel(text = type.str, color = GAME_LIGHT_GRAY_BLUE)
         val key = Input.Keys.toString(settings.keyBindingsInverse[type] ?: 0).toUpperCase(Locale.ROOT)
         val keyButton = res.getNinePatchTextButton(
             text = key,

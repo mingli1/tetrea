@@ -44,5 +44,9 @@ data class Settings(
     @Json(name = "das") var das: Float = 0.167f,
     @Json(name = "arr") var arr: Float = 0.033f,
     @Json(name = "sds") var sds: Float = 0.045f,
-    @Json(name = "showFps") var showFps: Boolean = false
+    @Json(name = "showFps") var showFps: Boolean = false,
+    @Json(name = "musicVolume") var musicVolume: Float = 0.5f,
+    @Json(name = "soundVolume") var soundVolume: Float = 0.5f,
+    @Json(name = "muteMusic") var muteMusic: Boolean = false,
+    @Json(name = "muteSound") var muteSound: Boolean = false
 )

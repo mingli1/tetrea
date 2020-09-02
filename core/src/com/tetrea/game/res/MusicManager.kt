@@ -1,12 +1,18 @@
 package com.tetrea.game.res
 
 import com.badlogic.gdx.audio.Music
+import com.tetrea.game.global.Settings
 
-class MusicManager(private val res: Resources) {
+class MusicManager(private val res: Resources, private val settings: Settings) {
 
     private var currBgMusic: Music? = null
 
     fun startBackgroundMusic() {
+        if (settings.muteMusic) {
+            mute()
+        } else {
+            setVolume(settings.musicVolume)
+        }
         res.bgMusic.shuffle()
         currBgMusic = res.bgMusic[0]
 
@@ -35,4 +41,8 @@ class MusicManager(private val res: Resources) {
         res.bgMusic.forEach { it.volume = volume }
         res.battleMusic.forEach { it.volume = volume }
     }
+
+    fun mute() = setVolume(0f)
+
+    fun unmute() = setVolume(settings.musicVolume)
 }
