@@ -240,6 +240,7 @@ class Resources : Disposable {
 
         loadTexture("white")
         loadTexture("black")
+        loadTexture("black_75_opacity")
         loadTexture("black_100_opacity")
         loadTexture("black_150_opacity")
         loadTexture("transparent")

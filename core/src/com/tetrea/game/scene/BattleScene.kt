@@ -283,6 +283,7 @@ class BattleScene(
     }
 
     fun render(batch: Batch) {
+        batch.draw(res.getTexture("black_75_opacity"), 0f, 0f, stage.width, stage.height)
         batch.draw(res.getTexture("score_header"), 6f, stage.height - 24f)
         batch.draw(res.getTexture("tetris_board_bg"), boardX - 66, boardY - 1)
         batch.draw(res.getTexture("enemy_hp_bar"), 36f, stage.height - 54f)
