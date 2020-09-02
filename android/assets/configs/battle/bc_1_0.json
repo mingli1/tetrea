@@ -1,0 +1,16 @@
+{
+  "worldId": 1,
+  "levelId": 0,
+  "bestOf": 1,
+  "enemy": {
+    "name": "ABC",
+    "avatar": "enemy_ittzzi",
+    "maxHp": 500,
+    "attack": 55,
+    "defense": 20,
+    "speed": 40
+  },
+  "attackPatterns": [
+    "Spiker"
+  ]
+}

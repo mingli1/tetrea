@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.extension.onClick
@@ -34,12 +35,18 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
     private lateinit var headerTable: Table
     private lateinit var scrollPane: ScrollPane
     private lateinit var selectionTable: Table
+    private lateinit var levelsTable: Table
     private lateinit var selectionBg: Image
     private val selectionDialog = SelectionDialog(game.res, this, false)
     private var playerVersusCard: VersusCard? = null
     private var enemyVersusCard: VersusCard? = null
     private lateinit var versusTag: Image
     private lateinit var bestOfText: Label
+    private lateinit var worldLabel: Label
+
+    private var selectedWorldId = game.player.currWorldId
+    private lateinit var leftWorldSelectButton: ImageButton
+    private lateinit var rightWorldSelectButton: ImageButton
 
     override fun show() {
         super.show()
@@ -47,16 +54,28 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
         parentTable = Table().apply { setFillParent(true) }
         stage.addActor(parentTable)
 
+        worldLabel = game.res.getLabel("WORLD ${selectedWorldId + 1}", fontScale = 1f)
+
         headerTable = Table().apply {
             background = NinePatchDrawable(game.res.getNinePatch("purple_bg"))
-            add(game.res.getLabel("CHOOSE A MATCHUP", fontScale = 1f)).padBottom(2f).row()
+            add(worldLabel).padBottom(2f).row()
             add(game.res.getLabel("YOUR RATING: ${game.player.rating.toInt()}", color = GAME_YELLOW))
         }
 
         parentTable.add(headerTable).size(220f, 44f).top().padTop(16f).colspan(2).row()
         createBackButton()
         createHelpButton()
-        populateSelections()
+        createWorldSelectButtons()
+
+        levelsTable = Table()
+        setLevelsTable()
+        scrollPane = ScrollPane(levelsTable).apply {
+            setOverscroll(false, false)
+            fadeScrollBars = false
+            layout()
+        }
+        scrollToCurrentLevel()
+        parentTable.add(scrollPane).expandY().colspan(2).top().padTop(16f)
 
         selectionBg = Image(game.res.getTexture("black_150_opacity")).apply {
             setSize(this@LevelSelectScreen.stage.width, this@LevelSelectScreen.stage.height)
@@ -109,7 +128,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
         game.batch.begin()
         if (transition == Transition.None) game.batch.color = Color.WHITE
 
-        game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
+        game.batch.draw(game.res.getTexture("world_${selectedWorldId}_bg"), 0f, 0f)
 
         game.batch.end()
 
@@ -180,16 +199,29 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
         parentTable.add(helpButton).top().right().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).row()
     }
 
-    private fun populateSelections() {
-        // todo: implement multiple worlds
-        val selectionTable = Table()
-        val currWorldId = 0
-        val configs = game.res.getBattleConfigs(currWorldId)
+    private fun createWorldSelectButtons() {
+        leftWorldSelectButton = getWorldSelectButton(true).apply {
+            setPosition(4f, this@LevelSelectScreen.stage.height / 2 - 55f / 2)
+            isVisible = selectedWorldId > 0
+            onTap { onWorldSelectButtonClicked(true) }
+        }
+        stage.addActor(leftWorldSelectButton)
+        rightWorldSelectButton = getWorldSelectButton(false).apply {
+            setPosition(this@LevelSelectScreen.stage.width - 4f - 27f, this@LevelSelectScreen.stage.height / 2 - 55f / 2)
+            isVisible = selectedWorldId < NUM_WORLDS - 1
+            onTap { onWorldSelectButtonClicked(false) }
+        }
+        stage.addActor(rightWorldSelectButton)
+    }
+
+    private fun setLevelsTable() {
+        levelsTable.clear()
+        val configs = game.res.getBattleConfigs(selectedWorldId)
 
         configs.forEachIndexed { levelId, config ->
             val selectionState = when {
-                currWorldId < game.player.currWorldId || levelId < game.player.currLevelId -> SelectionState.Completed
-                levelId == game.player.currLevelId -> SelectionState.Active
+                selectedWorldId < game.player.currWorldId || (levelId < game.player.currLevelId && selectedWorldId == game.player.currWorldId) -> SelectionState.Completed
+                levelId == game.player.currLevelId && selectedWorldId == game.player.currWorldId -> SelectionState.Active
                 else -> SelectionState.Locked
             }
 
@@ -253,23 +285,15 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
             val rating = game.res.getLabel(
                 text = if (selectionState == SelectionState.Completed || selectionState == SelectionState.Active)
                     "RATING: ${config.enemy.rating.toInt()}"
-                    else "RATING: ???",
+                else "RATING: ???",
                 color = GAME_ORANGE
             )
             textTable.add(rating).top().left().padBottom(2f)
 
             table.add(textTable).padTop(6f).padLeft(10f).top().left().expand().row()
 
-            selectionTable.add(table).size(195f, 60f).padBottom(16f).row()
+            levelsTable.add(table).size(195f, 60f).padBottom(16f).row()
         }
-
-        scrollPane = ScrollPane(selectionTable).apply {
-            setOverscroll(false, false)
-            fadeScrollBars = false
-            layout()
-        }
-        scrollPane.scrollTo(0f, 72f * (configs.size - game.player.currLevelId), 195f, 60f)
-        parentTable.add(scrollPane).expandY().colspan(2).top().padTop(16f)
     }
 
     private fun showSelectionDialog(config: BattleConfig, selectionState: SelectionState) {
@@ -291,5 +315,36 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
             Actions.run { selectionBg.isVisible = false }))
         selectionTable.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(DIALOG_FADE_DURATION),
             Actions.run { selectionTable.isVisible = false }))
+    }
+
+    private fun getWorldSelectButton(isLeft: Boolean): ImageButton {
+        val key = if (isLeft) "left" else "right"
+        val style = ImageButton.ImageButtonStyle().apply {
+            imageUp = TextureRegionDrawable(game.res.getTexture("world_select_arrow_${key}_up"))
+            imageDown = TextureRegionDrawable(game.res.getTexture("world_select_arrow_${key}_down"))
+            imageOver = TextureRegionDrawable(game.res.getTexture("world_select_arrow_${key}_down"))
+        }
+        return ImageButton(style)
+    }
+
+    private fun onWorldSelectButtonClicked(isLeft: Boolean) {
+        if (isLeft) selectedWorldId--
+        else selectedWorldId++
+
+        leftWorldSelectButton.isVisible = selectedWorldId > 0
+        rightWorldSelectButton.isVisible = selectedWorldId < NUM_WORLDS - 1
+
+        worldLabel.setText("WORLD ${selectedWorldId + 1}")
+
+        setLevelsTable()
+        scrollToCurrentLevel()
+    }
+
+    private fun scrollToCurrentLevel() {
+        if (selectedWorldId == game.player.currWorldId) {
+            scrollPane.scrollTo(0f, 72f * (game.res.getBattleConfigs(selectedWorldId).size - game.player.currLevelId), 195f, 60f)
+        } else {
+            scrollPane.scrollY = 0f
+        }
     }
 }

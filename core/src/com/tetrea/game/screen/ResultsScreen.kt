@@ -120,7 +120,9 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         game.batch.begin()
         if (transition == Transition.None) game.batch.color = Color.WHITE
 
-        game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
+        val bgKey = if (config.isMatchmaking) "home_screen_bg" else "world_${config.worldId}_bg"
+        game.batch.draw(game.res.getTexture(bgKey), 0f, 0f)
+        if (config.isMatchmaking) game.batch.draw(game.res.getTexture("home_screen_overlay"), 0f, 0f)
         game.batch.draw(game.res.getTexture("black_100_opacity"), 0f, 0f, stage.width, stage.height)
 
         game.batch.end()

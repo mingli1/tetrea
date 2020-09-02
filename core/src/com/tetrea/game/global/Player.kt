@@ -4,7 +4,10 @@ import com.squareup.moshi.Json
 import com.tetrea.game.battle.BattleRecord
 import com.tetrea.game.battle.BattleStats
 import com.tetrea.game.battle.MatchHistory
+import com.tetrea.game.res.NUM_LEVELS
+import com.tetrea.game.res.NUM_WORLDS
 import com.tetrea.game.util.Int2
+import kotlin.math.max
 
 private const val MAX_MATCH_HISTORY_SAVED = 10
 
@@ -59,7 +62,14 @@ data class Player(
         battleRecords[key]?.let {
             if (won) {
                 it.defeated = true
-                if (it.bestScore == null) currLevelId++
+                if (it.bestScore == null) {
+                    val maxLevel = NUM_LEVELS[currWorldId]
+                    if (currLevelId + 1 < maxLevel) currLevelId++
+                    else if (currWorldId + 1 < NUM_WORLDS) {
+                        currWorldId++
+                        currLevelId = 0
+                    }
+                }
                 it.allTimeRecord.x++
             } else {
                 it.allTimeRecord.y++
@@ -73,6 +83,5 @@ data class Player(
             }
             it.attempts++
         }
-        // todo: increment world id
     }
 }

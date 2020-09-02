@@ -70,7 +70,7 @@ fun Actor.setRelativePosition(pos: RelativePosition, stage: Stage) {
     )
 }
 
-fun Slider.onChange(block: () -> Unit) {
+fun Actor.onChange(block: () -> Unit) {
     addListener(object : ChangeListener() {
         override fun changed(event: ChangeEvent?, actor: Actor?) {
             block()

@@ -28,6 +28,9 @@ const val TETRIS_BUTTON_SIZE = 40
 private const val BUTTON_UP_KEY = "_up"
 private const val BUTTON_DOWN_KEY = "_down"
 
+const val NUM_WORLDS = 3
+val NUM_LEVELS = arrayOf(8, 5, 5)
+
 class Resources : Disposable {
 
     private val assetManager = AssetManager()
@@ -207,7 +210,9 @@ class Resources : Disposable {
         loadTexture("tetris_board_bg")
         loadTexture("apm_icon")
         loadTexture("pps_icon")
-        loadTexture("battle_bg_sky")
+        loadTexture("world_0_bg")
+        loadTexture("world_1_bg")
+        loadTexture("world_2_bg")
         loadTexture("score_header")
         loadTexture("enemy_hp_bar")
         loadTexture("bar_decay")
@@ -226,6 +231,10 @@ class Resources : Disposable {
         loadTexture("immune_hp_bar")
         loadTexture("settings_checkbox_off")
         loadTexture("settings_checkbox_on")
+        loadTexture("world_select_arrow_right_up")
+        loadTexture("world_select_arrow_right_down")
+        loadTexture("world_select_arrow_left_up")
+        loadTexture("world_select_arrow_left_down")
 
         loadTexture("enemy_ittzzi")
 
@@ -284,14 +293,17 @@ class Resources : Disposable {
 
     private fun loadBattleConfigs() {
         val adapter = moshi.adapter(BattleConfig::class.java)
-        val world = mutableListOf<BattleConfig>()
-        for (level in 0 until 8) {
-            val config = adapter.fromJson(fileString("configs/battle/bc_0_$level.json")) ?: return
-            val rating = Elo.getRating(config.enemy)
-            config.enemy.rating = rating
-            world.add(config)
+
+        for (world in 0 until NUM_WORLDS) {
+            val worlds = mutableListOf<BattleConfig>()
+            for (level in 0 until NUM_LEVELS[world]) {
+                val config = adapter.fromJson(fileString("configs/battle/bc_${world}_$level.json")) ?: return
+                val rating = Elo.getRating(config.enemy)
+                config.enemy.rating = rating
+                worlds.add(config)
+            }
+            battleConfigCache.add(worlds)
         }
-        battleConfigCache.add(world)
     }
 
     override fun dispose() {

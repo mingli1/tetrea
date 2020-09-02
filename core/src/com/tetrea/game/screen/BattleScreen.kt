@@ -87,7 +87,10 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         game.batch.begin()
         if (transition == Transition.None) game.batch.color = Color.WHITE
 
-        game.batch.draw(game.res.getTexture("battle_bg_sky"), 0f, 0f)
+        val bgKey = if (battleConfig.isMatchmaking) "home_screen_bg" else "world_${battleConfig.worldId}_bg"
+        game.batch.draw(game.res.getTexture(bgKey), 0f, 0f)
+        if (battleConfig.isMatchmaking) game.batch.draw(game.res.getTexture("home_screen_overlay"), 0f, 0f)
+
         scene.render(game.batch)
 
         game.batch.end()
