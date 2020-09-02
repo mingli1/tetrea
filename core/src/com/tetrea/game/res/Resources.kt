@@ -2,6 +2,7 @@ package com.tetrea.game.res
 
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
+import com.badlogic.gdx.audio.Music
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
@@ -43,6 +44,8 @@ class Resources : Disposable {
     private val ninePatchCache = mutableMapOf<String, NinePatch>()
     private val tetrisConfigCache = mutableMapOf<String, TetrisConfig>()
     private val battleConfigCache = mutableListOf<MutableList<BattleConfig>>()
+    val bgMusic = mutableListOf<Music>()
+    val battleMusic = mutableListOf<Music>()
     private val tetrisSheet: Array<Array<TextureRegion>>
     private val tetrisButtons: Array<Array<TextureRegion>>
     val titleLetters: Array<TextureRegion>
@@ -51,6 +54,16 @@ class Resources : Disposable {
 
     init {
         assetManager.load("textures.atlas", TextureAtlas::class.java)
+        assetManager.load("music/bg_a.ogg", Music::class.java)
+        assetManager.load("music/bg_b.ogg", Music::class.java)
+        assetManager.load("music/bg_c.ogg", Music::class.java)
+        assetManager.load("music/bg_d.ogg", Music::class.java)
+        assetManager.load("music/bg_e.ogg", Music::class.java)
+        assetManager.load("music/bg_f.ogg", Music::class.java)
+        assetManager.load("music/battle_a.ogg", Music::class.java)
+        assetManager.load("music/battle_b.ogg", Music::class.java)
+        assetManager.load("music/battle_c.ogg", Music::class.java)
+        assetManager.load("music/battle_d.ogg", Music::class.java)
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures.atlas", TextureAtlas::class.java)
@@ -62,6 +75,7 @@ class Resources : Disposable {
         loadTextures()
         loadTetrisConfigs()
         loadBattleConfigs()
+        loadMusic()
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)
@@ -307,9 +321,27 @@ class Resources : Disposable {
         }
     }
 
+    private fun loadMusic() {
+        bgMusic.add(assetManager.get("music/bg_a.ogg", Music::class.java))
+        bgMusic.add(assetManager.get("music/bg_b.ogg", Music::class.java))
+        bgMusic.add(assetManager.get("music/bg_c.ogg", Music::class.java))
+        bgMusic.add(assetManager.get("music/bg_d.ogg", Music::class.java))
+        bgMusic.add(assetManager.get("music/bg_e.ogg", Music::class.java))
+        bgMusic.add(assetManager.get("music/bg_f.ogg", Music::class.java))
+
+        battleMusic.add(assetManager.get("music/battle_a.ogg", Music::class.java))
+        battleMusic.add(assetManager.get("music/battle_b.ogg", Music::class.java))
+        battleMusic.add(assetManager.get("music/battle_c.ogg", Music::class.java))
+        battleMusic.add(assetManager.get("music/battle_d.ogg", Music::class.java))
+
+        battleMusic.forEach { it.isLooping = true }
+    }
+
     override fun dispose() {
         assetManager.dispose()
         atlas.dispose()
         font.dispose()
+        bgMusic.forEach { it.dispose() }
+        battleMusic.forEach { it.dispose() }
     }
 }

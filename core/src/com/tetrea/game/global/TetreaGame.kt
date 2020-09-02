@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.tetrea.game.res.MusicManager
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SaveManager
 import com.tetrea.game.screen.*
@@ -17,6 +18,7 @@ class TetreaGame : Game() {
     lateinit var res: Resources
     lateinit var saveManager: SaveManager
     lateinit var screenManager: ScreenManager
+    lateinit var musicManager: MusicManager
     lateinit var player: Player
     lateinit var settings: Settings
 
@@ -29,6 +31,7 @@ class TetreaGame : Game() {
         res = Resources()
         saveManager = SaveManager(res)
         screenManager = ScreenManager(this)
+        musicManager = MusicManager(res)
 
         player = saveManager.saveData.player
         settings = saveManager.saveData.settings
@@ -37,6 +40,8 @@ class TetreaGame : Game() {
             setPosition(5f, 5f)
             touchable = Touchable.disabled
         }
+
+        musicManager.startBackgroundMusic()
 
         updateScreen(screenManager.getScreen(HOME_SCREEN))
     }
