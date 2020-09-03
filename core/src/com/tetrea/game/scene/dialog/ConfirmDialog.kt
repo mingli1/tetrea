@@ -2,6 +2,7 @@ package com.tetrea.game.scene.dialog
 
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.res.Resources
+import com.tetrea.game.res.SoundManager
 
 private const val WINDOW_MIN_HEIGHT = 120f
 private const val BUTTON_WIDTH = 80f
@@ -16,6 +17,7 @@ class ConfirmDialog(
     private val affirmative: () -> Unit,
     private val dismissive: () -> Unit,
     res: Resources,
+    soundManager: SoundManager,
     affirmativeText: String = "YES",
     dismissiveText: String = "NO",
     windowStyleKey: String = "gray_blue_bg",
@@ -23,7 +25,8 @@ class ConfirmDialog(
 ) : BaseModalDialog(
     title,
     res.getNinePatchWindowStyle(windowStyleKey),
-    res
+    res,
+    soundManager
 ) {
 
     init {
@@ -46,6 +49,7 @@ class ConfirmDialog(
     }
 
     override fun result(obj: Any) {
+        super.result(obj)
         if (obj == AFFIRMATIVE_TAG) affirmative()
         else if (obj == DISMISSIVE_TAG) dismissive()
     }

@@ -3,6 +3,7 @@ package com.tetrea.game.scene.dialog
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.tetrea.game.res.Resources
+import com.tetrea.game.res.SoundManager
 import com.tetrea.game.screen.BaseScreen
 import com.tetrea.game.screen.BattleScreen
 
@@ -18,13 +19,15 @@ private const val QUIT = "QUIT"
 
 class PauseDialog(
     res: Resources,
+    soundManager: SoundManager,
     private val screen: BaseScreen,
     windowStyleKey: String = "gray_blue_bg",
     buttonStyleKey: String = "gray_blue_button"
 ) : BaseModalDialog(
     "PAUSED",
     res.getNinePatchWindowStyle(windowStyleKey),
-    res
+    res,
+    soundManager
 ) {
 
     private val confirmDialog: ConfirmDialog
@@ -47,6 +50,7 @@ class PauseDialog(
             this::exit,
             this::dismissConfirmDialog,
             res,
+            soundManager,
             windowStyleKey = windowStyleKey,
             buttonStyleKey = buttonStyleKey
         )
@@ -60,6 +64,7 @@ class PauseDialog(
     }
 
     override fun result(obj: Any) {
+        super.result(obj)
         when (obj) {
             RESUME, SETTINGS -> screen.notifyResume()
             QUIT -> {

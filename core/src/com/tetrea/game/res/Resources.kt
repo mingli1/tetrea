@@ -3,6 +3,7 @@ package com.tetrea.game.res
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.assets.AssetManager
 import com.badlogic.gdx.audio.Music
+import com.badlogic.gdx.audio.Sound
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
 import com.badlogic.gdx.graphics.g2d.NinePatch
@@ -44,6 +45,7 @@ class Resources : Disposable {
     private val ninePatchCache = mutableMapOf<String, NinePatch>()
     private val tetrisConfigCache = mutableMapOf<String, TetrisConfig>()
     private val battleConfigCache = mutableListOf<MutableList<BattleConfig>>()
+    val sounds = mutableMapOf<String, Sound>()
     val bgMusic = mutableListOf<Music>()
     val battleMusic = mutableListOf<Music>()
     private val tetrisSheet: Array<Array<TextureRegion>>
@@ -54,6 +56,7 @@ class Resources : Disposable {
 
     init {
         assetManager.load("textures.atlas", TextureAtlas::class.java)
+
         assetManager.load("music/bg_a.ogg", Music::class.java)
         assetManager.load("music/bg_b.ogg", Music::class.java)
         assetManager.load("music/bg_c.ogg", Music::class.java)
@@ -64,6 +67,11 @@ class Resources : Disposable {
         assetManager.load("music/battle_b.ogg", Music::class.java)
         assetManager.load("music/battle_c.ogg", Music::class.java)
         assetManager.load("music/battle_d.ogg", Music::class.java)
+
+        assetManager.load("sound/std_button_click.ogg", Sound::class.java)
+        assetManager.load("sound/sec_button_click.ogg", Sound::class.java)
+        assetManager.load("sound/checkbox_click.ogg", Sound::class.java)
+
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures.atlas", TextureAtlas::class.java)
@@ -76,6 +84,7 @@ class Resources : Disposable {
         loadTetrisConfigs()
         loadBattleConfigs()
         loadMusic()
+        loadSounds()
 
         tetrisSheet = getTexture("tetris").split(SQUARE_SIZE, SQUARE_SIZE)
         tetrisButtons = getTexture("tetris_buttons").split(TETRIS_BUTTON_SIZE, TETRIS_BUTTON_SIZE)
@@ -337,11 +346,18 @@ class Resources : Disposable {
         battleMusic.forEach { it.isLooping = true }
     }
 
+    private fun loadSounds() {
+        sounds["std_button_click"] = assetManager.get("sound/std_button_click.ogg", Sound::class.java)
+        sounds["sec_button_click"] = assetManager.get("sound/sec_button_click.ogg", Sound::class.java)
+        sounds["checkbox_click"] = assetManager.get("sound/checkbox_click.ogg", Sound::class.java)
+    }
+
     override fun dispose() {
         assetManager.dispose()
         atlas.dispose()
         font.dispose()
         bgMusic.forEach { it.dispose() }
         battleMusic.forEach { it.dispose() }
+        sounds.forEach { (_, sound) -> sound.dispose() }
     }
 }

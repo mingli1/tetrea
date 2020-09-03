@@ -2,6 +2,7 @@ package com.tetrea.game.scene.dialog
 
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.res.Resources
+import com.tetrea.game.res.SoundManager
 
 private const val WIDTH = 200f
 private const val BUTTON_WIDTH = 176f
@@ -11,6 +12,7 @@ open class MessageDialog(
     message: String,
     private val dismiss: () -> Unit,
     res: Resources,
+    soundManager: SoundManager,
     buttonText: String = "OK",
     title: String = "",
     windowStyleKey: String = "gray_blue_bg",
@@ -18,7 +20,8 @@ open class MessageDialog(
 ) : BaseModalDialog(
     title,
     res.getNinePatchWindowStyle(windowStyleKey),
-    res
+    res,
+    soundManager
 ) {
 
     val messageLabel = res.getLabel(text = message, fontScale = if (title.isEmpty()) 1f else 0.75f).apply {
@@ -38,6 +41,7 @@ open class MessageDialog(
     }
 
     override fun result(obj: Any) {
+        super.result(obj)
         dismiss()
     }
 }

@@ -33,11 +33,21 @@ class SettingsScreen(game: TetreaGame) : BaseScreen(game) {
             colorUp = GAME_LIGHT_GRAY_BLUE,
             colorDown = Color.WHITE
         ).apply {
-            onTap { navigateTo(HOME_SCREEN) }
+            onTap {
+                navigateTo(HOME_SCREEN)
+                game.soundManager.onPrimaryButtonClicked()
+            }
         }
         parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f).row()
 
-        val settingsTable = SettingsScene(game.res, game.settings, game.saveManager, game.musicManager, stage)
+        val settingsTable = SettingsScene(
+            game.res,
+            game.settings,
+            game.saveManager,
+            game.musicManager,
+            game.soundManager,
+            stage
+        )
         val scrollPane = ScrollPane(settingsTable).apply {
             setOverscroll(false, false)
             setCancelTouchFocus(false)

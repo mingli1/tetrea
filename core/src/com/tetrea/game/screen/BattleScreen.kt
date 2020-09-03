@@ -59,6 +59,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
             battleConfig.enemy,
             stage,
             game.res,
+            game.soundManager,
             this,
             inputHandler,
             game.settings

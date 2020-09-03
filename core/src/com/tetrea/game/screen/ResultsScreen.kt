@@ -45,6 +45,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         this::onRetry,
         {},
         game.res,
+        game.soundManager,
         windowStyleKey = "purple_bg",
         buttonStyleKey = "purple_button"
     )

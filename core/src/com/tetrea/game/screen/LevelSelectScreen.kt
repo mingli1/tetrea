@@ -101,6 +101,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
                     title = "MATCH QUIT",
                     message = "YOU LOST $ratingLost RATING FOR ABANDONING A MATCH.",
                     res = game.res,
+                    soundManager = game.soundManager,
                     dismiss = {},
                     windowStyleKey = "purple_bg",
                     buttonStyleKey = "purple_button"

@@ -12,11 +12,13 @@ import com.tetrea.game.extension.onTap
 import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
 import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.res.Resources
+import com.tetrea.game.res.SoundManager
 
 open class BaseModalDialog(
     title: String,
     windowStyle: WindowStyle,
-    private val res: Resources
+    private val res: Resources,
+    private val soundManager: SoundManager
 ) : Dialog(title, windowStyle) {
 
     private val bg = Image(res.getTexture("black_150_opacity"))
@@ -57,6 +59,10 @@ open class BaseModalDialog(
 
     override fun hide() {
         hide(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(0.4f, Interpolation.smoother), Actions.alpha(0f)))
+    }
+
+    override fun result(obj: Any) {
+        soundManager.onSecondaryButtonClicked()
     }
 
     protected fun getButton(text: String, key: String = "gray_blue_button") = res.getNinePatchTextButton(

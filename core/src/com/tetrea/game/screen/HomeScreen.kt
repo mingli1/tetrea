@@ -50,7 +50,10 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
             imageKey = "versus_button_icon",
             colorUp = Color(216 / 255f, 206 / 255f, 1f, 1f),
             y = buttonTableY,
-            onClick = { navigateTo(VERSUS_SELECT_SCREEN) }
+            onClick = {
+                game.soundManager.onPrimaryButtonClicked()
+                navigateTo(VERSUS_SELECT_SCREEN)
+            }
         )
         stage.addActor(versusButton)
 
@@ -60,7 +63,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
             imageKey = "arcade_button_icon",
             colorUp = Color(206 / 255f, 234 / 255f, 219 / 255f, 1f),
             y = buttonTableY - (BUTTON_HEIGHT + BUTTON_PADDING),
-            onClick = {}
+            onClick = { game.soundManager.onPrimaryButtonClicked() }
         )
         stage.addActor(arcadeButton)
 
@@ -70,7 +73,10 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
             imageKey = "profile_button_icon",
             colorUp = Color(234 / 255f, 211 / 255f, 204 / 255f, 1f),
             y = buttonTableY - 2 * (BUTTON_HEIGHT + BUTTON_PADDING),
-            onClick = { navigateTo(PROFILE_SCREEN) }
+            onClick = {
+                game.soundManager.onPrimaryButtonClicked()
+                navigateTo(PROFILE_SCREEN)
+            }
         )
         stage.addActor(profileButton)
 
@@ -80,7 +86,10 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
             imageKey = "settings_button_icon",
             colorUp = Color(201 / 255f, 210 / 255f, 234 / 255f, 1f),
             y = buttonTableY - 3 * (BUTTON_HEIGHT + BUTTON_PADDING),
-            onClick = { navigateTo(SETTINGS_SCREEN) }
+            onClick = {
+                game.soundManager.onPrimaryButtonClicked()
+                navigateTo(SETTINGS_SCREEN)
+            }
         )
         stage.addActor(settingsButton)
 
@@ -89,6 +98,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
                 title = "MATCH EXITED",
                 message = "YOU CLOSED THE APP DURING A BATTLE SO THE MATCH WILL COUNT AS A LOSS.",
                 res = game.res,
+                soundManager = game.soundManager,
                 dismiss = {
                     game.player.quitDuringBattle = false
                     game.saveManager.save()
@@ -100,6 +110,7 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
                 title = "MATCH DODGED",
                 message = "YOU DODGED A BATTLE BEFORE IT STARTED SO YOU WILL LOSE A BIT OF RATING.",
                 res = game.res,
+                soundManager = game.soundManager,
                 dismiss = {
                     game.player.dodgedBattle = false
                     game.saveManager.save()

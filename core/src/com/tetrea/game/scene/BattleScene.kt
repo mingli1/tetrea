@@ -41,6 +41,7 @@ class BattleScene(
     enemy: Enemy,
     private val stage: Stage,
     private val res: Resources,
+    private val soundManager: SoundManager,
     private val screen: BattleScreen,
     inputHandler: TetrisInputHandler,
     settings: Settings
@@ -138,7 +139,7 @@ class BattleScene(
         setPosition(this@BattleScene.stage.width / 2 - width / 2, versusTag.y + 52f)
     }
 
-    private val pauseDialog = PauseDialog(res, screen, windowStyleKey = "purple_bg", buttonStyleKey = "purple_button")
+    private val pauseDialog = PauseDialog(res, soundManager, screen, windowStyleKey = "purple_bg", buttonStyleKey = "purple_button")
 
     init {
         stage.addActor(res.getLabel(

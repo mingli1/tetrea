@@ -23,6 +23,7 @@ class SettingsScene(
     private val settings: Settings,
     private val saveManager: SaveManager,
     private val musicManager: MusicManager,
+    private val soundManager: SoundManager,
     private val parentStage: Stage
 ) : Table() {
 
@@ -35,6 +36,7 @@ class SettingsScene(
             currentBinding = null
         },
         res,
+        soundManager,
         "CANCEL"
     ).apply {
         if (!isAndroid()) {
@@ -51,6 +53,7 @@ class SettingsScene(
         {},
         {},
         res,
+        soundManager,
         "OK",
         "SWAP"
     )
@@ -167,8 +170,10 @@ class SettingsScene(
                 key = "gray_blue_button",
                 colorUp = Color.WHITE,
                 colorDown = Color.WHITE
-            ).apply { onTap { customizeAndroidButtons() } })
-                .expandX().size(204f, 36f).padLeft(8f).padRight(8f).padBottom(8f)
+            ).apply { onTap {
+                customizeAndroidButtons()
+                soundManager.onPrimaryButtonClicked()
+            } }).expandX().size(204f, 36f).padLeft(8f).padRight(8f).padBottom(8f)
         }
 
         add(controlsTable).width(220f).padBottom(16f).row()
@@ -283,6 +288,7 @@ class SettingsScene(
         val muteMusicCheckBox = res.getCheckBox().apply {
             isChecked = settings.muteMusic
             onChange {
+                soundManager.onCheckboxClicked()
                 settings.muteMusic = this.isChecked
                 saveManager.save()
                 if (settings.muteMusic) musicManager.mute()
@@ -296,6 +302,7 @@ class SettingsScene(
         val muteSoundCheckBox = res.getCheckBox().apply {
             isChecked = settings.muteSound
             onChange {
+                soundManager.onCheckboxClicked()
                 settings.muteSound = this.isChecked
                 saveManager.save()
             }
@@ -319,6 +326,7 @@ class SettingsScene(
         val showFpsCheckBox = res.getCheckBox().apply {
             isChecked = settings.showFps
             onChange {
+                soundManager.onCheckboxClicked()
                 settings.showFps = this.isChecked
                 saveManager.save()
             }
@@ -341,6 +349,7 @@ class SettingsScene(
         keyButton.onTap {
             waitingToBind = true
             currentBinding = type
+            soundManager.onPrimaryButtonClicked()
 
             keyBindDialog.messageLabel.setText("PRESS A KEY TO BIND TO ${type.str}")
             keyBindDialog.show(parentStage)

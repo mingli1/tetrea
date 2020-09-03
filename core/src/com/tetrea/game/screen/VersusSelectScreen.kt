@@ -35,6 +35,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
         this::showSelectionDialog,
         {},
         game.res,
+        game.soundManager,
         windowStyleKey = "purple_bg",
         buttonStyleKey = "purple_button"
     )
@@ -114,6 +115,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
                     title = "MATCH QUIT",
                     message = "YOU LOST $ratingLost RATING FOR ABANDONING A MATCH.",
                     res = game.res,
+                    soundManager = game.soundManager,
                     dismiss = {},
                     windowStyleKey = "purple_bg",
                     buttonStyleKey = "purple_button"
