@@ -37,6 +37,8 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
     override fun show() {
         super.show()
 
+        game.musicManager.startBattleMusic()
+
         arguments?.let {
             battleConfig = it[ARG_BATTLE_CONFIG] as BattleConfig
         }
@@ -103,6 +105,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         super.notifyPause()
         if (!isAndroid()) inputMultiplexer.removeProcessor(tetrisKeyInput)
         scene.showPauseDialog()
+        game.musicManager.pauseBattleMusic()
     }
 
     override fun notifyResume() {
@@ -110,6 +113,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         if (!isAndroid() && !inputMultiplexer.processors.contains(tetrisKeyInput)) {
             inputMultiplexer.addProcessor(tetrisKeyInput)
         }
+        game.musicManager.resumeBattleMusic()
     }
 
     fun finishBattlePrematurely() {
@@ -149,6 +153,9 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
             ARG_BATTLE_CONFIG to battleConfig
         )
         navigateTo(RESULTS_SCREEN, arguments)
+
+        game.musicManager.stopBattleMusic()
+        game.musicManager.resumeBackgroundMusic()
     }
 
     fun onBattleQuit() {
@@ -177,5 +184,8 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         val args = mapOf(ARG_MATCH_QUIT to ratingLost)
         navigateTo(if (battleConfig.isMatchmaking) VERSUS_SELECT_SCREEN else LEVEL_SELECT_SCREEN, args)
+
+        game.musicManager.stopBattleMusic()
+        game.musicManager.resumeBackgroundMusic()
     }
 }

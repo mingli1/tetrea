@@ -190,6 +190,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
     override fun onBattleButtonClicked(battleConfig: BattleConfig) {
         bestOfText = game.res.getLabel("BEST OF ${battleConfig.bestOf}", fontScale = 1f)
         bestOfText.setPosition(stage.width / 2 - bestOfText.width / 2, versusTag.y + 52f)
+        game.musicManager.pauseBackgroundMusic()
 
         playerVersusCard = VersusCard(
             stage = stage,
