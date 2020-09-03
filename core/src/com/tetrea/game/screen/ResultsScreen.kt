@@ -175,14 +175,23 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
     }
 
     private fun createButtons() {
-        val backButton = getButton("BACK").apply { onTap { onBackButtonClicked() } }
+        val backButton = getButton("BACK").apply { onTap {
+            onBackButtonClicked()
+            game.soundManager.onPrimaryButtonClicked()
+        } }
         buttonTable.add(backButton).align(Align.left).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
 
         if (!config.isMatchmaking) {
-            val retryButton = getButton("RETRY").apply { onTap { retryConfirmDialog.show(stage) } }
+            val retryButton = getButton("RETRY").apply { onTap {
+                retryConfirmDialog.show(stage)
+                game.soundManager.onPrimaryButtonClicked()
+            } }
             buttonTable.add(retryButton).align(Align.center).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
         }
-        val homeButton = getButton("HOME").apply { onTap { navigateTo(HOME_SCREEN) } }
+        val homeButton = getButton("HOME").apply { onTap {
+            navigateTo(HOME_SCREEN)
+            game.soundManager.onPrimaryButtonClicked()
+        } }
         buttonTable.add(homeButton).align(Align.right).size(BUTTON_WIDTH, BUTTON_HEIGHT).expandX()
     }
 

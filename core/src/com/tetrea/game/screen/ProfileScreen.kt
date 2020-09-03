@@ -42,7 +42,10 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             colorUp = GAME_LIGHT_ORANGE,
             colorDown = Color.WHITE
         ).apply {
-            onTap { navigateTo(HOME_SCREEN) }
+            onTap {
+                navigateTo(HOME_SCREEN)
+                game.soundManager.onPrimaryButtonClicked()
+            }
         }
         parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f)
         val editButton = game.res.getNinePatchTextButton(
@@ -50,7 +53,9 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             key = "profile_orange_button",
             colorUp = GAME_LIGHT_ORANGE,
             colorDown = Color.WHITE
-        )
+        ).apply {
+            onTap { game.soundManager.onPrimaryButtonClicked() }
+        }
         parentTable.add(editButton).top().right().size(76f, 28f).padTop(6f).row()
 
         contentTable = Table()

@@ -47,7 +47,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
 
     private lateinit var selectionTable: Table
     private lateinit var selectionBg: Image
-    private val selectionDialog = SelectionDialog(game.res, this, true)
+    private val selectionDialog = SelectionDialog(game.res, game.soundManager, this, true)
     private lateinit var battleConfig: BattleConfig
     var matchMade = false
 
@@ -70,7 +70,10 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
             colorUp = GAME_LIGHT_GRAY_BLUE,
             colorDown = Color.WHITE
         ).apply {
-            onTap { navigateTo(HOME_SCREEN) }
+            onTap {
+                navigateTo(HOME_SCREEN)
+                game.soundManager.onPrimaryButtonClicked()
+            }
         }
         parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f).row()
 
@@ -80,14 +83,20 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
                 ninePatchKey = "find_match_button",
                 imageKey = "find_match_button_icon",
                 colorUp = Color(216 / 255f, 206 / 255f, 1f, 1f),
-                onClick = { confirmDialog.show(this@VersusSelectScreen.stage) }
+                onClick = {
+                    confirmDialog.show(this@VersusSelectScreen.stage)
+                    game.soundManager.onPrimaryButtonClicked()
+                }
             )).size(220f, 50f).row()
             add(getButton(
                 text = "ADVENTURE",
                 ninePatchKey = "adventure_button",
                 imageKey = "adventure_button_icon",
                 colorUp = Color(216 / 255f, 206 / 255f, 1f, 1f),
-                onClick = { navigateTo(LEVEL_SELECT_SCREEN) }
+                onClick = {
+                    navigateTo(LEVEL_SELECT_SCREEN)
+                    game.soundManager.onPrimaryButtonClicked()
+                }
             )).size(220f, 50f).padTop(16f)
         }
         parentTable.add(bodyTable).top().padTop(24f).colspan(2).expandY()

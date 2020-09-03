@@ -11,6 +11,10 @@ class SoundManager(private val res: Resources, private val settings: Settings) {
 
     fun onCheckboxClicked() = play(res.sounds["checkbox_click"])
 
+    fun onWorldSelectClicked() = play(res.sounds["world_select_click"])
+
+    fun onLevelSelectClicked() = play(res.sounds["level_select_click"])
+
     private fun play(sound: Sound?) {
         if (sound == null) return
         if (!settings.muteSound) {

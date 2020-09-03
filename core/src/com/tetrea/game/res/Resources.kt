@@ -71,6 +71,8 @@ class Resources : Disposable {
         assetManager.load("sound/std_button_click.ogg", Sound::class.java)
         assetManager.load("sound/sec_button_click.ogg", Sound::class.java)
         assetManager.load("sound/checkbox_click.ogg", Sound::class.java)
+        assetManager.load("sound/world_select_click.ogg", Sound::class.java)
+        assetManager.load("sound/level_select_click.ogg", Sound::class.java)
 
         assetManager.finishLoading()
 
@@ -350,6 +352,8 @@ class Resources : Disposable {
         sounds["std_button_click"] = assetManager.get("sound/std_button_click.ogg", Sound::class.java)
         sounds["sec_button_click"] = assetManager.get("sound/sec_button_click.ogg", Sound::class.java)
         sounds["checkbox_click"] = assetManager.get("sound/checkbox_click.ogg", Sound::class.java)
+        sounds["world_select_click"] = assetManager.get("sound/world_select_click.ogg", Sound::class.java)
+        sounds["level_select_click"] = assetManager.get("sound/level_select_click.ogg", Sound::class.java)
     }
 
     override fun dispose() {

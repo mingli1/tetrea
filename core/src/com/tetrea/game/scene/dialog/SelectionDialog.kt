@@ -22,6 +22,7 @@ interface SelectionDialogCallback {
 
 class SelectionDialog(
     private val res: Resources,
+    private val soundManager: SoundManager,
     private val callback: SelectionDialogCallback,
     isMatchmaking: Boolean
 ) : Table() {
@@ -98,6 +99,7 @@ class SelectionDialog(
 
         add(battleButton).padTop(6f).size(170f, 35f).colspan(2).expand()
         battleButton.onTap {
+            soundManager.onPrimaryButtonClicked()
             battleButton.touchable = Touchable.disabled
             callback.onBattleButtonClicked(battleConfig)
         }

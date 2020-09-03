@@ -37,7 +37,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
     private lateinit var selectionTable: Table
     private lateinit var levelsTable: Table
     private lateinit var selectionBg: Image
-    private val selectionDialog = SelectionDialog(game.res, this, false)
+    private val selectionDialog = SelectionDialog(game.res, game.soundManager, this, false)
     private var playerVersusCard: VersusCard? = null
     private var enemyVersusCard: VersusCard? = null
     private lateinit var versusTag: Image
@@ -184,7 +184,10 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
             colorUp = GAME_LIGHT_GRAY_BLUE,
             colorDown = Color.WHITE
         ).apply {
-            onTap { navigateTo(VERSUS_SELECT_SCREEN) }
+            onTap {
+                navigateTo(VERSUS_SELECT_SCREEN)
+                game.soundManager.onPrimaryButtonClicked()
+            }
         }
 
         parentTable.add(backButton).top().left().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f)
@@ -196,7 +199,11 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
             key = "purple_button",
             colorUp = GAME_LIGHT_GRAY_BLUE,
             colorDown = Color.WHITE
-        )
+        ).apply {
+            onTap {
+                game.soundManager.onPrimaryButtonClicked()
+            }
+        }
 
         parentTable.add(helpButton).top().right().size(BUTTON_WIDTH, BUTTON_HEIGHT).padTop(6f).row()
     }
@@ -249,7 +256,10 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
                     enter = { background = enteredBg },
                     exit = { background = exitedBg }
                 )
-                onTap { showSelectionDialog(config, selectionState) }
+                onTap {
+                    showSelectionDialog(config, selectionState)
+                    game.soundManager.onLevelSelectClicked()
+                }
             }
             val avatar = Image(game.res.getTexture(config.enemy.avatar))
             table.add(avatar).padTop(16f).padLeft(8f).top().left()
@@ -330,6 +340,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
     }
 
     private fun onWorldSelectButtonClicked(isLeft: Boolean) {
+        game.soundManager.onWorldSelectClicked()
         if (isLeft) selectedWorldId--
         else selectedWorldId++
 
