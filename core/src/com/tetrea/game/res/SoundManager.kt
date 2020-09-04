@@ -40,6 +40,16 @@ class SoundManager(private val res: Resources, private val settings: Settings) {
 
     fun onTSpin() = play(res.sounds["tspin"])
 
+    fun onCrit() = play(res.sounds["crit"])
+
+    fun onCountdown() = play(res.sounds["countdown"])
+
+    fun onGo() = play(res.sounds["go"])
+
+    fun onWin() = play(res.sounds["win"])
+
+    fun onScoreChange() = play(res.sounds["score_change"])
+
     private fun play(sound: Sound?) {
         if (sound == null) return
         if (!settings.muteSound) {

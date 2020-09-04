@@ -89,6 +89,11 @@ class Resources : Disposable {
         assetManager.load("sound/perfect_clear.ogg", Sound::class.java)
         assetManager.load("sound/rotate.ogg", Sound::class.java)
         assetManager.load("sound/tspin.ogg", Sound::class.java)
+        assetManager.load("sound/crit.ogg", Sound::class.java)
+        assetManager.load("sound/countdown.ogg", Sound::class.java)
+        assetManager.load("sound/go.ogg", Sound::class.java)
+        assetManager.load("sound/win.ogg", Sound::class.java)
+        assetManager.load("sound/score_change.ogg", Sound::class.java)
 
         assetManager.finishLoading()
 
@@ -386,6 +391,11 @@ class Resources : Disposable {
         sounds["perfect_clear"] = assetManager.get("sound/perfect_clear.ogg", Sound::class.java)
         sounds["rotate"] = assetManager.get("sound/rotate.ogg", Sound::class.java)
         sounds["tspin"] = assetManager.get("sound/tspin.ogg", Sound::class.java)
+        sounds["crit"] = assetManager.get("sound/crit.ogg", Sound::class.java)
+        sounds["countdown"] = assetManager.get("sound/countdown.ogg", Sound::class.java)
+        sounds["go"] = assetManager.get("sound/go.ogg", Sound::class.java)
+        sounds["win"] = assetManager.get("sound/win.ogg", Sound::class.java)
+        sounds["score_change"] = assetManager.get("sound/score_change.ogg", Sound::class.java)
     }
 
     override fun dispose() {

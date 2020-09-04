@@ -309,6 +309,7 @@ class Tetris(
         var crit = false
         if (MathUtils.random() <= config.critChance) {
             attack = (attack * config.critMultiplier).toInt()
+            soundManager.onCrit()
             stats.numCrits++
             crit = true
         }
@@ -418,6 +419,8 @@ class Tetris(
 
     private fun gameOver(win: Boolean) {
         if (!win) soundManager.onDead()
+        else soundManager.onWin()
+
         started = false
         apm = totalAttack / clockTimer * 60
         pps = piecesPlaced / clockTimer

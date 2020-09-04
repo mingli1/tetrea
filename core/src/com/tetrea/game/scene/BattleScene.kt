@@ -255,13 +255,17 @@ class BattleScene(
                         hideGameNumberLabel()
                         hideMatchStateTag()
                         updateCountdown("GO!")
+                        soundManager.onGo()
                         screen.tetris.start()
                     }
                     -1 -> {
                         countdownLabel.isVisible = false
                         startCountdown = false
                     }
-                    else -> updateCountdown(countdown.toString())
+                    else -> {
+                        soundManager.onCountdown()
+                        updateCountdown(countdown.toString())
+                    }
                 }
                 countdownTimer = 0f
             }
@@ -506,6 +510,8 @@ class BattleScene(
         updateCountdown(countdown.toString())
         countdownTimer = 0f
         startCountdown = true
+
+        soundManager.onCountdown()
     }
 
     fun startGameOverSequence() {
@@ -541,6 +547,7 @@ class BattleScene(
     }
 
     private fun showPostGameResult2() {
+        soundManager.onScoreChange()
         screen.state.updateScores()
         scoreLabel.setText("${screen.state.playerScore} - ${screen.state.enemyScore}")
         val matchState = screen.state.getMatchState()
