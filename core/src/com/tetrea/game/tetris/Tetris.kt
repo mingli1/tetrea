@@ -3,6 +3,7 @@ package com.tetrea.game.tetris
 import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.extension.default
 import com.tetrea.game.res.SQUARE_SIZE
+import com.tetrea.game.res.SoundManager
 import com.tetrea.game.screen.BattleScreen
 import com.tetrea.game.tetris.model.Piece
 import com.tetrea.game.tetris.model.Square
@@ -16,7 +17,8 @@ class Tetris(
     private val screenX: Float,
     private val screenY: Float,
     private val config: TetrisConfig,
-    private val screen: BattleScreen
+    private val screen: BattleScreen,
+    private val soundManager: SoundManager
 ) {
 
     var started = false
@@ -191,6 +193,7 @@ class Tetris(
     fun hardDrop() {
         instantSoftDrop()
         currPiece?.lock()
+        soundManager.onLock()
         if (currPiece?.isToppedOut().default(false)) gameOver(false)
         else currPiece = getNextPiece()
     }
@@ -209,6 +212,7 @@ class Tetris(
 
     fun holdCurrPiece() {
         if (canHold) {
+            soundManager.onHold()
             val piece = holdPiece
             holdPiece = holdPool.find { it.pieceType == currPiece?.pieceType }?.apply { init(0, 0) }
             currPiece = piece?.pieceType?.let { hold ->
@@ -249,7 +253,10 @@ class Tetris(
         } else {
             config.comboTable.table[combo]
         }
-        if (combo > 1) screen.scene.spawnComboParticle(combo)
+        if (combo > 1) {
+            screen.scene.spawnComboParticle(combo)
+            soundManager.onCombo(combo)
+        }
 
         val b2bBonus = if (b2b >= config.b2bTable.table.size) {
             config.b2bTable.max
@@ -295,6 +302,7 @@ class Tetris(
         if (content.all { row -> row.all { !it.filled || it.square.pieceType == PieceType.Solid } }) {
             stats.numPC++
             attack += config.attackPC
+            soundManager.onPerfectClear()
             screen.scene.spawnCenterParticle(LineClearType.PerfectClear.desc, LineClearType.PerfectClear.color)
         }
 
@@ -380,6 +388,7 @@ class Tetris(
     }
 
     fun onRotate() {
+        soundManager.onRotate()
         startRotationTimer = true
         rotationTimer = 0f
         lockDelay2Timer = 0f
@@ -408,6 +417,7 @@ class Tetris(
     }
 
     private fun gameOver(win: Boolean) {
+        if (!win) soundManager.onDead()
         started = false
         apm = totalAttack / clockTimer * 60
         pps = piecesPlaced / clockTimer
@@ -535,6 +545,8 @@ class Tetris(
     }
 
     private fun applyLineClears(lines: Int, b2b: Int, combo: Int) {
+        if (b2b > 0) soundManager.onB2b()
+        else soundManager.onClear(lines)
         when (lines) {
             1 -> {
                 stats.numSingle++
@@ -561,6 +573,8 @@ class Tetris(
     }
 
     private fun applyTSpin(lines: Int, b2b: Int, combo: Int) {
+        if (b2b > 0) soundManager.onB2b()
+        else soundManager.onTSpin()
         when (lines) {
             1 -> {
                 stats.numTSS++

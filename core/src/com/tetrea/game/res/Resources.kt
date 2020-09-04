@@ -75,6 +75,21 @@ class Resources : Disposable {
         assetManager.load("sound/level_select_click.ogg", Sound::class.java)
         assetManager.load("sound/battle_start.ogg", Sound::class.java)
 
+        for (i in 1 until 17) {
+            assetManager.load("sound/combo$i.ogg", Sound::class.java)
+        }
+        for (i in 1 until 5) {
+            assetManager.load("sound/clear$i.ogg", Sound::class.java)
+        }
+        assetManager.load("sound/b2b.ogg", Sound::class.java)
+        assetManager.load("sound/died.ogg", Sound::class.java)
+        assetManager.load("sound/hold.ogg", Sound::class.java)
+        assetManager.load("sound/lock.ogg", Sound::class.java)
+        assetManager.load("sound/move.ogg", Sound::class.java)
+        assetManager.load("sound/perfect_clear.ogg", Sound::class.java)
+        assetManager.load("sound/rotate.ogg", Sound::class.java)
+        assetManager.load("sound/tspin.ogg", Sound::class.java)
+
         assetManager.finishLoading()
 
         atlas = assetManager.get("textures.atlas", TextureAtlas::class.java)
@@ -356,6 +371,21 @@ class Resources : Disposable {
         sounds["world_select_click"] = assetManager.get("sound/world_select_click.ogg", Sound::class.java)
         sounds["level_select_click"] = assetManager.get("sound/level_select_click.ogg", Sound::class.java)
         sounds["battle_start"] = assetManager.get("sound/battle_start.ogg", Sound::class.java)
+
+        for (i in 1 until 17) {
+            sounds["combo$i"] = assetManager.get("sound/combo$i.ogg", Sound::class.java)
+        }
+        for (i in 1 until 5) {
+            sounds["clear$i"] = assetManager.get("sound/clear$i.ogg", Sound::class.java)
+        }
+        sounds["b2b"] = assetManager.get("sound/b2b.ogg", Sound::class.java)
+        sounds["died"] = assetManager.get("sound/died.ogg", Sound::class.java)
+        sounds["hold"] = assetManager.get("sound/hold.ogg", Sound::class.java)
+        sounds["lock"] = assetManager.get("sound/lock.ogg", Sound::class.java)
+        sounds["move"] = assetManager.get("sound/move.ogg", Sound::class.java)
+        sounds["perfect_clear"] = assetManager.get("sound/perfect_clear.ogg", Sound::class.java)
+        sounds["rotate"] = assetManager.get("sound/rotate.ogg", Sound::class.java)
+        sounds["tspin"] = assetManager.get("sound/tspin.ogg", Sound::class.java)
     }
 
     override fun dispose() {
