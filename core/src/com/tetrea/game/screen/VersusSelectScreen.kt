@@ -209,6 +209,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
             onScreen = false,
             isEnemy = false,
             onFinished = {
+                game.soundManager.onBattleStart()
                 stage.addActor(versusTag)
                 stage.addActor(bestOfText)
 

@@ -15,6 +15,8 @@ class SoundManager(private val res: Resources, private val settings: Settings) {
 
     fun onLevelSelectClicked() = play(res.sounds["level_select_click"])
 
+    fun onBattleStart() = play(res.sounds["battle_start"])
+
     private fun play(sound: Sound?) {
         if (sound == null) return
         if (!settings.muteSound) {

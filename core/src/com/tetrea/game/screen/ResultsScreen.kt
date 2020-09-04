@@ -217,6 +217,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             onScreen = false,
             isEnemy = false,
             onFinished = {
+                game.soundManager.onBattleStart()
                 stage.addActor(versusTag)
                 stage.addActor(bestOfText)
 
