@@ -138,7 +138,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
     }
 
     override fun onBattleButtonClicked(battleConfig: BattleConfig) {
-        game.musicManager.pauseBackgroundMusic()
+        game.musicManager.fadeOutBackgroundMusic()
         game.musicManager.inBattle = true
 
         playerVersusCard = VersusCard(

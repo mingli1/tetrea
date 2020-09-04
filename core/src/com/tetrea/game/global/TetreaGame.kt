@@ -75,6 +75,7 @@ class TetreaGame : Game() {
         screen.render(min(DELTA_TIME_BOUND, Gdx.graphics.deltaTime))
         if (settings.showFps) fpsLabel.setText("${Gdx.graphics.framesPerSecond} fps")
         fpsLabel.isVisible = settings.showFps
+        musicManager.update(Gdx.graphics.deltaTime)
     }
 
     override fun dispose() {

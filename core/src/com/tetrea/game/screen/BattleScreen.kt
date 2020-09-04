@@ -155,9 +155,9 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         )
         navigateTo(RESULTS_SCREEN, arguments)
 
-        game.musicManager.stopBattleMusic()
+        game.musicManager.fadeOutBattleMusic()
         game.musicManager.inBattle = false
-        game.musicManager.resumeBackgroundMusic()
+        game.musicManager.fadeInBackgroundMusic()
     }
 
     fun onBattleQuit() {
@@ -189,6 +189,6 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
 
         game.musicManager.stopBattleMusic()
         game.musicManager.inBattle = false
-        game.musicManager.resumeBackgroundMusic()
+        game.musicManager.fadeInBackgroundMusic()
     }
 }
