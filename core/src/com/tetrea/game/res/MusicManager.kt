@@ -74,7 +74,7 @@ class MusicManager(private val res: Resources, private val settings: Settings) {
             }
         }
 
-        currBgMusic?.play()
+        fadeInBackgroundMusic()
     }
 
     fun startBattleMusic() {
