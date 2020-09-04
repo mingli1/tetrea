@@ -156,6 +156,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         navigateTo(RESULTS_SCREEN, arguments)
 
         game.musicManager.stopBattleMusic()
+        game.musicManager.inBattle = false
         game.musicManager.resumeBackgroundMusic()
     }
 
@@ -187,6 +188,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         navigateTo(if (battleConfig.isMatchmaking) VERSUS_SELECT_SCREEN else LEVEL_SELECT_SCREEN, args)
 
         game.musicManager.stopBattleMusic()
+        game.musicManager.inBattle = false
         game.musicManager.resumeBackgroundMusic()
     }
 }

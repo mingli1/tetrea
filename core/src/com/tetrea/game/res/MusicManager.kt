@@ -5,6 +5,7 @@ import com.tetrea.game.global.Settings
 
 class MusicManager(private val res: Resources, private val settings: Settings) {
 
+    var inBattle = false
     private var currBgMusic: Music? = null
     private var currBattleMusic: Music? = null
 
@@ -41,11 +42,11 @@ class MusicManager(private val res: Resources, private val settings: Settings) {
     }
 
     fun pauseBackgroundMusic() {
-        if (currBattleMusic == null) currBgMusic?.pause()
+        if (!inBattle) currBgMusic?.pause()
     }
 
     fun resumeBackgroundMusic() {
-        if (currBattleMusic == null) currBgMusic?.play()
+        if (!inBattle) currBgMusic?.play()
     }
 
     fun pauseBattleMusic() {

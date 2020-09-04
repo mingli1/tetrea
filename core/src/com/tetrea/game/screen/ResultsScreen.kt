@@ -210,6 +210,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         bestOfText = game.res.getLabel("BEST OF ${config.bestOf}", fontScale = 1f)
         bestOfText.setPosition(stage.width / 2 - bestOfText.width / 2, versusTag.y + 52f)
         game.musicManager.pauseBackgroundMusic()
+        game.musicManager.inBattle = true
 
         playerVersusCard = VersusCard(
             stage = stage,
