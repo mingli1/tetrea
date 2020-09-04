@@ -7,14 +7,13 @@ import com.tetrea.game.res.SoundManager
 import com.tetrea.game.screen.BaseScreen
 import com.tetrea.game.screen.BattleScreen
 
-private const val WINDOW_MIN_HEIGHT = 180f
+private const val WINDOW_MIN_HEIGHT = 140f
 private const val BUTTON_WIDTH = 150f
 private const val BUTTON_HEIGHT = 36f
 private const val BUTTON_PADDING = 16f
 private const val TOP_BOTTOM_PADDING = 2f
 
 private const val RESUME = "RESUME"
-private const val SETTINGS = "SETTINGS"
 private const val QUIT = "QUIT"
 
 class PauseDialog(
@@ -40,8 +39,6 @@ class PauseDialog(
 
         button(getButton(RESUME, key = buttonStyleKey), RESUME)
         buttonTable.row()
-        button(getButton(SETTINGS, key = buttonStyleKey), SETTINGS)
-        buttonTable.row()
         button(getButton(QUIT, key = buttonStyleKey), QUIT)
 
         confirmDialog = ConfirmDialog(
@@ -66,7 +63,7 @@ class PauseDialog(
     override fun result(obj: Any) {
         super.result(obj)
         when (obj) {
-            RESUME, SETTINGS -> screen.notifyResume()
+            RESUME -> screen.notifyResume()
             QUIT -> {
                 hide(null)
                 currStage?.let { confirmDialog.show(it) }
