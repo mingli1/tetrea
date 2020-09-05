@@ -40,30 +40,36 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
 
         val bodyTable = Table().apply {
             add(game.res.getButtonWithImage(
-                text = "40L SPRINT",
+                text = "SPRINT",
                 ninePatchKey = "sprint_button",
                 imageKey = "arcade_button_icon",
-                colorUp = Color(163 / 255f, 1f, 163 / 255f, 1f),
+                colorUp = Color(206 / 255f, 234 / 255f, 219 / 255f, 1f),
                 onClick = {
+                    navigateTo(TETRIS_SCREEN, mapOf(ARG_GAME_MODE to GameMode.Sprint))
                     game.soundManager.onPrimaryButtonClicked()
+                    game.musicManager.fadeOutBackgroundMusic()
                 }
             )).size(220f, 50f).row()
             add(game.res.getButtonWithImage(
                 text = "ULTRA",
                 ninePatchKey = "ultra_button",
                 imageKey = "ultra_button_icon",
-                colorUp = Color(163 / 255f, 1f, 163 / 255f, 1f),
+                colorUp = Color(206 / 255f, 234 / 255f, 219 / 255f, 1f),
                 onClick = {
+                    navigateTo(TETRIS_SCREEN, mapOf(ARG_GAME_MODE to GameMode.Ultra))
                     game.soundManager.onPrimaryButtonClicked()
+                    game.musicManager.fadeOutBackgroundMusic()
                 }
             )).size(220f, 50f).padTop(16f).row()
             add(game.res.getButtonWithImage(
-                text = "SURVIVAL",
+                text = "CHEESE",
                 ninePatchKey = "cheese_button",
                 imageKey = "cheese_button_icon",
-                colorUp = Color(163 / 255f, 1f, 163 / 255f, 1f),
+                colorUp = Color(206 / 255f, 234 / 255f, 219 / 255f, 1f),
                 onClick = {
+                    navigateTo(TETRIS_SCREEN, mapOf(ARG_GAME_MODE to GameMode.Cheese))
                     game.soundManager.onPrimaryButtonClicked()
+                    game.musicManager.fadeOutBackgroundMusic()
                 }
             )).size(220f, 50f).padTop(16f).row()
         }

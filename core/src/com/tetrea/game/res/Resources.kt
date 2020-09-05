@@ -307,6 +307,7 @@ class Resources : Disposable {
         loadTexture("world_select_arrow_right_down")
         loadTexture("world_select_arrow_left_up")
         loadTexture("world_select_arrow_left_down")
+        loadTexture("arcade_header")
 
         loadTexture("enemy_ittzzi")
 
