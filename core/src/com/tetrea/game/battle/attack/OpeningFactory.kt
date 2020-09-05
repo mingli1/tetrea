@@ -56,7 +56,7 @@ object OpeningFactory {
                     time = r * timeDiff + type.minTime,
                     lines = 4
                 ))
-                if (MathUtils.random() <= 0.33f) {
+                if (MathUtils.random() <= 0.2f) {
                     opening.add(Attack(
                         action = Action.SendLines,
                         time = 3f,

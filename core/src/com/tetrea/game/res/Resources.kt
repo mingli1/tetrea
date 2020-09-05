@@ -12,11 +12,13 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Disposable
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.battle.rating.Elo
+import com.tetrea.game.extension.onTap
 import com.tetrea.game.input.TetrisInputType
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.PieceType
@@ -231,6 +233,27 @@ class Resources : Disposable {
         }
     }
 
+    fun getButtonWithImage(
+        text: String,
+        ninePatchKey: String,
+        imageKey: String,
+        colorUp: Color,
+        onClick: () -> Unit
+    ): ImageTextButton {
+        return getNinePatchImageTextButton(
+            text = text,
+            ninePatchKey = ninePatchKey,
+            imageKey = imageKey,
+            colorUp = colorUp,
+            colorDown = Color.WHITE
+        ).apply {
+            label.setFontScale(1.5f)
+            labelCell.expandX().align(Align.left).padLeft(12f)
+            imageCell.padLeft(16f)
+            onTap { onClick() }
+        }
+    }
+
     private fun fileString(path: String) = Gdx.files.internal(path).readString()
 
     private fun loadTexture(key: String) {
@@ -245,6 +268,7 @@ class Resources : Disposable {
         loadTexture("home_screen_bg")
         loadTexture("home_screen_overlay")
         loadTexture("versus_select_overlay")
+        loadTexture("arcade_screen_overlay")
         loadTexture("settings_screen_overlay")
         loadTexture("profile_screen_overlay")
         loadTexture("title_letters")
@@ -274,6 +298,8 @@ class Resources : Disposable {
         loadTexture("settings_button_icon")
         loadTexture("find_match_button_icon")
         loadTexture("adventure_button_icon")
+        loadTexture("ultra_button_icon")
+        loadTexture("cheese_button_icon")
         loadTexture("immune_hp_bar")
         loadTexture("settings_checkbox_off")
         loadTexture("settings_checkbox_on")
@@ -310,6 +336,7 @@ class Resources : Disposable {
         loadNinePatch("red_button_up")
         loadNinePatch("red_button_down")
         loadNinePatch("purple_bg")
+        loadNinePatch("green_bg")
         loadNinePatch("orange_bg")
         loadNinePatch("light_purple_bg")
         loadNinePatch("orange_button_up")
@@ -331,6 +358,14 @@ class Resources : Disposable {
         loadNinePatch("settings_slider_bg")
         loadNinePatch("profile_orange_button_up")
         loadNinePatch("profile_orange_button_down")
+        loadNinePatch("arcade_green_button_up")
+        loadNinePatch("arcade_green_button_down")
+        loadNinePatch("sprint_button_up")
+        loadNinePatch("sprint_button_down")
+        loadNinePatch("ultra_button_up")
+        loadNinePatch("ultra_button_down")
+        loadNinePatch("cheese_button_up")
+        loadNinePatch("cheese_button_down")
     }
 
     private fun loadTetrisConfigs() {

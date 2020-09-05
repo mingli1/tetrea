@@ -63,7 +63,10 @@ class HomeScreen(game: TetreaGame) : BaseScreen(game) {
             imageKey = "arcade_button_icon",
             colorUp = Color(206 / 255f, 234 / 255f, 219 / 255f, 1f),
             y = buttonTableY - (BUTTON_HEIGHT + BUTTON_PADDING),
-            onClick = { game.soundManager.onPrimaryButtonClicked() }
+            onClick = {
+                game.soundManager.onPrimaryButtonClicked()
+                navigateTo(ARCADE_SCREEN)
+            }
         )
         stage.addActor(arcadeButton)
 

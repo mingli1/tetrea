@@ -78,7 +78,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
         parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f).row()
 
         val bodyTable = Table().apply {
-            add(getButton(
+            add(game.res.getButtonWithImage(
                 text = "FIND MATCH",
                 ninePatchKey = "find_match_button",
                 imageKey = "find_match_button_icon",
@@ -88,7 +88,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
                     game.soundManager.onPrimaryButtonClicked()
                 }
             )).size(220f, 50f).row()
-            add(getButton(
+            add(game.res.getButtonWithImage(
                 text = "ADVENTURE",
                 ninePatchKey = "adventure_button",
                 imageKey = "adventure_button_icon",
@@ -158,27 +158,6 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
 
         stage.act(dt)
         stage.draw()
-    }
-
-    private fun getButton(
-        text: String,
-        ninePatchKey: String,
-        imageKey: String,
-        colorUp: Color,
-        onClick: () -> Unit
-    ): ImageTextButton {
-        return game.res.getNinePatchImageTextButton(
-            text = text,
-            ninePatchKey = ninePatchKey,
-            imageKey = imageKey,
-            colorUp = colorUp,
-            colorDown = Color.WHITE
-        ).apply {
-            label.setFontScale(1.5f)
-            labelCell.expandX().align(Align.left).padLeft(12f)
-            imageCell.padLeft(16f)
-            onTap { onClick() }
-        }
     }
 
     private fun showSelectionDialog() {
