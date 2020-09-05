@@ -357,9 +357,9 @@ class SettingsScene(
         controlButtonMap[type] = keyButton
 
         controlsTable.add(label).expandX().left().padLeft(8f)
-            .padBottom(if (type == TetrisInputType.Pause) 8f else 4f)
+            .padBottom(if (type == TetrisInputType.Restart) 8f else 4f)
         controlsTable.add(keyButton).size(80f, 24f).expandX().right().padRight(8f)
-            .padBottom(if (type == TetrisInputType.Pause) 8f else 4f).row()
+            .padBottom(if (type == TetrisInputType.Restart) 8f else 4f).row()
     }
 
     private fun customizeAndroidButtons() {
