@@ -118,4 +118,8 @@ class TetrisInputHandler(
         tetris.stats.numInputs++
         tetris.holdCurrPiece()
     }
+
+    fun onRestart() {
+
+    }
 }

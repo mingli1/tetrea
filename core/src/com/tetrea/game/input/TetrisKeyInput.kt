@@ -28,6 +28,7 @@ class TetrisKeyInput(
             TetrisInputType.Rotate180 -> inputHandler.rotate180()
             TetrisInputType.Hold -> inputHandler.onHold()
             TetrisInputType.Pause -> inputHandler.onPause()
+            TetrisInputType.Restart -> inputHandler.onRestart()
         }
         return true
     }

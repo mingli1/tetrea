@@ -13,6 +13,7 @@ import com.tetrea.game.global.isAndroid
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.Tetris
+import com.tetrea.game.tetris.util.LineClearType
 
 const val ARG_BATTLE_CONFIG = "ARG_BATTLE_CONFIG"
 const val ARG_MATCH_STATE = "ARG_MATCH_STATE"
@@ -21,7 +22,7 @@ const val ARG_PLAYER_SCORE = "ARG_PLAYER_SCORE"
 const val ARG_ENEMY_SCORE = "ARG_ENEMY_SCORE"
 const val ARG_MATCH_QUIT = "ARG_MATCH_QUIT"
 
-class BattleScreen(game: TetreaGame) : BaseScreen(game) {
+class BattleScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
 
     lateinit var tetris: Tetris
     lateinit var scene: BattleScene
@@ -190,5 +191,53 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game) {
         game.musicManager.stopBattleMusic()
         game.musicManager.inBattle = false
         game.musicManager.fadeInBackgroundMusic()
+    }
+
+    override fun addGarbage(numLines: Int) {
+        scene.addGarbage(numLines)
+    }
+
+    override fun spawnComboParticle(combo: Int) {
+        scene.spawnComboParticle(combo)
+    }
+
+    override fun spawnB2bParticle(b2b: Int) {
+        scene.spawnB2BParticle(b2b)
+    }
+
+    override fun spawnCenterParticle(text: String, color: Color) {
+        scene.spawnCenterParticle(text, color)
+    }
+
+    override fun spawnSpikeParticle(spike: Int) {
+        scene.spawnSpikeParticle(spike)
+    }
+
+    override fun spawnLineClearParticle(type: LineClearType) {
+        scene.spawnLineClearParticle(type)
+    }
+
+    override fun spawnNumberParticle(lines: Int, x: Float, y: Float, crit: Boolean) {
+        scene.spawnNumberParticle(lines, x, y, crit)
+    }
+
+    override fun attackEnemy(attack: Int): Boolean {
+        return state.attackEnemy(attack)
+    }
+
+    override fun resetGarbage() {
+        scene.resetGarbage()
+    }
+
+    override fun setPlayerWonGame(win: Boolean) {
+        state.playerWonGame = win
+    }
+
+    override fun startGameOverSequence() {
+        scene.startGameOverSequence()
+    }
+
+    override fun cancelGarbage(lines: Int) {
+        scene.cancelGarbage(lines)
     }
 }

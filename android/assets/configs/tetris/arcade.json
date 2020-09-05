@@ -1,0 +1,48 @@
+{
+  "width": 10,
+  "height": 20,
+  "startDelay": 2,
+  "bagSize": 7,
+  "numPreviews": 5,
+  "gravity": 1.0,
+  "lockDelay1": 0.5,
+  "lockDelay2": 5.0,
+  "lockDelay3": 20.0,
+  "garbageDelay": 0.5,
+  "attackSingle": 0,
+  "attackDouble": 1,
+  "attackTriple": 2,
+  "attackQuad": 4,
+  "comboTable": {
+    "max": 3,
+    "table": [
+      0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3
+    ]
+  },
+  "b2bTable": {
+    "max": 4,
+    "table": [
+      0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2
+    ]
+  },
+  "critChance": 0.1,
+  "critMultiplier": 2.0,
+  "attackTSS": 2,
+  "attackTSD": 4,
+  "attackTST": 6,
+  "b2bBonus": 1,
+  "attackPC": 10,
+  "spikeThreshold": 10,
+  "scoreTable": {
+    "single": 100,
+    "double": 300,
+    "triple": 500,
+    "quad": 800,
+    "tss": 800,
+    "tsd": 1200,
+    "tst": 1600,
+    "b2bMultiplier": 1.5,
+    "combo": 50,
+    "pc": 3000
+  }
+}

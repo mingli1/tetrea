@@ -371,6 +371,7 @@ class Resources : Disposable {
     private fun loadTetrisConfigs() {
         val adapter = moshi.adapter(TetrisConfig::class.java)
         tetrisConfigCache["default"] = adapter.fromJson(fileString("configs/tetris/default.json")) ?: return
+        tetrisConfigCache["arcade"] = adapter.fromJson(fileString("configs/tetris/arcade.json")) ?: return
     }
 
     private fun loadBattleConfigs() {
