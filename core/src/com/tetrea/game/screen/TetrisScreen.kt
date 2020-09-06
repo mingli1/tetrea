@@ -34,7 +34,7 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
         val boardX = stage.width / 2 - (tetrisConfig.width * SQUARE_SIZE) / 2f + 3
         val boardY = (stage.height / 2 - (tetrisConfig.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 8f else 16f
 
-        tetris = Tetris(boardX, boardY, tetrisConfig, this, game.soundManager)
+        tetris = Tetris(boardX, boardY, tetrisConfig, this, game.soundManager, gameMode)
         inputHandler = TetrisInputHandler(tetris, this, game.soundManager, game.settings.das, game.settings.arr, game.settings.sds)
         tetrisKeyInput = TetrisKeyInput(game.settings, inputHandler)
         scene = TetrisScene(

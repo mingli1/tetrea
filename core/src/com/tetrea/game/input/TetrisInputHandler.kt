@@ -47,7 +47,7 @@ class TetrisInputHandler(
         if (down) {
             soundManager.onMove()
             tetris.rightHeld = true
-            tetris.stats.numInputs++
+            tetris.onInput()
 
             if (leftTuning.inProgress) leftTuning.reset()
             rightTuning.start()
@@ -66,7 +66,7 @@ class TetrisInputHandler(
         if (down) {
             soundManager.onMove()
             tetris.leftHeld = true
-            tetris.stats.numInputs++
+            tetris.onInput()
 
             if (rightTuning.inProgress) rightTuning.reset()
             leftTuning.start()
@@ -83,18 +83,18 @@ class TetrisInputHandler(
 
     fun softDrop(down: Boolean) {
         startSoftDrop = down
-        if (down) tetris.stats.numInputs++
+        if (down) tetris.onInput()
     }
 
     fun hardDrop() {
         if (!tetris.started) return
         tetris.hardDrop()
-        tetris.stats.numInputs++
+        tetris.onInput()
     }
 
     fun rotateClockwise() {
         if (!tetris.started) return
-        tetris.stats.numInputs++
+        tetris.onInput()
         tetris.onRotate()
         tetris.currPiece?.rotate(Rotation.Clockwise)
     }
@@ -102,20 +102,20 @@ class TetrisInputHandler(
     fun rotateCounterClockwise() {
         if (!tetris.started) return
         tetris.onRotate()
-        tetris.stats.numInputs++
+        tetris.onInput()
         tetris.currPiece?.rotate(Rotation.Counterclockwise)
     }
 
     fun rotate180() {
         if (!tetris.started) return
         tetris.onRotate()
-        tetris.stats.numInputs++
+        tetris.onInput()
         tetris.currPiece?.rotate(Rotation.OneEighty)
     }
 
     fun onHold() {
         if (!tetris.started) return
-        tetris.stats.numInputs++
+        tetris.onInput()
         tetris.holdCurrPiece()
     }
 

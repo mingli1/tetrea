@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.utils.Align
+import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
@@ -33,12 +34,23 @@ class TetrisScene(
     private var countdownTimer = 0f
     private var startCountdown = false
 
+    private val timeLabel = res.getLabel(
+        x = boardX + (config.width * SQUARE_SIZE) + 8f,
+        y = boardY + 8f,
+        fontScale = 1f
+    )
+
+    private val primaryLabel = res.getLabel(
+
+    )
+
     init {
         stage.addActor(res.getLabel(
             when (gameMode) {
                 GameMode.Sprint -> "40L SPRINT"
                 GameMode.Ultra -> "2 MIN ULTRA"
                 GameMode.Cheese -> "100L CHEESE RACE"
+                else -> ""
             },
             x = 3f,
             y = stage.height - 23f,
@@ -48,9 +60,23 @@ class TetrisScene(
             setAlignment(Align.center)
         })
         stage.addActor(countdownLabel)
+
+        stage.addActor(res.getLabel(
+            "TIME",
+            x = boardX + (config.width * SQUARE_SIZE) + 8f,
+            y = boardY + 12f,
+            fontScale = 0.5f
+        ))
+        stage.addActor(timeLabel)
     }
 
     fun update(dt: Float) {
+        timeLabel.setText(if (gameMode == GameMode.Ultra)
+            screen.tetris.ultraTimer.formatMMSS()
+        else
+            screen.tetris.clockTimer.formatMMSS()
+        )
+
         if (startCountdown) {
             countdownTimer += dt
             if (countdownTimer >= 1f) {

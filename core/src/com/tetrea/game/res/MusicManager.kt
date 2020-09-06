@@ -78,7 +78,11 @@ class MusicManager(private val res: Resources, private val settings: Settings) {
     }
 
     fun startBattleMusic() {
-        setBattleMusicVolume(settings.musicVolume)
+        if (settings.muteMusic) {
+            mute()
+        } else {
+            setBattleMusicVolume(settings.musicVolume)
+        }
         currBattleMusic = res.battleMusic.random()
         currBattleMusic?.play()
     }

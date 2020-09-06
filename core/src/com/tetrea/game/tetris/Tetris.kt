@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.extension.default
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.res.SoundManager
+import com.tetrea.game.screen.GameMode
 import com.tetrea.game.screen.TetrisStateManager
 import com.tetrea.game.tetris.model.Piece
 import com.tetrea.game.tetris.model.Square
@@ -13,12 +14,15 @@ import com.tetrea.game.tetris.util.PieceType
 import com.tetrea.game.util.Timer
 import kotlin.math.max
 
+private const val ULTRA_TIME = 120f
+
 class Tetris(
     private val screenX: Float,
     private val screenY: Float,
     private val config: TetrisConfig,
     private val stateManager: TetrisStateManager,
-    private val soundManager: SoundManager
+    private val soundManager: SoundManager,
+    private val gameMode: GameMode
 ) {
 
     var started = false
@@ -68,10 +72,16 @@ class Tetris(
     private var attack = 0
     private var spike = 0
     private var currLineClearType = LineClearType.None
+    private var inputs = 0
 
+    // visible stats
     var clockTimer = 0f
     var apm = 0f
     var pps = 0f
+    var inputsPerPiece = 0f
+    var score = 0
+    var ultraTimer = ULTRA_TIME
+
     private var gravityTimer = Timer(config.gravity, { currPiece?.move(0, -1) }, true)
 
     private var lockDelay1Timer = 0f
@@ -97,9 +107,17 @@ class Tetris(
     fun update(dt: Float) {
         if (!started) return
 
+        if (gameMode == GameMode.Ultra) {
+            ultraTimer -= dt
+            if (ultraTimer <= 0f) {
+                gameOver(false)
+            }
+        }
+
         clockTimer += dt
         apm = totalAttack / clockTimer * 60
         pps = piecesPlaced / clockTimer
+        inputsPerPiece = inputs / piecesPlaced.toFloat()
 
         gravityTimer.update(dt)
 
@@ -145,6 +163,11 @@ class Tetris(
 
     fun isUnitEmpty(x: Int, y: Int): Boolean {
         return !content[y][x].filled
+    }
+
+    fun onInput() {
+        stats.numInputs++
+        inputs++
     }
 
     fun queueGarbage(numLines: Int) {
@@ -351,6 +374,8 @@ class Tetris(
         clockTimer = 0f
         apm = 0f
         pps = 0f
+        inputsPerPiece = 0f
+        ultraTimer = ULTRA_TIME
     }
 
     fun reset(resetGarbage: Boolean = true) {
