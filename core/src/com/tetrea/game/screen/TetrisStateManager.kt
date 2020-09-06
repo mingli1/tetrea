@@ -30,7 +30,7 @@ interface TetrisStateManager {
 
     fun setPlayerWonGame(win: Boolean)
 
-    fun startGameOverSequence()
+    fun onGameOver()
 
     fun cancelGarbage(lines: Int)
 }

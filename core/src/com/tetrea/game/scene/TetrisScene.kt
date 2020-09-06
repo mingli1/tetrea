@@ -3,7 +3,9 @@ package com.tetrea.game.scene
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
+import com.tetrea.game.extension.formatComma
 import com.tetrea.game.extension.formatMMSS
 import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.res.Resources
@@ -39,10 +41,31 @@ class TetrisScene(
         y = boardY + 8f,
         fontScale = 1f
     )
+    private val statsLabel1: Label
+    private val statsLabel2: Label
+    private var statsLabel3: Label? = null
 
-    private val primaryLabel = res.getLabel(
+    private val statsX = boardX - 62f
+    private val statsY1 = boardY + 168f
+    private val statsY2 = boardY + 134f
+    private val statsY3 = boardY + 100f
 
-    )
+    private val primaryDescLabel = res.getLabel(
+        text = when (gameMode) {
+            GameMode.Sprint, GameMode.Cheese -> "LINES LEFT"
+            GameMode.Ultra -> "SCORE"
+            else -> ""
+        }
+    ).apply {
+        setSize(this@TetrisScene.stage.width, 20f)
+        setPosition(0f, boardY + (config.height + 3) * SQUARE_SIZE + 30f)
+        setAlignment(Align.center)
+    }
+    private val primaryLabel = res.getLabel(fontScale = 2f).apply {
+        setSize(this@TetrisScene.stage.width, 30f)
+        setPosition(0f, boardY + (config.height + 3) * SQUARE_SIZE)
+        setAlignment(Align.center)
+    }
 
     init {
         stage.addActor(res.getLabel(
@@ -68,6 +91,61 @@ class TetrisScene(
             fontScale = 0.5f
         ))
         stage.addActor(timeLabel)
+
+        stage.addActor(primaryDescLabel)
+        stage.addActor(primaryLabel)
+
+        stage.addActor(res.getLabel(
+            when (gameMode) {
+                GameMode.Sprint, GameMode.Cheese -> "PPS"
+                else -> "APM"
+            },
+            x = statsX,
+            y = statsY1,
+            fontScale = 0.5f
+        ))
+        statsLabel1 = res.getLabel(
+            x = statsX,
+            y = statsY1 - 4,
+            fontScale = 1f
+        )
+        stage.addActor(statsLabel1)
+
+        stage.addActor(res.getLabel(
+            when (gameMode) {
+                GameMode.Sprint -> "INPUTS/PIECE"
+                GameMode.Ultra -> "POINTS/PIECE"
+                else -> "# PIECES"
+            },
+            x = statsX,
+            y = statsY2,
+            fontScale = 0.5f
+        ))
+        statsLabel2 = res.getLabel(
+            x = statsX,
+            y = statsY2 - 4,
+            fontScale = 1f
+        )
+        stage.addActor(statsLabel2)
+
+        if (gameMode != GameMode.Cheese) {
+            stage.addActor(res.getLabel(
+                when (gameMode) {
+                    GameMode.Sprint -> "# PIECE"
+                    GameMode.Ultra -> "PPS"
+                    else -> ""
+                },
+                x = statsX,
+                y = statsY3,
+                fontScale = 0.5f
+            ))
+            statsLabel3 = res.getLabel(
+                x = statsX,
+                y = statsY3 - 4,
+                fontScale = 1f
+            )
+            stage.addActor(statsLabel3)
+        }
     }
 
     fun update(dt: Float) {
@@ -76,6 +154,27 @@ class TetrisScene(
         else
             screen.tetris.clockTimer.formatMMSS()
         )
+
+        primaryLabel.setText(when (gameMode) {
+            GameMode.Sprint -> screen.tetris.sprintLines.toString()
+            GameMode.Ultra -> screen.tetris.score.formatComma()
+            else -> ""
+        })
+
+        statsLabel1.setText(when (gameMode) {
+            GameMode.Sprint, GameMode.Cheese -> String.format("%.2f", screen.tetris.pps)
+            else -> String.format("%.2f", screen.tetris.apm)
+        })
+        statsLabel2.setText(when (gameMode) {
+            GameMode.Sprint -> String.format("%.2f", screen.tetris.inputsPerPiece)
+            GameMode.Ultra -> String.format("%.1f", screen.tetris.pointsPerBlock)
+            else -> screen.tetris.piecesPlaced.toString()
+        })
+        statsLabel3?.setText(when (gameMode) {
+            GameMode.Sprint -> screen.tetris.piecesPlaced.toString()
+            GameMode.Ultra -> String.format("%.2f", screen.tetris.pps)
+            else -> ""
+        })
 
         if (startCountdown) {
             countdownTimer += dt

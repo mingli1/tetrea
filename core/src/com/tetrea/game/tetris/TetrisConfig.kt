@@ -28,5 +28,5 @@ data class TetrisConfig(
     @Json(name = "attackTST") val attackTST: Int,
     @Json(name = "attackPC") val attackPC: Int,
     @Json(name = "spikeThreshold") val spikeThreshold: Int,
-    @Json(name = "scoreTable") val scoreTable: ScoreTable? = null
+    @Json(name = "scoreTable") val scoreTable: ScoreTable
 )

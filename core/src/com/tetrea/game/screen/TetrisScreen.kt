@@ -144,7 +144,7 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
 
     }
 
-    override fun startGameOverSequence() {
+    override fun onGameOver() {
 
     }
 

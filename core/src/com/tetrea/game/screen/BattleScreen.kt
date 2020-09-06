@@ -233,7 +233,7 @@ class BattleScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
         state.playerWonGame = win
     }
 
-    override fun startGameOverSequence() {
+    override fun onGameOver() {
         scene.startGameOverSequence()
     }
 

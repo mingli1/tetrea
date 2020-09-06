@@ -14,6 +14,7 @@ import com.tetrea.game.tetris.util.PieceType
 import com.tetrea.game.util.Timer
 import kotlin.math.max
 
+private const val SPRINT_GOAL = 40
 private const val ULTRA_TIME = 120f
 
 class Tetris(
@@ -80,7 +81,9 @@ class Tetris(
     var pps = 0f
     var inputsPerPiece = 0f
     var score = 0
+    var sprintLines = SPRINT_GOAL
     var ultraTimer = ULTRA_TIME
+    var pointsPerBlock = 0f
 
     private var gravityTimer = Timer(config.gravity, { currPiece?.move(0, -1) }, true)
 
@@ -117,7 +120,10 @@ class Tetris(
         clockTimer += dt
         apm = totalAttack / clockTimer * 60
         pps = piecesPlaced / clockTimer
-        inputsPerPiece = inputs / piecesPlaced.toFloat()
+        if (piecesPlaced > 0) {
+            inputsPerPiece = inputs / piecesPlaced.toFloat()
+            pointsPerBlock = score / piecesPlaced.toFloat()
+        }
 
         gravityTimer.update(dt)
 
@@ -278,6 +284,7 @@ class Tetris(
         }
         if (combo > 1) {
             stateManager.spawnComboParticle(combo)
+            score += config.scoreTable.combo * (combo - 1)
             soundManager.onCombo(combo)
         }
 
@@ -325,6 +332,7 @@ class Tetris(
         if (content.all { row -> row.all { !it.filled || it.square.pieceType == PieceType.Solid } }) {
             stats.numPC++
             attack += config.attackPC
+            score += config.scoreTable.pc
             soundManager.onPerfectClear()
             stateManager.spawnCenterParticle(LineClearType.PerfectClear.desc, LineClearType.PerfectClear.color)
         }
@@ -363,6 +371,11 @@ class Tetris(
             }
             if (stateManager.attackEnemy(attack)) gameOver(true)
         }
+
+        if (gameMode == GameMode.Sprint) {
+            sprintLines -= rowsToClear.size
+            if (sprintLines <= 0) gameOver(false)
+        }
     }
 
     fun generateQueue() {
@@ -374,8 +387,11 @@ class Tetris(
         clockTimer = 0f
         apm = 0f
         pps = 0f
+        score = 0
+        sprintLines = SPRINT_GOAL
         inputsPerPiece = 0f
         ultraTimer = ULTRA_TIME
+        pointsPerBlock = 0f
     }
 
     fun reset(resetGarbage: Boolean = true) {
@@ -452,7 +468,7 @@ class Tetris(
         currPiece = null
         recordStats()
         stateManager.setPlayerWonGame(win)
-        stateManager.startGameOverSequence()
+        stateManager.onGameOver()
     }
 
     private fun receiveGarbage() {
@@ -575,27 +591,34 @@ class Tetris(
     private fun applyLineClears(lines: Int, b2b: Int, combo: Int) {
         if (b2b > 0) soundManager.onB2b()
         else soundManager.onClear(lines)
+
+        val b2bScoreBonus = if (b2b > 0) config.scoreTable.b2bMultiplier else 1f
+
         when (lines) {
             1 -> {
                 stats.numSingle++
                 attack += config.attackSingle
                 currLineClearType = LineClearType.None
+                score += config.scoreTable.single
             }
             2 -> {
                 stats.numDouble++
                 attack += config.attackDouble
                 currLineClearType = LineClearType.Double
+                score += config.scoreTable.double
             }
             3 -> {
                 stats.numTriple++
                 attack += config.attackTriple
                 currLineClearType = LineClearType.Triple
+                score += config.scoreTable.triple
             }
             4 -> {
                 stats.numQuad++
                 attack += config.attackQuad + b2b
                 if (combo >= 3) attack += (config.attackQuad - 1) * (combo - 1)
                 currLineClearType = LineClearType.Quad
+                score += (config.scoreTable.quad * b2bScoreBonus).toInt()
             }
         }
     }
@@ -603,23 +626,29 @@ class Tetris(
     private fun applyTSpin(lines: Int, b2b: Int, combo: Int) {
         if (b2b > 0) soundManager.onB2b()
         else soundManager.onTSpin()
+
+        val b2bScoreBonus = if (b2b > 0) config.scoreTable.b2bMultiplier else 1f
+
         when (lines) {
             1 -> {
                 stats.numTSS++
                 attack += config.attackTSS + b2b
                 currLineClearType = LineClearType.TSS
+                score += (config.scoreTable.tss * b2bScoreBonus).toInt()
             }
             2 -> {
                 stats.numTSD++
                 attack += config.attackTSD + b2b
                 if (combo >= 3) attack += (config.attackTSD - 1) * (combo - 1)
                 currLineClearType = LineClearType.TSD
+                score += (config.scoreTable.tsd * b2bScoreBonus).toInt()
             }
             3 -> {
                 stats.numTST++
                 attack += config.attackTST + b2b
                 if (combo >= 3) attack += (config.attackTST - 1) * (combo - 1)
                 currLineClearType = LineClearType.TST
+                score += (config.scoreTable.tst * b2bScoreBonus).toInt()
             }
         }
     }

@@ -1,5 +1,8 @@
 package com.tetrea.game.extension
 
+import java.text.NumberFormat
+import java.util.*
+
 fun Float.formatMMSS(): String {
     val minutes = ((this % 3600) / 60).toInt()
     val seconds = (this % 60).toInt()
@@ -16,3 +19,5 @@ fun Int.sign() = if (this >= 0) "+" else ""
 fun Float.toMillis() = (this * 1000).toInt().toString()
 
 fun Float.formatPercent() = "${(this * 100f).toInt()}%"
+
+fun Int.formatComma() = NumberFormat.getNumberInstance(Locale.US).format(this)
