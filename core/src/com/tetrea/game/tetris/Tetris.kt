@@ -465,6 +465,10 @@ class Tetris(
         started = false
         apm = totalAttack / clockTimer * 60
         pps = piecesPlaced / clockTimer
+        if (piecesPlaced > 0) {
+            inputsPerPiece = inputs / piecesPlaced.toFloat()
+            pointsPerBlock = score / piecesPlaced.toFloat()
+        }
         currPiece = null
         recordStats()
         stateManager.setPlayerWonGame(win)

@@ -11,6 +11,7 @@ import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.res.SoundManager
+import com.tetrea.game.scene.dialog.PauseDialog
 import com.tetrea.game.screen.GameMode
 import com.tetrea.game.screen.TetrisScreen
 import com.tetrea.game.tetris.TetrisConfig
@@ -66,6 +67,15 @@ class TetrisScene(
         setPosition(0f, boardY + (config.height + 3) * SQUARE_SIZE)
         setAlignment(Align.center)
     }
+
+    private val pauseDialog = PauseDialog(
+        res,
+        soundManager,
+        screen,
+        windowStyleKey = "green_bg",
+        buttonStyleKey = "green_button",
+        gameMode = gameMode
+    )
 
     init {
         stage.addActor(res.getLabel(
@@ -208,6 +218,12 @@ class TetrisScene(
         renderTetris(batch)
     }
 
+    fun showPauseDialog() {
+        if (!stage.actors.contains(pauseDialog)) {
+            pauseDialog.show(stage)
+        }
+    }
+
     fun startCountdown() {
         screen.tetris.generateQueue()
         screen.tetris.resetVisibleStats()
@@ -219,6 +235,14 @@ class TetrisScene(
         startCountdown = true
 
         soundManager.onCountdown()
+    }
+
+    fun onRestart() {
+        screen.tetris.reset()
+        screen.tetris.currPiece = null
+        screen.tetris.bag.clear()
+
+        startCountdown()
     }
 
     private fun renderTetris(batch: Batch) {

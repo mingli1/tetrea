@@ -35,7 +35,7 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
         val boardY = (stage.height / 2 - (tetrisConfig.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 8f else 16f
 
         tetris = Tetris(boardX, boardY, tetrisConfig, this, game.soundManager, gameMode)
-        inputHandler = TetrisInputHandler(tetris, this, game.soundManager, game.settings.das, game.settings.arr, game.settings.sds)
+        inputHandler = TetrisInputHandler(tetris, this, game.soundManager, game.settings.das, game.settings.arr, game.settings.sds, gameMode)
         tetrisKeyInput = TetrisKeyInput(game.settings, inputHandler)
         scene = TetrisScene(
             boardX,
@@ -98,10 +98,32 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
 
     override fun notifyPause() {
         super.notifyPause()
+        if (!isAndroid()) inputMultiplexer.removeProcessor(tetrisKeyInput)
+        scene.showPauseDialog()
+        game.musicManager.pauseBattleMusic()
     }
 
     override fun notifyResume() {
         super.notifyResume()
+        if (!isAndroid() && !inputMultiplexer.processors.contains(tetrisKeyInput)) {
+            inputMultiplexer.addProcessor(tetrisKeyInput)
+        }
+        game.musicManager.resumeBattleMusic()
+    }
+
+    fun onQuit() {
+        navigateTo(ARCADE_SCREEN)
+        game.musicManager.stopBattleMusic()
+        game.musicManager.inBattle = false
+        game.musicManager.fadeInBackgroundMusic()
+    }
+
+    override fun onRestart() {
+        scene.onRestart()
+    }
+
+    override fun onGameOver() {
+
     }
 
     override fun addGarbage(numLines: Int) {
@@ -141,10 +163,6 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
     }
 
     override fun setPlayerWonGame(win: Boolean) {
-
-    }
-
-    override fun onGameOver() {
 
     }
 

@@ -100,6 +100,8 @@ abstract class BaseScreen(protected val game: TetreaGame) : Screen, Disposable {
         gameState = GameState.Pause
     }
 
+    open fun onRestart() {}
+
     enum class GameState {
         Resume,
         Pause

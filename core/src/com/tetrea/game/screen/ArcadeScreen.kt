@@ -48,6 +48,7 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
                     navigateTo(TETRIS_SCREEN, mapOf(ARG_GAME_MODE to GameMode.Sprint))
                     game.soundManager.onPrimaryButtonClicked()
                     game.musicManager.fadeOutBackgroundMusic()
+                    game.musicManager.inBattle = true
                 }
             )).size(220f, 50f).row()
             add(game.res.getButtonWithImage(
@@ -59,6 +60,7 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
                     navigateTo(TETRIS_SCREEN, mapOf(ARG_GAME_MODE to GameMode.Ultra))
                     game.soundManager.onPrimaryButtonClicked()
                     game.musicManager.fadeOutBackgroundMusic()
+                    game.musicManager.inBattle = true
                 }
             )).size(220f, 50f).padTop(16f).row()
             add(game.res.getButtonWithImage(
@@ -70,6 +72,7 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
                     navigateTo(TETRIS_SCREEN, mapOf(ARG_GAME_MODE to GameMode.Cheese))
                     game.soundManager.onPrimaryButtonClicked()
                     game.musicManager.fadeOutBackgroundMusic()
+                    game.musicManager.inBattle = true
                 }
             )).size(220f, 50f).padTop(16f).row()
         }

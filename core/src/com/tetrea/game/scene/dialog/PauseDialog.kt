@@ -6,14 +6,16 @@ import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SoundManager
 import com.tetrea.game.screen.BaseScreen
 import com.tetrea.game.screen.BattleScreen
+import com.tetrea.game.screen.GameMode
+import com.tetrea.game.screen.TetrisScreen
 
-private const val WINDOW_MIN_HEIGHT = 140f
 private const val BUTTON_WIDTH = 150f
 private const val BUTTON_HEIGHT = 36f
 private const val BUTTON_PADDING = 16f
 private const val TOP_BOTTOM_PADDING = 2f
 
 private const val RESUME = "RESUME"
+private const val RESTART = "RESTART"
 private const val QUIT = "QUIT"
 
 class PauseDialog(
@@ -21,7 +23,8 @@ class PauseDialog(
     soundManager: SoundManager,
     private val screen: BaseScreen,
     windowStyleKey: String = "gray_blue_bg",
-    buttonStyleKey: String = "gray_blue_button"
+    buttonStyleKey: String = "gray_blue_button",
+    private val gameMode: GameMode
 ) : BaseModalDialog(
     "PAUSED",
     res.getNinePatchWindowStyle(windowStyleKey),
@@ -32,13 +35,17 @@ class PauseDialog(
     private val confirmDialog: ConfirmDialog
 
     init {
-        background.minHeight = WINDOW_MIN_HEIGHT
+        background.minHeight = if (gameMode == GameMode.Versus) 140f else 180f
 
         buttonTable.defaults().width(BUTTON_WIDTH).padLeft(BUTTON_PADDING).padBottom(TOP_BOTTOM_PADDING)
         buttonTable.defaults().height(BUTTON_HEIGHT).padRight(BUTTON_PADDING)
 
         button(getButton(RESUME, key = buttonStyleKey), RESUME)
         buttonTable.row()
+        if (gameMode != GameMode.Versus) {
+            button(getButton(RESTART, key = buttonStyleKey), RESTART)
+            buttonTable.row()
+        }
         button(getButton(QUIT, key = buttonStyleKey), QUIT)
 
         confirmDialog = ConfirmDialog(
@@ -64,9 +71,18 @@ class PauseDialog(
         super.result(obj)
         when (obj) {
             RESUME -> screen.notifyResume()
-            QUIT -> {
+            RESTART -> {
                 hide(null)
-                currStage?.let { confirmDialog.show(it) }
+                screen.notifyResume()
+                screen.onRestart()
+            }
+            QUIT -> {
+                if (gameMode == GameMode.Versus) {
+                    hide(null)
+                    currStage?.let { confirmDialog.show(it) }
+                } else {
+                    exit()
+                }
             }
         }
     }
@@ -83,6 +99,8 @@ class PauseDialog(
 
         if (screen is BattleScreen) {
             screen.onBattleQuit()
+        } else if (screen is TetrisScreen) {
+            screen.onQuit()
         }
     }
 }

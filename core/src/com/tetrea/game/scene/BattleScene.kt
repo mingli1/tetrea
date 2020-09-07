@@ -25,6 +25,7 @@ import com.tetrea.game.scene.component.VersusCard
 import com.tetrea.game.scene.dialog.PauseDialog
 import com.tetrea.game.scene.effect.TextParticleSpawner
 import com.tetrea.game.screen.BattleScreen
+import com.tetrea.game.screen.GameMode
 import com.tetrea.game.tetris.TetrisConfig
 import com.tetrea.game.tetris.util.LineClearType
 import com.tetrea.game.tetris.util.PieceType
@@ -139,7 +140,14 @@ class BattleScene(
         setPosition(this@BattleScene.stage.width / 2 - width / 2, versusTag.y + 52f)
     }
 
-    private val pauseDialog = PauseDialog(res, soundManager, screen, windowStyleKey = "purple_bg", buttonStyleKey = "purple_button")
+    private val pauseDialog = PauseDialog(
+        res, 
+        soundManager,
+        screen,
+        windowStyleKey = "purple_bg",
+        buttonStyleKey = "purple_button",
+        gameMode = GameMode.Versus
+    )
 
     init {
         stage.addActor(res.getLabel(
