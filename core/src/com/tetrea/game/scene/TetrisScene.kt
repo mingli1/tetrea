@@ -283,7 +283,7 @@ class TetrisScene(
         gameOverLabel.isVisible = true
     }
 
-    fun showEndState() {
+    fun showEndState(newRecord: Boolean) {
         finalLabel.isVisible = true
         finalValueLabel.isVisible = true
         finalValueLabel.setText(when (gameMode) {
@@ -291,6 +291,7 @@ class TetrisScene(
             GameMode.Ultra -> screen.tetris.score.formatComma()
             else -> ""
         })
+        newRecordTag.isVisible = newRecord
     }
 
     fun onRestart() {

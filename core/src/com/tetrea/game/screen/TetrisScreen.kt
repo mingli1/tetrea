@@ -25,11 +25,12 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
     private val inputMultiplexer = InputMultiplexer()
     private lateinit var inputHandler: TetrisInputHandler
     private lateinit var tetrisKeyInput: TetrisKeyInput
+    private var gameMode = GameMode.Sprint
 
     override fun show() {
         stage.addActor(game.fpsLabel)
 
-        val gameMode = arguments?.get(ARG_GAME_MODE) as? GameMode ?: GameMode.Sprint
+        gameMode = arguments?.get(ARG_GAME_MODE) as? GameMode ?: GameMode.Sprint
         val tetrisConfig = game.res.getTetrisConfig("arcade")
         val boardX = stage.width / 2 - (tetrisConfig.width * SQUARE_SIZE) / 2f + 3
         val boardY = (stage.height / 2 - (tetrisConfig.height * SQUARE_SIZE) / 2f) - if (isAndroid()) 8f else 16f
@@ -126,7 +127,36 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
     override fun onGameOver(toppedOut: Boolean) {
         game.musicManager.pauseBattleMusic()
         if (toppedOut) scene.showTopOutState()
-        else scene.showEndState()
+        else {
+            var newRecord = false
+            when (gameMode) {
+                GameMode.Sprint -> {
+                    if (game.player.arcadeStats.sprintTime == 0f || tetris.clockTimer < game.player.arcadeStats.sprintTime) {
+                        game.player.arcadeStats.sprintTime = tetris.clockTimer
+                        game.saveManager.save()
+                        newRecord = true
+                    }
+                }
+                GameMode.Ultra -> {
+                    if (game.player.arcadeStats.ultraScore == 0 || tetris.score > game.player.arcadeStats.ultraScore) {
+                        game.player.arcadeStats.ultraScore = tetris.score
+                        game.saveManager.save()
+                        newRecord = true
+                    }
+                }
+                GameMode.Cheese -> {
+                    if (game.player.arcadeStats.cheeseTime == 0f || tetris.clockTimer < game.player.arcadeStats.cheeseTime) {
+                        game.player.arcadeStats.cheeseTime = tetris.clockTimer
+                        newRecord = true
+                    }
+                    if (game.player.arcadeStats.cheeseLeastBlocks == 0 || tetris.piecesPlaced < game.player.arcadeStats.cheeseLeastBlocks) {
+                        game.player.arcadeStats.cheeseLeastBlocks = tetris.piecesPlaced
+                    }
+                    game.saveManager.save()
+                }
+            }
+            scene.showEndState(newRecord)
+        }
     }
 
     override fun addGarbage(numLines: Int) {

@@ -6,6 +6,7 @@ import com.tetrea.game.battle.BattleStats
 import com.tetrea.game.battle.MatchHistory
 import com.tetrea.game.res.NUM_LEVELS
 import com.tetrea.game.res.NUM_WORLDS
+import com.tetrea.game.tetris.ArcadeStats
 import com.tetrea.game.util.Int2
 import kotlin.math.max
 
@@ -21,6 +22,7 @@ data class Player(
     @Json(name = "battleRecords") private val battleRecords: MutableMap<String, BattleRecord> = mutableMapOf(),
     @Json(name = "matchHistory") val matchHistory: MutableList<MatchHistory> = mutableListOf(),
     @Json(name = "battleStats") val battleStats: BattleStats = BattleStats(),
+    @Json(name = "arcadeStats") val arcadeStats: ArcadeStats = ArcadeStats(),
     @Json(name = "quitDuringBattle") var quitDuringBattle: Boolean = false,
     @Json(name = "dodgedBattle") var dodgedBattle: Boolean = false
 ) {

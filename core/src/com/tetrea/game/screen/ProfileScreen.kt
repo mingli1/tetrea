@@ -60,8 +60,9 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
 
         contentTable = Table()
         createOverviewTable()
+        createArcadeStatsTable()
         if (game.player.matchHistory.isNotEmpty()) createMatchHistoryTable()
-        createStatsTable()
+        createBattleStatsTable()
 
         val scrollPane = ScrollPane(contentTable).apply {
             setOverscroll(false, false)
@@ -164,6 +165,26 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         ppsBar.applyChange(game.player.battleStats.getPps(), false)
     }
 
+    private fun createArcadeStatsTable() {
+        val statsTable = Table().apply {
+            background = NinePatchDrawable(game.res.getNinePatch("orange_bg"))
+        }
+        statsTable.add(game.res.getLabel("ARCADE STATS", color = GAME_LIGHT_ORANGE, fontScale = 1f))
+            .expand().top().left().padTop(8f).padLeft(8f).padBottom(4f).row()
+
+        val statsMap = game.player.arcadeStats.getLabeledPairs()
+        statsMap.forEach { (label, value) ->
+            val labelText = game.res.getLabel(text = label, color = GAME_LIGHT_ORANGE)
+            val statText = game.res.getLabel(text = value)
+            statsTable.add(labelText).expandX().left().padLeft(8f).padTop(4f)
+                .padBottom(if (label == "CHEESE LEAST BLOCKS") 8f else 0f)
+            statsTable.add(statText).expandX().right().padRight(8f).padTop(5f)
+                .padBottom(if (label == "CHEESE LEAST BLOCKS") 8f else 0f).row()
+        }
+
+        contentTable.add(statsTable).width(220f).padBottom(16f).row()
+    }
+
     private fun createMatchHistoryTable() {
         val historyTable = Table().apply {
             background = NinePatchDrawable(game.res.getNinePatch("orange_bg"))
@@ -196,7 +217,7 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         contentTable.add(historyTable).width(220f).padBottom(16f).row()
     }
 
-    private fun createStatsTable() {
+    private fun createBattleStatsTable() {
         val statsTable = Table().apply {
             background = NinePatchDrawable(game.res.getNinePatch("orange_bg"))
         }
@@ -209,7 +230,7 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             val statText = game.res.getLabel(text = value)
             statsTable.add(labelText).expandX().left().padLeft(8f).padTop(4f)
                 .padBottom(if (label == "PERFECT CLEARS") 8f else 0f)
-            statsTable.add(statText).expandX().right().padRight(8f)
+            statsTable.add(statText).expandX().right().padRight(8f).padTop(5f)
                 .padBottom(if (label == "PERFECT CLEARS") 8f else 0f).row()
         }
 
