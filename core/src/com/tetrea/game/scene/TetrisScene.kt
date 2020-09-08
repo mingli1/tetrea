@@ -3,10 +3,12 @@ package com.tetrea.game.scene
 import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.extension.formatComma
 import com.tetrea.game.extension.formatMMSS
+import com.tetrea.game.extension.formatMMSSDDD
 import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SQUARE_SIZE
@@ -50,6 +52,37 @@ class TetrisScene(
     private val statsY1 = boardY + 168f
     private val statsY2 = boardY + 134f
     private val statsY3 = boardY + 100f
+
+    private val gameOverLabel = res.getLabel(text = "GAME\nOVER!", fontScale = 1.5f).apply {
+        setSize(config.width * SQUARE_SIZE.toFloat(), config.height * SQUARE_SIZE.toFloat())
+        setAlignment(Align.center)
+        setPosition(boardX, boardY)
+        isVisible = false
+    }
+    private val finalLabel = res.getLabel(
+        text = when (gameMode) {
+            GameMode.Sprint, GameMode.Cheese -> "FINAL TIME"
+            GameMode.Ultra -> "FINAL SCORE"
+            else -> ""
+        },
+        fontScale = 1f
+    ).apply {
+        width = config.width * SQUARE_SIZE.toFloat()
+        setAlignment(Align.center)
+        setPosition(boardX, boardY + 150)
+    }
+    private val finalValueLabel = res.getLabel(
+        fontScale = 1.5f,
+        color = GAME_YELLOW
+    ).apply {
+        width = config.width * SQUARE_SIZE.toFloat()
+        setAlignment(Align.center)
+        setPosition(boardX, boardY + 128)
+    }
+    private val newRecordTag = Image(res.getTexture("new_record_tag")).apply {
+        setPosition(boardX + 10, boardY + 80)
+        setSize(100f, 20f)
+    }
 
     private val primaryDescLabel = res.getLabel(
         text = when (gameMode) {
@@ -156,6 +189,11 @@ class TetrisScene(
             )
             stage.addActor(statsLabel3)
         }
+        stage.addActor(gameOverLabel)
+
+        stage.addActor(finalLabel)
+        stage.addActor(finalValueLabel)
+        stage.addActor(newRecordTag)
     }
 
     fun update(dt: Float) {
@@ -229,12 +267,30 @@ class TetrisScene(
         screen.tetris.resetVisibleStats()
 
         countdown = config.startDelay
+        gameOverLabel.isVisible = false
+        finalLabel.isVisible = false
+        finalValueLabel.isVisible = false
+        newRecordTag.isVisible = false
         countdownLabel.isVisible = true
         updateCountdown(countdown.toString())
         countdownTimer = 0f
         startCountdown = true
 
         soundManager.onCountdown()
+    }
+
+    fun showTopOutState() {
+        gameOverLabel.isVisible = true
+    }
+
+    fun showEndState() {
+        finalLabel.isVisible = true
+        finalValueLabel.isVisible = true
+        finalValueLabel.setText(when (gameMode) {
+            GameMode.Sprint, GameMode.Cheese -> screen.tetris.clockTimer.formatMMSSDDD()
+            GameMode.Ultra -> screen.tetris.score.formatComma()
+            else -> ""
+        })
     }
 
     fun onRestart() {

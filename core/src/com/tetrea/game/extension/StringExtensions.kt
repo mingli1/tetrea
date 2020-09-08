@@ -9,6 +9,12 @@ fun Float.formatMMSS(): String {
     return String.format("%02d:%02d", minutes, seconds)
 }
 
+fun Float.formatMMSSDDD(): String {
+    val minutes = ((this % 3600) / 60).toInt()
+    val seconds = this % 60
+    return if (minutes > 0) String.format("%02d:%06.3f", minutes, seconds) else String.format("%06.3f", seconds)
+}
+
 fun Float.formatHours(): String {
     val hours = this / 3600f
     return String.format("%.2f H", hours)

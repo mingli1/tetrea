@@ -113,6 +113,7 @@ class Tetris(
         if (gameMode == GameMode.Ultra) {
             ultraTimer -= dt
             if (ultraTimer <= 0f) {
+                ultraTimer = 0f
                 gameOver(false)
             }
         }
@@ -211,8 +212,8 @@ class Tetris(
             }
         }
         // top out
-        if (solidGarbageRow >= config.height) gameOver(false)
-        if (!currPiece?.canMove(0, -1).default(true)) gameOver(false)
+        if (solidGarbageRow >= config.height) gameOver(win = false, toppedOut = true)
+        if (!currPiece?.canMove(0, -1).default(true)) gameOver(win = false, toppedOut = true)
     }
 
     fun isWithinHeight(y: Int) = y < config.height * 2
@@ -223,7 +224,7 @@ class Tetris(
         instantSoftDrop()
         currPiece?.lock()
         soundManager.onLock()
-        if (currPiece?.isToppedOut().default(false)) gameOver(false)
+        if (currPiece?.isToppedOut().default(false)) gameOver(win = false, toppedOut = true)
         else currPiece = getNextPiece()
     }
 
@@ -374,7 +375,10 @@ class Tetris(
 
         if (gameMode == GameMode.Sprint) {
             sprintLines -= rowsToClear.size
-            if (sprintLines <= 0) gameOver(false)
+            if (sprintLines <= 0) {
+                sprintLines = 0
+                gameOver(false)
+            }
         }
     }
 
@@ -410,6 +414,7 @@ class Tetris(
         piecesPlaced = 0
         garbage.clear()
         gravityTimer.delay = config.gravity
+        inputs = 0
 
         combo = 0
         totalB2b = 0
@@ -458,7 +463,7 @@ class Tetris(
         return topOfStack
     }
 
-    private fun gameOver(win: Boolean) {
+    private fun gameOver(win: Boolean, toppedOut: Boolean = false) {
         if (!win) soundManager.onDead()
         else soundManager.onWin()
 
@@ -472,7 +477,7 @@ class Tetris(
         currPiece = null
         recordStats()
         stateManager.setPlayerWonGame(win)
-        stateManager.onGameOver()
+        stateManager.onGameOver(toppedOut)
     }
 
     private fun receiveGarbage() {
@@ -500,7 +505,7 @@ class Tetris(
             if (currY >= config.height * 2) break
         }
         // top out
-        if (lines >= config.height) gameOver(false)
+        if (lines >= config.height) gameOver(win = false, toppedOut = true)
 
         stateManager.cancelGarbage(lines)
         garbage.clear()

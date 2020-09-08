@@ -9,7 +9,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.extension.onTap
-import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
 import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.res.Resources
 import com.tetrea.game.res.SoundManager
@@ -68,7 +67,7 @@ open class BaseModalDialog(
     protected fun getButton(text: String, key: String = "gray_blue_button") = res.getNinePatchTextButton(
         text = text,
         key = key,
-        colorUp = GAME_LIGHT_GRAY_BLUE,
+        colorUp = Color.WHITE,
         colorDown = Color.WHITE
     )
 }

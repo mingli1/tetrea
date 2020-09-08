@@ -291,6 +291,7 @@ class Resources : Disposable {
         loadTexture("tiebreaker_tag")
         loadTexture("victory_tag")
         loadTexture("defeat_tag")
+        loadTexture("new_record_tag")
         loadTexture("versus_tag")
         loadTexture("versus_button_icon")
         loadTexture("arcade_button_icon")

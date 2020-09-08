@@ -120,10 +120,13 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
 
     override fun onRestart() {
         scene.onRestart()
+        game.musicManager.resumeBattleMusic()
     }
 
-    override fun onGameOver() {
-
+    override fun onGameOver(toppedOut: Boolean) {
+        game.musicManager.pauseBattleMusic()
+        if (toppedOut) scene.showTopOutState()
+        else scene.showEndState()
     }
 
     override fun addGarbage(numLines: Int) {
