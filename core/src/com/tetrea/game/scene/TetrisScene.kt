@@ -206,6 +206,7 @@ class TetrisScene(
         primaryLabel.setText(when (gameMode) {
             GameMode.Sprint -> screen.tetris.sprintLines.toString()
             GameMode.Ultra -> screen.tetris.score.formatComma()
+            GameMode.Cheese -> screen.tetris.cheeseLines.toString()
             else -> ""
         })
 

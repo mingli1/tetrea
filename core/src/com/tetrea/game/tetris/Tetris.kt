@@ -16,6 +16,8 @@ import kotlin.math.max
 
 private const val SPRINT_GOAL = 40
 private const val ULTRA_TIME = 120f
+private const val CHEESE_GOAL = 100
+private const val CHEESE_HEIGHT = 9
 
 class Tetris(
     private val screenX: Float,
@@ -74,6 +76,7 @@ class Tetris(
     private var spike = 0
     private var currLineClearType = LineClearType.None
     private var inputs = 0
+    private var currCheeseLinesCleared = 0
 
     // visible stats
     var clockTimer = 0f
@@ -84,6 +87,7 @@ class Tetris(
     var sprintLines = SPRINT_GOAL
     var ultraTimer = ULTRA_TIME
     var pointsPerBlock = 0f
+    var cheeseLines = CHEESE_GOAL
 
     private var gravityTimer = Timer(config.gravity, { currPiece?.move(0, -1) }, true)
 
@@ -105,6 +109,11 @@ class Tetris(
         reset()
         currPiece = getNextPiece()
         started = true
+
+        if (gameMode == GameMode.Cheese) {
+            repeat(CHEESE_HEIGHT) { garbage.add(1) }
+            receiveGarbage(uniqueHoles = true)
+        }
     }
 
     fun update(dt: Float) {
@@ -263,7 +272,18 @@ class Tetris(
                     rowFilled = false
                 }
             }
-            if (rowFilled) rowsToClear.add(y)
+            if (rowFilled) {
+                rowsToClear.add(y)
+
+                if (gameMode == GameMode.Cheese && content[y].any { it.square.pieceType == PieceType.Garbage }) {
+                    cheeseLines--
+                    currCheeseLinesCleared++
+                    if (cheeseLines <= 0) {
+                        cheeseLines = 0
+                        gameOver(false)
+                    }
+                }
+            }
         }
         val numLinesToClear = rowsToClear.size
 
@@ -271,6 +291,15 @@ class Tetris(
             combo = 0
             spike = 0
             if (garbage.isNotEmpty()) garbageTimer.start()
+            if (gameMode == GameMode.Cheese && currCheeseLinesCleared > 0) {
+                if (cheeseLines > CHEESE_HEIGHT) {
+                    repeat(currCheeseLinesCleared) {
+                        garbage.add(1)
+                        receiveGarbage(uniqueHoles = true)
+                    }
+                    currCheeseLinesCleared = 0
+                }
+            }
             return
         } else {
             combo++
@@ -395,6 +424,7 @@ class Tetris(
         sprintLines = SPRINT_GOAL
         inputsPerPiece = 0f
         ultraTimer = ULTRA_TIME
+        cheeseLines = CHEESE_GOAL
         pointsPerBlock = 0f
     }
 
@@ -480,17 +510,37 @@ class Tetris(
         stateManager.onGameOver(toppedOut)
     }
 
-    private fun receiveGarbage() {
+    private fun receiveGarbage(uniqueHoles: Boolean = false) {
         if (garbage.isEmpty()) return
         val lines = garbage.sum()
         offsetStack(lines)
         var currY = solidGarbageRow
+
+        var prevX = 0
+        if (uniqueHoles) {
+            prevX = if (content[0].any { it.square.pieceType == PieceType.Garbage }) {
+                content[0].find { !it.filled }?.y ?: 0
+            } else {
+                MathUtils.random(config.width - 1)
+            }
+        }
+
         for (i in garbage.size - 1 downTo 0) {
             var numLines = garbage[i]
             if (currY + numLines > config.height * 2) {
                 numLines = config.height * 2 - currY
             }
-            val holeX = MathUtils.random(config.width - 1)
+            var holeX = MathUtils.random(config.width - 1)
+
+            if (uniqueHoles) {
+                if (holeX == prevX) {
+                    holeX += MathUtils.randomSign()
+                    if (holeX < 0) holeX = config.width - 1
+                    if (holeX > config.width - 1) holeX = 0
+                }
+                prevX = holeX
+            }
+
             for (y in currY until currY + numLines) {
                 for (x in 0 until config.width) {
                     if (x != holeX) {
