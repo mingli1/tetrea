@@ -1,28 +1,47 @@
 package com.tetrea.game.screen
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
+import com.badlogic.gdx.scenes.scene2d.Touchable
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.ui.Stack
-import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
+import com.badlogic.gdx.utils.Align
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.AnimatedImageBar
+import com.tetrea.game.scene.dialog.MessageDialog
+import java.util.*
 
 private const val MAX_APM = 150f
 private const val MAX_PPS = 4f
+private const val MAX_NAME_LENGTH = 7
 
 class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
 
     private lateinit var parentTable: Table
     private lateinit var contentTable: Table
+    private lateinit var editBg: Table
+    private lateinit var editTable: Table
+    private lateinit var playerNameLabel: Label
 
     private val apmBar = AnimatedImageBar(1f, 1f, 0.5f, false, MAX_APM, 200f, 8f, game.res.getTexture("atk"))
     private val ppsBar = AnimatedImageBar(1f, 1f, 0.5f, false, MAX_PPS, 200f, 8f, game.res.getTexture("spd"))
+
+    private val nameLengthDialog = MessageDialog(
+        "NAME CANNOT EXCEED $MAX_NAME_LENGTH CHARACTERS",
+        {},
+        game.res,
+        game.soundManager,
+        title = "EDIT FAILED",
+        windowStyleKey = "orange_bg",
+        buttonStyleKey = "orange_button"
+    )
 
     override fun show() {
         super.show()
@@ -54,7 +73,10 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             colorUp = GAME_LIGHT_ORANGE,
             colorDown = Color.WHITE
         ).apply {
-            onTap { game.soundManager.onPrimaryButtonClicked() }
+            onTap {
+                showEditDialog()
+                game.soundManager.onPrimaryButtonClicked()
+            }
         }
         parentTable.add(editButton).top().right().size(76f, 28f).padTop(6f).row()
 
@@ -71,6 +93,19 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             layout()
         }
         parentTable.add(scrollPane).expandY().colspan(2).top().padTop(24f)
+
+        editBg = Table().apply {
+            background = TextureRegionDrawable(game.res.getTexture("black_150_opacity"))
+            setFillParent(true)
+            isVisible = false
+            touchable = Touchable.enabled
+        }
+        stage.addActor(editBg)
+        editTable = Table().apply {
+            background = NinePatchDrawable(game.res.getNinePatch("orange_bg"))
+        }
+        editBg.add(editTable).size(196f, 220f)
+        createEditTable()
 
         Gdx.input.inputProcessor = multiplexer
     }
@@ -105,7 +140,7 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         }
 
         val avatar = Image(game.res.getTexture(game.player.avatar))
-        val name = game.res.getLabel(text = game.player.name,fontScale = 1f)
+        playerNameLabel = game.res.getLabel(text = game.player.name,fontScale = 1f)
         val rating = game.res.getLabel(
             text = "RATING: ${game.player.rating.toInt()} (${game.player.maxRating.toInt()} PEAK)",
             color = GAME_LIGHT_ORANGE
@@ -113,7 +148,7 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
 
         overviewTable.add(avatar).padTop(6f).padLeft(4f).expandX()
         val textTable = Table().apply {
-            add(name).top().left().expandX().padBottom(2f).row()
+            add(playerNameLabel).top().left().expandX().padBottom(2f).row()
             add(rating).top().left().expandX().padBottom(2f)
         }
         overviewTable.add(textTable).width(160f).padTop(6f).padLeft(10f).top().left().row()
@@ -235,5 +270,92 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
         }
 
         contentTable.add(statsTable).width(220f).padBottom(24f).row()
+    }
+
+    private fun showEditDialog() {
+        editBg.isVisible = true
+        editBg.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(0.4f)))
+    }
+
+    private fun createEditTable() {
+        val title = game.res.getLabel("EDIT PROFILE", color = GAME_LIGHT_ORANGE, fontScale = 1f)
+        editTable.add(title).expandX().top().left().padTop(8f).padLeft(8f).padBottom(4f).colspan(2).row()
+
+        val avatar = Image(game.res.getTexture(game.player.avatar))
+        val randomAvatarButton = game.res.getNinePatchTextButton(
+            text = "RANDOM",
+            key = "profile_orange_button",
+            colorUp = GAME_LIGHT_ORANGE,
+            colorDown = Color.WHITE
+        ).apply {
+            onTap {  }
+        }
+        editTable.add(avatar).top().padTop(16f).padLeft(8f)
+        editTable.add(randomAvatarButton).size(90f, 30f).padTop(12f).row()
+
+        val name = game.res.getLabel(text = game.player.name, fontScale = 1f).apply {
+            setAlignment(Align.center)
+        }
+        val editNameButton = game.res.getNinePatchTextButton(
+            text = "EDIT",
+            key = "profile_orange_button",
+            colorUp = GAME_LIGHT_ORANGE,
+            colorDown = Color.WHITE
+        ).apply {
+            onTap { editName(name) }
+        }
+        editTable.add(name).top().width(75f).padTop(16f).padLeft(8f)
+        editTable.add(editNameButton).top().size(90f, 30f).padTop(10f).row()
+
+        val saveButton = game.res.getNinePatchTextButton(
+            text = "SAVE",
+            key = "profile_orange_button",
+            colorUp = GAME_LIGHT_ORANGE,
+            colorDown = Color.WHITE
+        ).apply {
+            onTap {
+                editBg.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(0.4f), Actions.run {
+                    editBg.isVisible = false
+                    game.player.name = name.text.toString()
+                    game.saveManager.save()
+                    playerNameLabel.setText(name.text.toString())
+                }))
+            }
+        }
+        editTable.add(saveButton).expandY().padTop(16f).bottom().size(172f, 30f).colspan(2).row()
+        val cancelButton = game.res.getNinePatchTextButton(
+            text = "CANCEL",
+            key = "profile_orange_button",
+            colorUp = GAME_LIGHT_ORANGE,
+            colorDown = Color.WHITE
+        ).apply {
+            onTap {
+                editBg.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(0.4f), Actions.run {
+                    editBg.isVisible = false
+                    avatar.drawable = TextureRegionDrawable(game.res.getTexture(game.player.avatar))
+                    name.setText(game.player.name)
+                }))
+            }
+        }
+        editTable.add(cancelButton).expandY().bottom().size(172f, 30f).padBottom(8f).colspan(2)
+    }
+
+    private fun editName(nameLabel: Label) {
+        Gdx.input.getTextInput(
+            object : Input.TextInputListener {
+                override fun input(text: String) {
+                    if (text.length > MAX_NAME_LENGTH) {
+                        nameLengthDialog.show(stage)
+                    } else {
+                        nameLabel.setText(text.toUpperCase(Locale.ROOT))
+                    }
+                }
+
+                override fun canceled() {}
+            },
+            "EDIT NAME",
+            nameLabel.text.toString(),
+            ""
+        )
     }
 }

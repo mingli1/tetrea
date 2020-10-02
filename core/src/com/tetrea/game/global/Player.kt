@@ -13,7 +13,7 @@ import kotlin.math.max
 private const val MAX_MATCH_HISTORY_SAVED = 10
 
 data class Player(
-    @Json(name = "name") val name: String = "PLAYER",
+    @Json(name = "name") var name: String = "PLAYER",
     @Json(name = "avatar") val avatar: String = "enemy_ittzzi",
     @Json(name = "rating") var rating: Float = 800f,
     @Json(name = "maxRating") var maxRating: Float = 800f,
