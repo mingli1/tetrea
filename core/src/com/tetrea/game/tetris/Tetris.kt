@@ -413,7 +413,22 @@ class Tetris(
 
     fun generateQueue() {
         bag.clear()
-        repeat(2) { addToBag() }
+        if (gameMode == GameMode.Sprint) {
+            addToBag()
+            if (bag[0].pieceType == PieceType.O || bag[0].pieceType == PieceType.S || bag[0].pieceType == PieceType.Z) {
+                for (i in bag.size - 1 downTo 1) {
+                    if (bag[i].pieceType != PieceType.O && bag[i].pieceType != PieceType.S && bag[i].pieceType != PieceType.Z) {
+                        val temp = bag[0]
+                        bag[0] = bag[i]
+                        bag[i] = temp
+                        break
+                    }
+                }
+            }
+            addToBag()
+        } else {
+            repeat(2) { addToBag() }
+        }
     }
 
     fun resetVisibleStats() {
