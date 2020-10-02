@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.math.MathUtils
 import com.badlogic.gdx.scenes.scene2d.Touchable
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.*
@@ -29,6 +30,8 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
     private lateinit var editBg: Table
     private lateinit var editTable: Table
     private lateinit var playerNameLabel: Label
+    private lateinit var playerAvatar: Image
+    private var editAvatar: String? = null
 
     private val apmBar = AnimatedImageBar(1f, 1f, 0.5f, false, MAX_APM, 200f, 8f, game.res.getTexture("atk"))
     private val ppsBar = AnimatedImageBar(1f, 1f, 0.5f, false, MAX_PPS, 200f, 8f, game.res.getTexture("spd"))
@@ -139,19 +142,19 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             background = NinePatchDrawable(game.res.getNinePatch("orange_bg"))
         }
 
-        val avatar = Image(game.res.getTexture(game.player.avatar))
+        playerAvatar = Image(game.res.getTexture(game.player.avatar))
         playerNameLabel = game.res.getLabel(text = game.player.name,fontScale = 1f)
         val rating = game.res.getLabel(
             text = "RATING: ${game.player.rating.toInt()} (${game.player.maxRating.toInt()} PEAK)",
             color = GAME_LIGHT_ORANGE
         )
 
-        overviewTable.add(avatar).padTop(6f).padLeft(4f).expandX()
+        overviewTable.add(playerAvatar).padTop(2f).padLeft(4f).expandX()
         val textTable = Table().apply {
             add(playerNameLabel).top().left().expandX().padBottom(2f).row()
             add(rating).top().left().expandX().padBottom(2f)
         }
-        overviewTable.add(textTable).width(160f).padTop(6f).padLeft(10f).top().left().row()
+        overviewTable.add(textTable).width(170f).padTop(6f).top().left().row()
         overviewTable.add(Image(game.res.getTexture("white"))).width(200f).padTop(4f).colspan(2).row()
         overviewTable.add(game.res.getLabel("MATCHMAKING", color = GAME_LIGHT_ORANGE)).padLeft(8f).padTop(8f).top().left().colspan(2).row()
 
@@ -288,7 +291,10 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             colorUp = GAME_LIGHT_ORANGE,
             colorDown = Color.WHITE
         ).apply {
-            onTap {  }
+            onTap {
+                editAvatar = "${MathUtils.random(0, 24)}_avatar"
+                avatar.drawable = TextureRegionDrawable(game.res.getTexture(editAvatar!!))
+            }
         }
         editTable.add(avatar).top().padTop(16f).padLeft(8f)
         editTable.add(randomAvatarButton).size(90f, 30f).padTop(12f).row()
@@ -317,8 +323,14 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
                 editBg.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(0.4f), Actions.run {
                     editBg.isVisible = false
                     game.player.name = name.text.toString()
+                    editAvatar?.let {
+                        game.player.avatar = it
+                        playerAvatar.drawable = TextureRegionDrawable(game.res.getTexture(it))
+                    }
                     game.saveManager.save()
                     playerNameLabel.setText(name.text.toString())
+
+                    editAvatar = null
                 }))
             }
         }
@@ -332,6 +344,7 @@ class ProfileScreen(game: TetreaGame) : BaseScreen(game) {
             onTap {
                 editBg.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(0.4f), Actions.run {
                     editBg.isVisible = false
+                    editAvatar = null
                     avatar.drawable = TextureRegionDrawable(game.res.getTexture(game.player.avatar))
                     name.setText(game.player.name)
                 }))
