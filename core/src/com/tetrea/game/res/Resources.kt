@@ -35,6 +35,8 @@ private const val BUTTON_DOWN_KEY = "_down"
 const val NUM_WORLDS = 3
 val NUM_LEVELS = arrayOf(8, 5, 5)
 
+private const val NUM_AVATARS = 25
+
 class Resources : Disposable {
 
     private val assetManager = AssetManager()
@@ -47,6 +49,7 @@ class Resources : Disposable {
     private val ninePatchCache = mutableMapOf<String, NinePatch>()
     private val tetrisConfigCache = mutableMapOf<String, TetrisConfig>()
     private val battleConfigCache = mutableListOf<MutableList<BattleConfig>>()
+
     val sounds = mutableMapOf<String, Sound>()
     val bgMusic = mutableListOf<Music>()
     val battleMusic = mutableListOf<Music>()
@@ -310,8 +313,6 @@ class Resources : Disposable {
         loadTexture("world_select_arrow_left_down")
         loadTexture("arcade_header")
 
-        loadTexture("enemy_ittzzi")
-
         loadTexture("white")
         loadTexture("black")
         loadTexture("black_75_opacity")
@@ -370,6 +371,10 @@ class Resources : Disposable {
         loadNinePatch("ultra_button_down")
         loadNinePatch("cheese_button_up")
         loadNinePatch("cheese_button_down")
+
+        for (i in 0 until NUM_AVATARS) {
+            loadTexture("${i}_avatar")
+        }
     }
 
     private fun loadTetrisConfigs() {

@@ -1,5 +1,6 @@
 package com.tetrea.game.global
 
+import com.badlogic.gdx.math.MathUtils
 import com.squareup.moshi.Json
 import com.tetrea.game.battle.BattleRecord
 import com.tetrea.game.battle.BattleStats
@@ -8,13 +9,12 @@ import com.tetrea.game.res.NUM_LEVELS
 import com.tetrea.game.res.NUM_WORLDS
 import com.tetrea.game.tetris.ArcadeStats
 import com.tetrea.game.util.Int2
-import kotlin.math.max
 
 private const val MAX_MATCH_HISTORY_SAVED = 10
 
 data class Player(
     @Json(name = "name") var name: String = "PLAYER",
-    @Json(name = "avatar") val avatar: String = "enemy_ittzzi",
+    @Json(name = "avatar") var avatar: String = "${MathUtils.random(0, 24)}_avatar",
     @Json(name = "rating") var rating: Float = 800f,
     @Json(name = "maxRating") var maxRating: Float = 800f,
     @Json(name = "currWorldId") var currWorldId: Int = 0,

@@ -35,10 +35,10 @@ object EnemyFactory {
                 else -> statPriority.increment(2)
             }
         }
-        // todo: generate name and avatar
+        // todo: generate name
         return Enemy(
             name = "ENEMY",
-            avatar = "enemy_ittzzi",
+            avatar = "${MathUtils.random(0, 24)}_avatar",
             maxHp = maxHp.toInt(),
             attack = min(statPriority.getAtk(), 100),
             defense = min(statPriority.getDef(), 100),

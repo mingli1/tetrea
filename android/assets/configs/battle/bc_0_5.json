@@ -4,7 +4,7 @@
   "bestOf": 3,
   "enemy": {
     "name": "ENEMY 1",
-    "avatar": "enemy_ittzzi",
+    "avatar": "5_avatar",
     "maxHp": 10,
     "attack": 55,
     "defense": 20,
