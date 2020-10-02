@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils
 import com.tetrea.game.battle.rating.ENEMY_HP_TO_ELO_PERCENT
 import com.tetrea.game.battle.rating.MAX_ENEMY_ELO
 import com.tetrea.game.battle.rating.MIN_ENEMY_ELO
+import com.tetrea.game.util.NameFactory
 import kotlin.math.min
 import kotlin.math.pow
 
@@ -35,9 +36,8 @@ object EnemyFactory {
                 else -> statPriority.increment(2)
             }
         }
-        // todo: generate name
         return Enemy(
-            name = "ENEMY",
+            name = NameFactory.getEnemyName(),
             avatar = "${MathUtils.random(0, 24)}_avatar",
             maxHp = maxHp.toInt(),
             attack = min(statPriority.getAtk(), 100),
