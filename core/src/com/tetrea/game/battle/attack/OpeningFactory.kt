@@ -51,16 +51,17 @@ object OpeningFactory {
                 ))
             }
             OpeningType.MKO -> {
-                opening.add(Attack(
-                    action = Action.SendLines,
-                    time = r * timeDiff + type.minTime,
-                    lines = 4
-                ))
-                if (MathUtils.random() <= 0.2f) {
+                if (MathUtils.random() <= 0.3f) {
                     opening.add(Attack(
                         action = Action.SendLines,
                         time = 3f,
                         lines = 10
+                    ))
+                } else {
+                    opening.add(Attack(
+                        action = Action.SendLines,
+                        time = r * timeDiff + type.minTime,
+                        lines = 4
                     ))
                 }
             }
@@ -99,6 +100,11 @@ object OpeningFactory {
                     action = Action.SendLines,
                     time = 1f,
                     lines = 3
+                ))
+                opening.add(Attack(
+                    action = Action.SendLines,
+                    time = 1f,
+                    lines = 4
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,

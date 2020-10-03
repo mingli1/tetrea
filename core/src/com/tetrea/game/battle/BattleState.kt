@@ -23,6 +23,7 @@ private const val ATTACK_OFFSET = 2
 private const val HEAL_CHANCE_MULTIPLIER = 0.35f
 private const val MIN_HEAL_PERCENTAGE = 0.05f
 private const val MAX_HEAL_PERCENTAGE = 0.2f
+private const val HEAL_DELAY_OFFSET = 2.5f
 private const val CHEESE_PERCENTAGE = 0.2f
 
 private const val PERCENT_HP_SHOULD_NOT_HEAL = 0.8f
@@ -150,6 +151,7 @@ class BattleState(
             futureAction = when {
                 canHeal && shouldHeal() -> {
                     canHeal = false
+                    attackDelay += HEAL_DELAY_OFFSET
                     screen.scene.startEnemyCharge(attackDelay, Action.Heal)
                     ({ healEnemy(getHeal()) })
                 }

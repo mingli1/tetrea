@@ -14,9 +14,9 @@
   "attackTriple": 2,
   "attackQuad": 4,
   "comboTable": {
-    "max": 3,
+    "max": 4,
     "table": [
-      0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 3, 3
+      0, 0, 1, 1, 1, 2, 2, 3, 3, 3, 4, 4, 4
     ]
   },
   "b2bTable": {
