@@ -34,7 +34,7 @@ object OpeningFactory {
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = 1.5f,
                     lines = 7
                 ))
             }
@@ -46,7 +46,7 @@ object OpeningFactory {
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = 1.5f,
                     lines = 5
                 ))
             }
@@ -73,42 +73,42 @@ object OpeningFactory {
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = MathUtils.random(1f, 1.4f),
                     lines = 1
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = MathUtils.random(1f, 1.4f),
                     lines = 1
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = MathUtils.random(1f, 1.4f),
                     lines = 2
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = MathUtils.random(1f, 1.4f),
                     lines = 2
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = MathUtils.random(1f, 1.4f),
                     lines = 3
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = MathUtils.random(1f, 1.4f),
                     lines = 3
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = MathUtils.random(1f, 1.4f),
                     lines = 4
                 ))
                 opening.add(Attack(
                     action = Action.SendLines,
-                    time = 1f,
+                    time = MathUtils.random(1f, 1.4f),
                     lines = 4
                 ))
             }

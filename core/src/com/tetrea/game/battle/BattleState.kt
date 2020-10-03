@@ -15,9 +15,9 @@ import com.tetrea.game.screen.BattleScreen
 import com.tetrea.game.util.Timer
 import kotlin.math.max
 
-private const val MIN_ATTACK_DELAY = 2.3f
-private const val MAX_ATTACK_DELAY = 15f
-private const val SPEED_RANGE = 5f
+private const val MIN_ATTACK_DELAY = 1.5f
+private const val MAX_ATTACK_DELAY = 12f
+private const val SPEED_RANGE = 3f
 private const val MAX_ATTACK = 6
 private const val ATTACK_OFFSET = 2
 private const val HEAL_CHANCE_MULTIPLIER = 0.35f
@@ -29,7 +29,7 @@ private const val CHEESE_PERCENTAGE = 0.2f
 private const val PERCENT_HP_SHOULD_NOT_HEAL = 0.8f
 private const val PERCENT_HP_SHOULD_HEAL = 0.15f
 private const val LOW_HP_HEAL_PRIORITY = 0.8f
-private const val HIGH_STACK = 14
+private const val HIGH_STACK = 16
 private const val PERCENT_HP_SHOULD_CHEESE = 0.3f
 
 private const val MIN_ABILITY_PERCENT = 0.15f
@@ -173,6 +173,7 @@ class BattleState(
         if (attackTimer >= attackDelay) {
             futureAction()
             attackDelay = getAttackDelay()
+            println(attackDelay)
             attackTimer = 0f
             initAction = false
 
@@ -227,11 +228,11 @@ class BattleState(
         var maxAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MAX_ATTACK_DELAY + 3f else MAX_ATTACK_DELAY
 
         if (config.aiLevel.level >= 3 && screen.tetris.topOfStack() >= HIGH_STACK) {
-            minAttackDelay -= 1f
-            maxAttackDelay -= 1f
+            minAttackDelay -= 0.7f
+            maxAttackDelay -= 0.7f
         }
 
-        val minDelay = (1f - (config.enemy.speed / 100f)) * (minAttackDelay + (maxAttackDelay - minAttackDelay))
+        val minDelay = minAttackDelay + ((maxAttackDelay - minAttackDelay) * (1f - (config.enemy.speed / 100f)))
         val maxDelay = minDelay + SPEED_RANGE
         return MathUtils.random(minDelay, maxDelay)
     }

@@ -57,12 +57,13 @@ object BattleConfigFactory {
 
     private fun getAbilities(rating: Float, statPriority: StatPriority): List<Action> {
         val abilities = mutableListOf<Action>()
-        if (rating >= Action.SolidGarbage.ratingThreshold) abilities.add(Action.SolidGarbage)
+        if (rating >= Action.SolidGarbage.ratingThreshold && rating < 2500) abilities.add(Action.SolidGarbage)
         if (rating >= Action.Gravity.ratingThreshold) abilities.add(Action.Gravity)
 
         when (statPriority) {
             StatPriority.AttackSpeed, StatPriority.AttackDefense -> {
-                if (rating >= Action.SolidGarbage.ratingThreshold) abilities.add(Action.SolidGarbage)
+                if (rating >= Action.SolidGarbage.ratingThreshold && rating < 2500) abilities.add(Action.SolidGarbage)
+                else if (rating >= 2500) abilities.add(Action.Immune)
                 if (rating >= Action.Gravity.ratingThreshold) abilities.add(Action.Gravity)
             }
             StatPriority.DefenseSpeed, StatPriority.DefenseAttack -> {
