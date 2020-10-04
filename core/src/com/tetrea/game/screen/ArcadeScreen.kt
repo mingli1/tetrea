@@ -3,15 +3,24 @@ package com.tetrea.game.screen
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
+import com.badlogic.gdx.scenes.scene2d.actions.Actions
+import com.badlogic.gdx.scenes.scene2d.ui.Image
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.GAME_LIGHT_GREEN
+import com.tetrea.game.scene.dialog.ArcadeHelpDialog
+
+private const val DIALOG_FADE_DURATION = 0.4f
 
 class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
 
     private lateinit var parentTable: Table
+
+    private lateinit var helpTable: Table
+    private lateinit var helpBg: Image
+    private val helpDialog = ArcadeHelpDialog(game.res)
 
     override fun show() {
         super.show()
@@ -36,7 +45,20 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
                 game.soundManager.onPrimaryButtonClicked()
             }
         }
-        parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f).row()
+        parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f)
+
+        val helpButton = game.res.getNinePatchTextButton(
+            text = "HELP",
+            key = "arcade_green_button",
+            colorUp = GAME_LIGHT_GREEN,
+            colorDown = Color.WHITE
+        ).apply {
+            onTap {
+                showHelpDialog()
+                game.soundManager.onPrimaryButtonClicked()
+            }
+        }
+        parentTable.add(helpButton).top().right().size(76f, 28f).padTop(6f).row()
 
         val bodyTable = Table().apply {
             add(game.res.getButtonWithImage(
@@ -78,6 +100,19 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
         }
         parentTable.add(bodyTable).top().padTop(24f).colspan(2).expandY()
 
+        helpBg = Image(game.res.getTexture("black_150_opacity")).apply {
+            setSize(this@ArcadeScreen.stage.width, this@ArcadeScreen.stage.height)
+            isVisible = false
+            onTap { hideHelpDialog() }
+        }
+        stage.addActor(helpBg)
+        helpTable = Table().apply {
+            setFillParent(true)
+            isVisible = false
+        }
+        helpTable.add(helpDialog).size(205f, 280f)
+        stage.addActor(helpTable)
+
         Gdx.input.inputProcessor = multiplexer
     }
 
@@ -98,5 +133,19 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
 
         stage.act(dt)
         stage.draw()
+    }
+
+    private fun showHelpDialog() {
+        helpBg.isVisible = true
+        helpBg.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION)))
+        helpTable.isVisible = true
+        helpTable.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION)))
+    }
+
+    private fun hideHelpDialog() {
+        helpBg.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(DIALOG_FADE_DURATION),
+            Actions.run { helpBg.isVisible = false }))
+        helpTable.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(DIALOG_FADE_DURATION),
+            Actions.run { helpTable.isVisible = false }))
     }
 }
