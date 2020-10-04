@@ -8,12 +8,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.tetrea.game.battle.BattleConfig
-import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.Player
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.AnimatedImageBar
-import com.tetrea.game.screen.LevelSelectScreen
 import com.tetrea.game.screen.SelectionState
 
 interface SelectionDialogCallback {

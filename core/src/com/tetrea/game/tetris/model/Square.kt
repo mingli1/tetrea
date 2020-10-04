@@ -1,6 +1,6 @@
 package com.tetrea.game.tetris.model
 
-import com.tetrea.game.tetris.*
+import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.util.CCW_ROTATE_DATA
 import com.tetrea.game.tetris.util.CW_ROTATE_DATA
 import com.tetrea.game.tetris.util.PieceType

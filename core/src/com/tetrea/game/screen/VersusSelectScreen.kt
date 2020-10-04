@@ -1,16 +1,13 @@
 package com.tetrea.game.screen
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.Image
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
-import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.battle.BattleConfigFactory
 import com.tetrea.game.battle.rating.Elo
@@ -30,19 +27,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
     private val confirmDialog = ConfirmDialog(
         "MATCHMAKING",
         "YOU WILL BE MATCHED WITH AN ENEMY OF SIMILAR RATING. ARE YOU SURE YOU WANT TO PROCEED?",
-        //this::showSelectionDialog,
-        {
-            Gdx.input.getTextInput(
-                object : Input.TextInputListener {
-                    override fun input(text: String) {
-                        showSelectionDialog(text.toFloat())
-                    }
-
-                    override fun canceled() {}
-                },
-                "", "", "Enter elo"
-            )
-        },
+        this::showSelectionDialog,
         {},
         game.res,
         game.soundManager,
@@ -200,10 +185,9 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
         stage.draw()
     }
 
-    private fun showSelectionDialog(rating: Float) {
+    private fun showSelectionDialog() {
         matchMade = true
-        //battleConfig = BattleConfigFactory.findMatch(game.player.rating)
-        battleConfig = BattleConfigFactory.findMatch(rating)
+        battleConfig = BattleConfigFactory.findMatch(game.player.rating)
 
         selectionDialog.resetBarAnimations()
         selectionDialog.setConfig(battleConfig, SelectionState.Active, game.player)

@@ -4,12 +4,14 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.InputMultiplexer
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.GL20
-import com.tetrea.game.global.TetreaGame
-import com.tetrea.game.battle.*
+import com.tetrea.game.battle.BattleConfig
+import com.tetrea.game.battle.BattleState
+import com.tetrea.game.battle.MatchState
 import com.tetrea.game.battle.rating.Elo
+import com.tetrea.game.global.TetreaGame
+import com.tetrea.game.global.isAndroid
 import com.tetrea.game.input.TetrisInputHandler
 import com.tetrea.game.input.TetrisKeyInput
-import com.tetrea.game.global.isAndroid
 import com.tetrea.game.res.SQUARE_SIZE
 import com.tetrea.game.scene.BattleScene
 import com.tetrea.game.tetris.Tetris

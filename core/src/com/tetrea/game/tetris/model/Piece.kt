@@ -1,6 +1,6 @@
 package com.tetrea.game.tetris.model
 
-import com.tetrea.game.tetris.*
+import com.tetrea.game.tetris.Tetris
 import com.tetrea.game.tetris.util.*
 
 class Piece(

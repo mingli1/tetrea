@@ -8,14 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions
 import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
-import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.BattleConfig
 import com.tetrea.game.extension.onClick
 import com.tetrea.game.extension.onTap
+import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.*
-import com.tetrea.game.scene.dialog.SelectionDialog
 import com.tetrea.game.scene.component.VersusCard
 import com.tetrea.game.scene.dialog.MessageDialog
+import com.tetrea.game.scene.dialog.SelectionDialog
 import com.tetrea.game.scene.dialog.SelectionDialogCallback
 import com.tetrea.game.scene.dialog.VersusHelpDialog
 import kotlin.math.abs

@@ -5,7 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.tetrea.game.extension.onClick
 import com.tetrea.game.extension.setRelativePosition
 import com.tetrea.game.global.Settings
-import com.tetrea.game.res.*
+import com.tetrea.game.res.Resources
 
 class TetrisAndroidInput(
     stage: Stage,

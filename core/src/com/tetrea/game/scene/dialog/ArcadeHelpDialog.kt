@@ -5,7 +5,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
-import com.tetrea.game.res.*
+import com.tetrea.game.res.GAME_LIGHT_GREEN
+import com.tetrea.game.res.GAME_VERY_LIGHT_GREEN
+import com.tetrea.game.res.GAME_YELLOW
+import com.tetrea.game.res.Resources
 
 class ArcadeHelpDialog(res: Resources) : Table() {
 

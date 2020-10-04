@@ -1,11 +1,7 @@
 package com.tetrea.game.battle
 
 import com.badlogic.gdx.math.MathUtils
-import com.tetrea.game.battle.attack.Action
-import com.tetrea.game.battle.attack.Attack
-import com.tetrea.game.battle.attack.AttackPattern
-import com.tetrea.game.battle.attack.OpeningFactory
-import com.tetrea.game.battle.attack.OpeningType
+import com.tetrea.game.battle.attack.*
 import com.tetrea.game.battle.enemy.AILevel
 import com.tetrea.game.battle.enemy.EnemyFactory
 import com.tetrea.game.battle.enemy.StatPriority

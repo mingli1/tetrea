@@ -14,7 +14,9 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.global.TetreaGame
-import com.tetrea.game.res.*
+import com.tetrea.game.res.GAME_LIGHT_ORANGE
+import com.tetrea.game.res.GAME_LOSS_RED
+import com.tetrea.game.res.GAME_VICTORY_GREEN
 import com.tetrea.game.scene.component.AnimatedImageBar
 import com.tetrea.game.scene.dialog.MessageDialog
 import java.util.*

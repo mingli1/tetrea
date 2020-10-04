@@ -9,11 +9,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.*
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable
 import com.badlogic.gdx.utils.Align
 import com.tetrea.game.battle.BattleConfig
-import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.battle.MatchState
 import com.tetrea.game.battle.rating.Elo
 import com.tetrea.game.extension.onTap
 import com.tetrea.game.extension.sign
+import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.*
 import com.tetrea.game.scene.component.VersusCard
 import com.tetrea.game.scene.dialog.ConfirmDialog

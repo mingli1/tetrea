@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.utils.Pool
 import com.tetrea.game.res.Resources
-import java.util.Random
+import java.util.*
 
 class TextParticleSpawner(res: Resources, stage: Stage) {
 
