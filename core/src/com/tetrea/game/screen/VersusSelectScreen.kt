@@ -19,10 +19,7 @@ import com.tetrea.game.global.TetreaGame
 import com.tetrea.game.res.GAME_LIGHT_GRAY_BLUE
 import com.tetrea.game.res.GAME_YELLOW
 import com.tetrea.game.scene.component.VersusCard
-import com.tetrea.game.scene.dialog.ConfirmDialog
-import com.tetrea.game.scene.dialog.MessageDialog
-import com.tetrea.game.scene.dialog.SelectionDialog
-import com.tetrea.game.scene.dialog.SelectionDialogCallback
+import com.tetrea.game.scene.dialog.*
 import kotlin.math.abs
 
 private const val DIALOG_FADE_DURATION = 0.4f
@@ -64,6 +61,10 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
     private lateinit var battleConfig: BattleConfig
     var matchMade = false
 
+    private lateinit var helpTable: Table
+    private lateinit var helpBg: Image
+    private val helpDialog = VersusHelpDialog(game.res, true)
+
     override fun show() {
         super.show()
 
@@ -88,7 +89,20 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
                 game.soundManager.onPrimaryButtonClicked()
             }
         }
-        parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f).row()
+        parentTable.add(backButton).top().left().size(76f, 28f).padTop(6f)
+
+        val helpButton = game.res.getNinePatchTextButton(
+            text = "HELP",
+            key = "purple_button",
+            colorUp = GAME_LIGHT_GRAY_BLUE,
+            colorDown = Color.WHITE
+        ).apply {
+            onTap {
+                showHelpDialog()
+                game.soundManager.onPrimaryButtonClicked()
+            }
+        }
+        parentTable.add(helpButton).top().right().size(76f, 28f).padTop(6f).row()
 
         val bodyTable = Table().apply {
             add(game.res.getButtonWithImage(
@@ -129,6 +143,19 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
         }
         selectionTable.add(selectionDialog).size(196f, 220f)
         stage.addActor(selectionTable)
+
+        helpBg = Image(game.res.getTexture("black_150_opacity")).apply {
+            setSize(this@VersusSelectScreen.stage.width, this@VersusSelectScreen.stage.height)
+            isVisible = false
+            onTap { hideHelpDialog() }
+        }
+        stage.addActor(helpBg)
+        helpTable = Table().apply {
+            setFillParent(true)
+            isVisible = false
+        }
+        helpTable.add(helpDialog).size(205f, 350f)
+        stage.addActor(helpTable)
 
         arguments?.let {
             if (it.containsKey(ARG_MATCH_QUIT)) {
@@ -189,6 +216,20 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
             Actions.run {
                 selectionDialog.startBarAnimations(battleConfig)
             }))
+    }
+
+    private fun showHelpDialog() {
+        helpBg.isVisible = true
+        helpBg.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION)))
+        helpTable.isVisible = true
+        helpTable.addAction(Actions.sequence(Actions.alpha(0f), Actions.fadeIn(DIALOG_FADE_DURATION)))
+    }
+
+    private fun hideHelpDialog() {
+        helpBg.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(DIALOG_FADE_DURATION),
+            Actions.run { helpBg.isVisible = false }))
+        helpTable.addAction(Actions.sequence(Actions.alpha(1f), Actions.fadeOut(DIALOG_FADE_DURATION),
+            Actions.run { helpTable.isVisible = false }))
     }
 
     override fun onBattleButtonClicked(battleConfig: BattleConfig) {
