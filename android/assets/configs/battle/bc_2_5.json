@@ -1,74 +1,92 @@
 {
-  "worldId": 0,
-  "levelId": 7,
-  "bestOf": 3,
+  "worldId": 2,
+  "levelId": 5,
+  "bestOf": 7,
   "enemy": {
-    "name": "SZ",
-    "avatar": "7_avatar",
-    "maxHp": 42,
-    "attack": 30,
-    "defense": 17,
-    "speed": 25
+    "name": "TIOJ",
+    "avatar": "21_avatar",
+    "maxHp": 135,
+    "attack": 100,
+    "defense": 65,
+    "speed": 76
   },
-  "aiLevel": "Simple",
+  "aiLevel": "Genius",
   "attackPatterns": [
-    "FourWider"
+    "FourWider", "Cheeser"
   ],
   "opening": [
     {
       "action": "SendLines",
-      "time": 16.8,
+      "time": 10.4,
       "lines": 1
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 1
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 1
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 2
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 2
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 2
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 3
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 3
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 3
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 4
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.1,
       "lines": 4
+    },
+    {
+      "action": "SendLines",
+      "time": 1.1,
+      "lines": 4
+    },
+    {
+      "action": "SendLines",
+      "time": 1.1,
+      "lines": 5
+    },
+    {
+      "action": "Gravity",
+      "time": 4.5
+    },
+    {
+      "action": "Immune",
+      "time": 4.5
     }
   ]
 }

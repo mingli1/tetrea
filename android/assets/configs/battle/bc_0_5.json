@@ -3,22 +3,25 @@
   "levelId": 5,
   "bestOf": 3,
   "enemy": {
-    "name": "ENEMY 1",
+    "name": "T",
     "avatar": "5_avatar",
-    "maxHp": 10,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
+    "maxHp": 28,
+    "attack": 22,
+    "defense": 18,
+    "speed": 18
   },
-  "attackScheme": [
+  "attackPatterns": [
+    "Defensive"
+  ],
+  "opening": [
     {
-      "action": "Random",
-      "numMoves": 3
+      "action": "Gravity",
+      "time": 5.3
     },
     {
-      "action": "Heal",
-      "time": 3.5,
-      "heal": 5
+      "action": "SendLines",
+      "time": 7.7,
+      "lines": 4
     }
   ]
 }

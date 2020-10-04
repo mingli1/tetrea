@@ -1,24 +1,79 @@
 {
   "worldId": 2,
   "levelId": 2,
-  "bestOf": 3,
+  "bestOf": 5,
   "enemy": {
-    "name": "ENEMY 1",
-    "avatar": "1_avatar",
-    "maxHp": 10,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
+    "name": "JSJS",
+    "avatar": "18_avatar",
+    "maxHp": 97,
+    "attack": 63,
+    "defense": 80,
+    "speed": 50
   },
+  "aiLevel": "Expert",
+  "attackPatterns": [
+    "Defensive", "Cheeser"
+  ],
+  "opening": [
+    {
+      "action": "SolidGarbage",
+      "time": 10.4
+    }
+  ],
   "attackScheme": [
     {
-      "action": "Random",
-      "numMoves": 3
+      "action": "SendLines",
+      "time": 7.9,
+      "lines": 3
+    },
+    {
+      "action": "SendLines",
+      "time": 6.9,
+      "lines": 2
+    },
+    {
+      "action": "SendLines",
+      "time": 5.9,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 7.9,
+      "lines": 3
+    },
+    {
+      "action": "SendLines",
+      "time": 6.9,
+      "lines": 2
+    },
+    {
+      "action": "DamageReduction",
+      "time": 10.2
+    },
+    {
+      "action": "SendLines",
+      "time": 5.9,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 7.9,
+      "lines": 3
+    },
+    {
+      "action": "SendLines",
+      "time": 6.9,
+      "lines": 2
+    },
+    {
+      "action": "SendLines",
+      "time": 5.9,
+      "lines": 1
     },
     {
       "action": "Heal",
-      "time": 3.5,
-      "heal": 5
+      "time": 10,
+      "heal": 15
     }
   ]
 }

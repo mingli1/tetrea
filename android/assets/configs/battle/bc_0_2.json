@@ -1,24 +1,29 @@
 {
   "worldId": 0,
   "levelId": 2,
-  "bestOf": 3,
+  "bestOf": 1,
   "enemy": {
-    "name": "ENEMY 1",
+    "name": "I",
     "avatar": "2_avatar",
-    "maxHp": 10,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
+    "maxHp": 17,
+    "attack": 16,
+    "defense": 3,
+    "speed": 12
   },
   "attackScheme": [
     {
-      "action": "Random",
-      "numMoves": 3
+      "action": "SendLines",
+      "time": 8.5,
+      "lines": 12
     },
     {
       "action": "Heal",
-      "time": 3.5,
+      "time": 6,
       "heal": 5
+    },
+    {
+      "action": "Random",
+      "numMoves": 20
     }
   ]
 }

@@ -3,11 +3,36 @@
   "levelId": 4,
   "bestOf": 1,
   "enemy": {
-    "name": "ENEMY 1",
+    "name": "Z",
     "avatar": "4_avatar",
-    "maxHp": 100,
-    "attack": 100,
-    "defense": 100,
-    "speed": 100
-  }
+    "maxHp": 20,
+    "attack": 20,
+    "defense": 10,
+    "speed": 17
+  },
+  "attackPatterns": [
+    "Spiker"
+  ],
+  "attackScheme": [
+    {
+      "action": "SendLines",
+      "time": 10.7,
+      "lines": 8
+    },
+    {
+      "action": "SendLines",
+      "time": 8.5,
+      "lines": 5
+    },
+    {
+      "action": "SendLines",
+      "time": 10.5,
+      "lines": 10
+    },
+    {
+      "action": "Heal",
+      "time": 5.5,
+      "heal": 5
+    }
+  ]
 }

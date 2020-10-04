@@ -1,0 +1,57 @@
+{
+  "worldId": 2,
+  "levelId": 6,
+  "bestOf": 7,
+  "enemy": {
+    "name": "STLST",
+    "avatar": "22_avatar",
+    "maxHp": 158,
+    "attack": 100,
+    "defense": 72,
+    "speed": 93
+  },
+  "aiLevel": "Genius",
+  "opening": [
+    {
+      "action": "SendLines",
+      "time": 2.6,
+      "lines": 4
+    }
+  ],
+  "attackScheme": [
+    {
+      "action": "SendLines",
+      "time": 3.6,
+      "lines": 5
+    },
+    {
+      "action": "SendLines",
+      "time": 3.6,
+      "lines": 5
+    },
+    {
+      "action": "SendLines",
+      "time": 3.6,
+      "lines": 5
+    },
+    {
+      "action": "SendLines",
+      "time": 3.6,
+      "lines": 5
+    },
+    {
+      "action": "SendLines",
+      "time": 3.6,
+      "lines": 5
+    },
+    {
+      "action": "Immune",
+      "time": 6.3
+    },
+    {
+      "action": "Heal",
+      "time": 1.5,
+      "heal": 10
+    }
+  ]
+}

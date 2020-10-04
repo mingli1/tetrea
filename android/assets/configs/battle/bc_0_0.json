@@ -3,14 +3,18 @@
   "levelId": 0,
   "bestOf": 1,
   "enemy": {
-    "name": "ABC",
+    "name": "L",
     "avatar": "0_avatar",
-    "maxHp": 500,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
+    "maxHp": 8,
+    "attack": 8,
+    "defense": 5,
+    "speed": 7
   },
-  "attackPatterns": [
-    "Spiker"
+  "attackScheme": [
+    {
+      "action": "SendLines",
+      "time": 9.5,
+      "lines": 4
+    }
   ]
 }

@@ -1,14 +1,14 @@
 {
   "worldId": 0,
   "levelId": 1,
-  "bestOf": 3,
+  "bestOf": 1,
   "enemy": {
-    "name": "XD",
+    "name": "J",
     "avatar": "1_avatar",
-    "maxHp": 10,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
+    "maxHp": 12,
+    "attack": 10,
+    "defense": 5,
+    "speed": 8
   },
   "attackScheme": [
     {
@@ -17,8 +17,8 @@
     },
     {
       "action": "Heal",
-      "time": 3.5,
-      "heal": 5
+      "time": 5.5,
+      "heal": 3
     }
   ]
 }

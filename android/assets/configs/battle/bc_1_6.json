@@ -1,0 +1,24 @@
+{
+  "worldId": 1,
+  "levelId": 6,
+  "bestOf": 3,
+  "enemy": {
+    "name": "ITT",
+    "avatar": "14_avatar",
+    "maxHp": 63,
+    "attack": 51,
+    "defense": 42,
+    "speed": 45
+  },
+  "aiLevel": "Intermediate",
+  "opening": [
+    {
+      "action": "Gravity",
+      "time": 6.1
+    },
+    {
+      "action": "Gravity",
+      "time": 6.1
+    }
+  ]
+}

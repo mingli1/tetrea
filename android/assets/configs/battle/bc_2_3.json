@@ -1,24 +1,68 @@
 {
   "worldId": 2,
   "levelId": 3,
-  "bestOf": 3,
+  "bestOf": 5,
   "enemy": {
-    "name": "ENEMY 1",
-    "avatar": "1_avatar",
-    "maxHp": 10,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
+    "name": "TOJ",
+    "avatar": "19_avatar",
+    "maxHp": 110,
+    "attack": 63,
+    "defense": 65,
+    "speed": 78
   },
+  "aiLevel": "Expert",
+  "attackPatterns": [
+    "Cheeser"
+  ],
+  "opening": [
+    {
+      "action": "DamageReduction",
+      "time": 10.4
+    }
+  ],
   "attackScheme": [
     {
-      "action": "Random",
-      "numMoves": 3
+      "action": "SendLines",
+      "time": 7.9,
+      "lines": 1
     },
     {
-      "action": "Heal",
-      "time": 3.5,
-      "heal": 5
+      "action": "SendLines",
+      "time": 1.5,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 1.5,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 1.5,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 1.5,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 1.5,
+      "lines": 1
+    },{
+      "action": "SendLines",
+      "time": 1.5,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 1.5,
+      "lines": 1
+    },
+    {
+      "action": "Random",
+      "numMoves": 4
     }
   ]
 }

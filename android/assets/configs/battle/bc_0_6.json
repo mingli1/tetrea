@@ -3,22 +3,61 @@
   "levelId": 6,
   "bestOf": 3,
   "enemy": {
-    "name": "ENEMY 1",
+    "name": "LJ",
     "avatar": "6_avatar",
-    "maxHp": 10,
-    "attack": 55,
+    "maxHp": 31,
+    "attack": 24,
     "defense": 20,
-    "speed": 40
+    "speed": 25
   },
+  "aiLevel": "Simple",
+  "attackPatterns": [
+    "Cheeser"
+  ],
   "attackScheme": [
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 1
+    },
+    {
+      "action": "SendLines",
+      "time": 2,
+      "lines": 1
+    },
     {
       "action": "Random",
       "numMoves": 3
-    },
-    {
-      "action": "Heal",
-      "time": 3.5,
-      "heal": 5
     }
   ]
 }

@@ -1,0 +1,24 @@
+{
+  "worldId": 2,
+  "levelId": 7,
+  "bestOf": 9,
+  "enemy": {
+    "name": "ZZZTOJ",
+    "avatar": "23_avatar",
+    "maxHp": 174,
+    "attack": 100,
+    "defense": 100,
+    "speed": 100
+  },
+  "aiLevel": "Genius",
+  "opening": [
+    {
+      "action": "Gravity",
+      "time": 3.6
+    },
+    {
+      "action": "DamageReduction",
+      "time": 6.5
+    }
+  ]
+}

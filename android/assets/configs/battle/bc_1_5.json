@@ -1,73 +1,78 @@
 {
-  "worldId": 0,
-  "levelId": 7,
+  "worldId": 1,
+  "levelId": 5,
   "bestOf": 3,
   "enemy": {
-    "name": "SZ",
-    "avatar": "7_avatar",
-    "maxHp": 42,
-    "attack": 30,
-    "defense": 17,
-    "speed": 25
+    "name": "JZT",
+    "avatar": "13_avatar",
+    "maxHp": 58,
+    "attack": 49,
+    "defense": 35,
+    "speed": 39
   },
-  "aiLevel": "Simple",
+  "aiLevel": "Intermediate",
   "attackPatterns": [
     "FourWider"
   ],
   "opening": [
     {
       "action": "SendLines",
-      "time": 16.8,
+      "time": 13.8,
       "lines": 1
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 1
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 1
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 2
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 2
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 2
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 3
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 3
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 3
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
       "lines": 4
     },
     {
       "action": "SendLines",
-      "time": 1.5,
+      "time": 1.3,
+      "lines": 4
+    },
+    {
+      "action": "SendLines",
+      "time": 1.3,
       "lines": 4
     }
   ]

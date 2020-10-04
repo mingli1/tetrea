@@ -33,7 +33,7 @@ private const val BUTTON_UP_KEY = "_up"
 private const val BUTTON_DOWN_KEY = "_down"
 
 const val NUM_WORLDS = 3
-val NUM_LEVELS = arrayOf(8, 5, 5)
+val NUM_LEVELS = arrayOf(8, 8, 8)
 
 private const val NUM_AVATARS = 25
 

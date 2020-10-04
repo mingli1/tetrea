@@ -3,22 +3,53 @@
   "levelId": 3,
   "bestOf": 3,
   "enemy": {
-    "name": "ENEMY 1",
+    "name": "ZZZ",
     "avatar": "11_avatar",
-    "maxHp": 10,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
+    "maxHp": 45,
+    "attack": 30,
+    "defense": 50,
+    "speed": 28
   },
+  "aiLevel": "Intermediate",
+  "attackPatterns": [
+    "Defensive"
+  ],
+  "opening": [
+    {
+      "action": "SendLines",
+      "time": 6.1,
+      "lines": 4
+    }
+  ],
   "attackScheme": [
     {
       "action": "Random",
-      "numMoves": 3
+      "numMoves": 4
     },
     {
       "action": "Heal",
-      "time": 3.5,
-      "heal": 5
+      "time": 4.1,
+      "heal": 2
+    },
+    {
+      "action": "Heal",
+      "time": 3.9,
+      "heal": 2
+    },
+    {
+      "action": "Heal",
+      "time": 3.6,
+      "heal": 2
+    },
+    {
+      "action": "Heal",
+      "time": 3.3,
+      "heal": 2
+    },
+    {
+      "action": "Heal",
+      "time": 3,
+      "heal": 2
     }
   ]
 }

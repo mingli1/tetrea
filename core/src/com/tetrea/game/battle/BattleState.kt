@@ -173,7 +173,6 @@ class BattleState(
         if (attackTimer >= attackDelay) {
             futureAction()
             attackDelay = getAttackDelay()
-            println(attackDelay)
             attackTimer = 0f
             initAction = false
 

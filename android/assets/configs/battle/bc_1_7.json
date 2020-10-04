@@ -1,25 +1,28 @@
 {
   "worldId": 1,
-  "levelId": 4,
-  "bestOf": 3,
+  "levelId": 7,
+  "bestOf": 5,
   "enemy": {
-    "name": "SJT",
-    "avatar": "12_avatar",
-    "maxHp": 53,
-    "attack": 35,
-    "defense": 33,
-    "speed": 45
+    "name": "STZT",
+    "avatar": "15_avatar",
+    "maxHp": 75,
+    "attack": 54,
+    "defense": 61,
+    "speed": 46
   },
   "aiLevel": "Intermediate",
+  "attackPatterns": [
+    "Defensive", "Cheeser"
+  ],
   "opening": [
     {
       "action": "SendLines",
-      "time": 4.1,
+      "time": 5.4,
       "lines": 4
     },
     {
       "action": "SendLines",
-      "time": 7.1,
+      "time": 6.1,
       "lines": 5
     }
   ],
@@ -35,13 +38,12 @@
       "lines": 2
     },
     {
-      "action": "SendLines",
-      "time": 3.2,
-      "lines": 2
+      "action": "DamageReduction",
+      "time": 6.2
     },
     {
       "action": "Random",
-      "numMoves": 4
+      "numMoves": 2
     }
   ]
 }

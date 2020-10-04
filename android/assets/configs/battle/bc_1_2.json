@@ -3,22 +3,26 @@
   "levelId": 2,
   "bestOf": 3,
   "enemy": {
-    "name": "ENEMY 1",
+    "name": "LST",
     "avatar": "10_avatar",
-    "maxHp": 10,
-    "attack": 55,
-    "defense": 20,
-    "speed": 40
+    "maxHp": 44,
+    "attack": 40,
+    "defense": 26,
+    "speed": 32
   },
+  "aiLevel": "Simple",
+  "opening": [
+    {
+      "action": "SendLines",
+      "time": 6.1,
+      "lines": 4
+    }
+  ],
   "attackScheme": [
     {
-      "action": "Random",
-      "numMoves": 3
-    },
-    {
-      "action": "Heal",
-      "time": 3.5,
-      "heal": 5
+      "action": "SendLines",
+      "time": 9.1,
+      "lines": 5
     }
   ]
 }
