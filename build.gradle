@@ -50,7 +50,8 @@ project(":desktop") {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
-        
+        implementation "com.squareup.moshi:moshi:1.9.2"
+        implementation "com.squareup.moshi:moshi-kotlin:1.9.2"
     }
 }
 
@@ -72,12 +73,13 @@ project(":android") {
 }
 
 project(":core") {
-    apply plugin: "java-library"
+    apply plugin: "kotlin"
 
 
     dependencies {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
-        
+        implementation "com.squareup.moshi:moshi:1.9.2"
+        implementation "com.squareup.moshi:moshi-kotlin:1.9.2"
     }
 }
 repositories {
