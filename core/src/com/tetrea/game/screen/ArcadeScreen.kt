@@ -110,7 +110,7 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
             setFillParent(true)
             isVisible = false
         }
-        helpTable.add(helpDialog).size(205f, 280f)
+        helpTable.add(helpDialog).size(220f, 280f)
         stage.addActor(helpTable)
 
         Gdx.input.inputProcessor = multiplexer

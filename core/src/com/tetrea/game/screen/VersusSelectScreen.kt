@@ -139,7 +139,7 @@ class VersusSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, S
             setFillParent(true)
             isVisible = false
         }
-        helpTable.add(helpDialog).size(205f, 350f)
+        helpTable.add(helpDialog).size(220f, 350f)
         stage.addActor(helpTable)
 
         arguments?.let {

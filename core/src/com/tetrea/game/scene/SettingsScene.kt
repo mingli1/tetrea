@@ -87,7 +87,7 @@ class SettingsScene(
             tetrisBoard = Image(res.getTexture("tetris_board_bg")).apply { setPosition(boardX - 66, boardY -1) }
             enemyHpBar = Image(res.getTexture("enemy_hp_bar")).apply { setPosition(36f, parentStage.height - 54f) }
 
-            TetrisInputType.values().forEach {
+            TetrisInputType.values().dropLast(1).forEach {
                 val button = ImageButton(res.getTetrisButtonStyle(it)).apply {
                     addListener(object : DragListener() {
                         override fun drag(event: InputEvent?, x: Float, y: Float, pointer: Int) {
@@ -372,7 +372,7 @@ class SettingsScene(
         tetrisItemSlots?.let { parentStage.addActor(it) }
         enemyHpBar?.let { parentStage.addActor(it) }
 
-        TetrisInputType.values().forEach {
+        TetrisInputType.values().dropLast(1).forEach {
             androidButtons[it]?.setRelativePosition(settings.androidBindings[it]!!, parentStage)
             parentStage.addActor(androidButtons[it])
         }
@@ -386,7 +386,7 @@ class SettingsScene(
         tetrisItemSlots?.remove()
         enemyHpBar?.remove()
 
-        TetrisInputType.values().forEach {
+        TetrisInputType.values().dropLast(1).forEach {
             val button = androidButtons[it]!!
 
             settings.androidBindings[it]!!.relX.relativeTo =

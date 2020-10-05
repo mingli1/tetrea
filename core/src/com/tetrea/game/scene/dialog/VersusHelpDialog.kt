@@ -58,7 +58,7 @@ class VersusHelpDialog(res: Resources, isMatchmaking: Boolean) : Table() {
         background = NinePatchDrawable(res.getNinePatch("purple_bg"))
 
         add(res.getLabel("ABOUT", fontScale = 1f, color = GAME_PURPLE))
-            .top().left().padLeft(8f).padTop(8f).row()
+            .top().left().padLeft(16f).padTop(8f).row()
 
         val content = Table()
         val scrollPane = ScrollPane(content).apply {
@@ -70,162 +70,162 @@ class VersusHelpDialog(res: Resources, isMatchmaking: Boolean) : Table() {
 
         if (isMatchmaking) {
             content.add(res.getLabel("MATCHMAKING", fontScale = 1f, color = GAME_YELLOW))
-                .left().padTop(8f).padLeft(8f).expandX().row()
+                .left().padTop(8f).padLeft(12f).expandX().row()
             content.add(
                 res.getLabel("BATTLE AGAINST AN OPPONENT OF SIMILAR RATING IN A SET OF GAMES. WINNING OR LOSING A MATCH CHANGES YOUR RATING BASED ON THE RATING DIFFERENCE BETWEEN YOU AND THE OPPONENT.").apply {
                     setWrap(true)
                     setAlignment(Align.left)
                 }
-            ).left().width(189f).padLeft(8f).padTop(2f).row()
+            ).left().width(189f).padLeft(12f).padTop(2f).row()
 
             content.add(
                 res.getLabel("BEST-OF FOR RATING:", color = GAME_LIGHT_PURPLE)
-            ).left().padLeft(8f).expandX().padTop(8f).row()
+            ).left().padLeft(12f).expandX().padTop(8f).row()
 
             content.add(
                 res.getLabel("< 1000 = BO1")
-            ).left().padLeft(16f).expandX().padTop(2f).row()
+            ).left().padLeft(20f).expandX().padTop(2f).row()
             content.add(
                 res.getLabel("< 1800 = BO3")
-            ).left().padLeft(16f).expandX().padTop(2f).row()
+            ).left().padLeft(20f).expandX().padTop(2f).row()
             content.add(
                 res.getLabel("< 2400 = BO5")
-            ).left().padLeft(16f).expandX().padTop(2f).row()
+            ).left().padLeft(20f).expandX().padTop(2f).row()
             content.add(
                 res.getLabel("< 3000 = BO7")
-            ).left().padLeft(16f).expandX().padTop(2f).row()
+            ).left().padLeft(20f).expandX().padTop(2f).row()
             content.add(
                 res.getLabel(">= 3000 = BO9")
-            ).left().padLeft(16f).expandX().padTop(2f).row()
+            ).left().padLeft(20f).expandX().padTop(2f).row()
         } else {
             content.add(res.getLabel("ADVENTURE", fontScale = 1f, color = GAME_YELLOW))
-                .left().padTop(8f).padLeft(8f).expandX().row()
+                .left().padTop(8f).padLeft(12f).expandX().row()
             content.add(
                 res.getLabel("BATTLE AGAINST OPPONENTS WITH UNIQUE ATTACK PATTERNS AND ABILITIES. EACH WORLD IS OF INCREASING DIFFICULTY. MATCHES WILL APPLY RATING CHANGES.").apply {
                     setWrap(true)
                     setAlignment(Align.left)
                 }
-            ).left().width(189f).padLeft(8f).padTop(2f).row()
+            ).left().width(189f).padLeft(12f).padTop(2f).row()
         }
 
         content.add(res.getLabel("HOW BATTLES WORK", fontScale = 1f, color = GAME_YELLOW))
-            .left().padLeft(8f).padTop(8f).expandX().row()
+            .left().padLeft(12f).padTop(8f).expandX().row()
         content.add(
             res.getLabel("ENEMIES ALL HAVE AN HP BAR AND POWER BAR. TO WIN A GAME, YOU MUST SEND ENOUGH ATTACK TO DROP THE ENEMY'S HP TO 0. THE ENEMY CAN ALSO SEND ATTACKS IN THE FORM OF GARBAGE LINES AND OTHER SPECIAL ABILITIES WHEN IT FILLS ITS POWER BAR.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(8f).padTop(2f).row()
+        ).left().width(189f).padLeft(12f).padTop(2f).row()
 
         content.add(
             res.getLabel("POWER BAR COLORS:", color = GAME_LIGHT_PURPLE)
-        ).left().padLeft(8f).expandX().padTop(8f).row()
+        ).left().padLeft(12f).expandX().padTop(8f).row()
         content.add(
             res.getLabel("- YELLOW = GARBAGE LINES")
-        ).left().padLeft(8f).expandX().padTop(2f).row()
+        ).left().padLeft(12f).expandX().padTop(2f).row()
         content.add(
             res.getLabel("- BLUE = HEALING")
-        ).left().padLeft(8f).expandX().padTop(2f).row()
+        ).left().padLeft(12f).expandX().padTop(2f).row()
         content.add(
             res.getLabel("- GRAY = SOLID GARBAGE LINES")
-        ).left().padLeft(8f).expandX().padTop(2f).row()
+        ).left().padLeft(12f).expandX().padTop(2f).row()
         content.add(
             res.getLabel("- PURPLE = INCREASE GRAVITY")
-        ).left().padLeft(8f).expandX().padTop(2f).row()
+        ).left().padLeft(12f).expandX().padTop(2f).row()
         content.add(
             res.getLabel("- ORANGE = DAMAGE REDUCTION")
-        ).left().padLeft(8f).expandX().padTop(2f).row()
+        ).left().padLeft(12f).expandX().padTop(2f).row()
         content.add(
             res.getLabel("- GREEN = IMMUNITY")
-        ).left().padLeft(8f).expandX().padTop(2f).row()
+        ).left().padLeft(12f).expandX().padTop(2f).row()
 
         content.add(res.getLabel("BATTLE MECHANICS", fontScale = 1f, color = GAME_YELLOW))
-            .left().padLeft(8f).padTop(8f).expandX().row()
+            .left().padLeft(12f).padTop(8f).expandX().row()
         content.add(
             res.getLabel("T-SPINS AND QUADS SEND THE MOST DAMAGE. CHAINING THEM GIVES A BACK-TO-BACK BONUS THAT SCALES WITH THE AMOUNT OF BACK-TO-BACKS.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(8f).padTop(2f).row()
+        ).left().width(189f).padLeft(12f).padTop(2f).row()
 
         content.add(
             res.getLabel("LARGE COMBOS ALSO DEAL A LOT OF DAMAGE. WHEN FINISHING A COMBO WITH A QUAD, T-SPIN DOUBLE, OR T-SPIN TRIPLE, THE DAMAGE IS SCALED BASED ON THE SIZE OF THE COMBO.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(8f).padTop(8f).row()
+        ).left().width(189f).padLeft(12f).padTop(8f).row()
 
         content.add(
             res.getLabel("EACH ATTACK HAS A 10% CHANCE OF BEING A CRITICAL STRIKE THAT SENDS DOUBLE THE DAMAGE. USE THIS TO YOUR ADVANTAGE TO CREATE MASSIVE DAMAGE SPIKES.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(8f).padTop(8f).row()
+        ).left().width(189f).padLeft(12f).padTop(8f).row()
 
         content.add(
             res.getLabel("INCOMING GARBAGE LINES CAN BE NEUTRALIZED BY SENDING LINES WHILE THEY BUFFER, EVEN IF THE ENEMY HAS APPLIED IMMUNITY OR DAMAGE REDUCTION.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(8f).padTop(8f).row()
+        ).left().width(189f).padLeft(12f).padTop(8f).row()
 
         content.add(res.getLabel("ATTACK PATTERNS", fontScale = 1f, color = GAME_YELLOW))
-            .left().padLeft(8f).padTop(8f).expandX().row()
+            .left().padLeft(12f).padTop(8f).expandX().row()
         content.add(
             res.getLabel("ENEMIES MAY HAVE CERTAIN ATTACK PATTERNS THAT DETERMINE TYPE OF ATTACKS SENT.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(8f).padTop(2f).row()
+        ).left().width(189f).padLeft(12f).padTop(2f).row()
 
         content.add(
             res.getLabel("RANDOM", color = GAME_LIGHT_PURPLE)
-        ).left().padLeft(8f).expandX().padTop(8f).row()
+        ).left().padLeft(12f).expandX().padTop(8f).row()
         content.add(
             res.getLabel("THE DEFAULT PATTERN. ENEMIES ATTACK BASED ON THEIR STATS.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(12f).padTop(2f).row()
+        ).left().width(189f).padLeft(16f).padTop(2f).row()
 
         content.add(
             res.getLabel("SPIKER", color = GAME_LIGHT_PURPLE)
-        ).left().padLeft(8f).expandX().padTop(8f).row()
+        ).left().padLeft(12f).expandX().padTop(8f).row()
         content.add(
             res.getLabel("ENEMIES TEND TO SEND LARGE BURSTS AT A TIME.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(12f).padTop(2f).row()
+        ).left().width(189f).padLeft(16f).padTop(2f).row()
 
         content.add(
             res.getLabel("CHEESER", color = GAME_LIGHT_PURPLE)
-        ).left().padLeft(8f).expandX().padTop(8f).row()
+        ).left().padLeft(12f).expandX().padTop(8f).row()
         content.add(
             res.getLabel("ENEMIES TEND TO SEND MESSIER GARBAGE LINES.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(12f).padTop(2f).row()
+        ).left().width(189f).padLeft(16f).padTop(2f).row()
 
         content.add(
             res.getLabel("DEFENSIVE", color = GAME_LIGHT_PURPLE)
-        ).left().padLeft(8f).expandX().padTop(8f).row()
+        ).left().padLeft(12f).expandX().padTop(8f).row()
         content.add(
             res.getLabel("ENEMIES WILL HEAL MORE OR USE MORE DEFENSIVE ABILITIES.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(12f).padTop(2f).row()
+        ).left().width(189f).padLeft(16f).padTop(2f).row()
 
         content.add(
             res.getLabel("FOUR WIDER", color = GAME_LIGHT_PURPLE)
-        ).left().padLeft(8f).expandX().padTop(8f).row()
+        ).left().padLeft(12f).expandX().padTop(8f).row()
         content.add(
             res.getLabel("ENEMIES SEND A MASSIVE COMBO AS THEIR OPENER.").apply {
                 setWrap(true)
                 setAlignment(Align.left)
             }
-        ).left().width(189f).padLeft(12f).padTop(2f).padBottom(8f).row()
+        ).left().width(189f).padLeft(16f).padTop(2f).padBottom(8f).row()
     }
 }
