@@ -162,7 +162,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
             val labelText = game.res.getLabel(text = label, color = if (playerWin) GAME_LIGHT_GRAY_BLUE else GAME_LIGHT_RED)
             val statText = game.res.getLabel(text = value)
             statsTable.add(labelText).expandX().left().padTop(4f)
-            statsTable.add(statText).expandX().right().row()
+            statsTable.add(statText).expandX().right().padRight(1f).row()
         }
 
         val scrollPane = ScrollPane(statsTable).apply {
