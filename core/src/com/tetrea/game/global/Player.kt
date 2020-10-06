@@ -65,24 +65,23 @@ data class Player(
             if (won) {
                 it.defeated = true
                 if (it.bestScore == null) {
+                    it.bestScore = Int2(playerScore, enemyScore)
+
                     val maxLevel = NUM_LEVELS[currWorldId]
                     if (currLevelId + 1 < maxLevel) currLevelId++
                     else if (currWorldId + 1 < NUM_WORLDS) {
                         currWorldId++
                         currLevelId = 0
                     }
+                } else {
+                    if (playerScore > it.bestScore!!.x) it.bestScore!!.x = playerScore
+                    if (enemyScore < it.bestScore!!.y) it.bestScore!!.y = enemyScore
                 }
                 it.allTimeRecord.x++
             } else {
                 it.allTimeRecord.y++
             }
 
-            if (it.bestScore == null) {
-                it.bestScore = Int2(playerScore, enemyScore)
-            } else {
-                if (playerScore > it.bestScore!!.x) it.bestScore!!.x = playerScore
-                if (enemyScore < it.bestScore!!.y) it.bestScore!!.y = enemyScore
-            }
             it.attempts++
         }
     }
