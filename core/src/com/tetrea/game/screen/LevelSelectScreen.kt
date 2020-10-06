@@ -320,7 +320,7 @@ class LevelSelectScreen(game: TetreaGame) : BaseScreen(game), LateDisposable, Se
             when (selectionState) {
                 SelectionState.Completed -> {
                     game.player.getRecord(config.compositeKey).bestScore?.let {
-                        desc.setText("YOU ${it.x} - ${it.y} ENEMY")
+                        desc.setText("YOU ${it.x} - ${it.y} ${config.enemy.name}")
                     }
                 }
                 SelectionState.Active -> {

@@ -137,7 +137,7 @@ class SelectionDialog(
         when (selectionState) {
             SelectionState.Completed -> {
                 player.getRecord(config.compositeKey).bestScore?.let {
-                    desc.setText("YOU ${it.x} - ${it.y} ENEMY")
+                    desc.setText("YOU ${it.x} - ${it.y} ${config.enemy.name}")
                 }
             }
             SelectionState.Active -> {
@@ -154,7 +154,7 @@ class SelectionDialog(
 
         h2hLabel.color = labelColor
         player.getRecord(config.compositeKey).let {
-            h2h.setText("YOU ${it.allTimeRecord.x} - ${it.allTimeRecord.y} ENEMY")
+            h2h.setText("YOU ${it.allTimeRecord.x} - ${it.allTimeRecord.y} ${config.enemy.name}")
         }
 
         val attackPatternsText = when {

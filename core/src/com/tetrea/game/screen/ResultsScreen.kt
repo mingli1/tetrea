@@ -252,7 +252,7 @@ class ResultsScreen(game: TetreaGame) : BaseScreen(game), LateDisposable {
         val change = newRating - game.player.rating.toInt()
         ratingLabel = game.res.getLabel(fontScale = 1f, color = GAME_ORANGE)
         startRatingAnim = true
-        headerTable.add(ratingLabel).align(Align.left).padLeft(12f)
+        headerTable.add(ratingLabel).align(Align.left).padLeft(12f).width(105f)
         val ratingChangeLabel = game.res.getLabel(
             text = "(${change.sign()}$change)",
             fontScale = 1f,
