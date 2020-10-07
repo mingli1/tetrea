@@ -36,6 +36,9 @@ private const val MIN_ABILITY_PERCENT = 0.15f
 private const val MAX_ABILITY_PERCENT = 0.35f
 private const val NUM_SOLID_GARBAGE = 3
 
+private const val MIN_2_DELAY_OFFSET = 0.5f
+private const val MIN_3_DELAY_OFFSET = 0.8f
+
 class BattleState(
     private val config: BattleConfig,
     private val screen: BattleScreen,
@@ -225,6 +228,14 @@ class BattleState(
     private fun getAttackDelay(): Float {
         var minAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MIN_ATTACK_DELAY + 3f else MIN_ATTACK_DELAY
         var maxAttackDelay = if (config.hasPattern(AttackPattern.Spiker)) MAX_ATTACK_DELAY + 3f else MAX_ATTACK_DELAY
+
+        if (screen.tetris.clockTimer >= 180f) {
+            minAttackDelay -= MIN_3_DELAY_OFFSET
+            maxAttackDelay -= MIN_3_DELAY_OFFSET
+        } else if (screen.tetris.clockTimer >= 120f) {
+            minAttackDelay -= MIN_2_DELAY_OFFSET
+            maxAttackDelay -= MIN_2_DELAY_OFFSET
+        }
 
         if (config.aiLevel.level >= 3 && screen.tetris.topOfStack() >= HIGH_STACK) {
             minAttackDelay -= 0.7f

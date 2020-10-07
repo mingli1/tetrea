@@ -139,6 +139,20 @@ class VersusHelpDialog(res: Resources, isMatchmaking: Boolean) : Table() {
             res.getLabel("- GREEN = IMMUNITY")
         ).left().padLeft(10f).expandX().padTop(2f).row()
 
+        content.add(
+            res.getLabel("AFTER 2 MINUTES, YOUR ATTACK IS INCREASED BY 1.5X AND THE ENEMY'S SPEED BECOMES FASTER.").apply {
+                setWrap(true)
+                setAlignment(Align.left)
+            }
+        ).left().width(189f).padLeft(10f).padTop(8f).row()
+
+        content.add(
+            res.getLabel("AFTER 3 MINUTES, YOUR ATTACK IS INCREASED BY 2X AND THE ENEMY'S SPEED BECOMES EVEN FASTER.").apply {
+                setWrap(true)
+                setAlignment(Align.left)
+            }
+        ).left().width(189f).padLeft(10f).padTop(8f).row()
+
         content.add(res.getLabel("BATTLE MECHANICS", fontScale = 1f, color = GAME_YELLOW))
             .left().padLeft(10f).padTop(8f).expandX().row()
         content.add(

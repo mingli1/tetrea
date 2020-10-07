@@ -19,6 +19,9 @@ private const val ULTRA_TIME = 120f
 private const val CHEESE_GOAL = 100
 private const val CHEESE_HEIGHT = 9
 
+private const val MIN_2_ATTACK_MULTIPLIER = 1.5f
+private const val MIN_3_ATTACK_MULTIPLIER = 2f
+
 class Tetris(
     private val screenX: Float,
     private val screenY: Float,
@@ -373,6 +376,12 @@ class Tetris(
             soundManager.onCrit()
             stats.numCrits++
             crit = true
+        }
+
+        if (clockTimer >= 180f) {
+            attack = (attack * MIN_3_ATTACK_MULTIPLIER).toInt()
+        } else if (clockTimer >= 120f) {
+            attack = (attack * MIN_2_ATTACK_MULTIPLIER).toInt()
         }
 
         totalAttack += attack
