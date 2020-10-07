@@ -76,7 +76,6 @@ class Tetris(
     private var spike = 0
     private var currLineClearType = LineClearType.None
     private var inputs = 0
-    private var currCheeseLinesCleared = 0
 
     // visible stats
     var clockTimer = 0f
@@ -277,7 +276,6 @@ class Tetris(
 
                 if (gameMode == GameMode.Cheese && content[y].any { it.square.pieceType == PieceType.Garbage }) {
                     cheeseLines--
-                    currCheeseLinesCleared++
                     if (cheeseLines <= 0) {
                         cheeseLines = 0
                         gameOver(false)
@@ -291,13 +289,15 @@ class Tetris(
             combo = 0
             spike = 0
             if (garbage.isNotEmpty()) garbageTimer.start()
-            if (gameMode == GameMode.Cheese && currCheeseLinesCleared > 0) {
-                if (cheeseLines > CHEESE_HEIGHT) {
-                    repeat(currCheeseLinesCleared) {
-                        garbage.add(1)
-                        receiveGarbage(uniqueHoles = true)
-                    }
-                    currCheeseLinesCleared = 0
+            if (gameMode == GameMode.Cheese) {
+                val numLinesToAdd = if (cheeseLines < CHEESE_HEIGHT) {
+                    cheeseLines - garbageHeight()
+                } else {
+                    CHEESE_HEIGHT - garbageHeight()
+                }
+                repeat(numLinesToAdd) {
+                    garbage.add(1)
+                    receiveGarbage(uniqueHoles = true)
                 }
             }
             return
@@ -528,17 +528,16 @@ class Tetris(
     private fun receiveGarbage(uniqueHoles: Boolean = false) {
         if (garbage.isEmpty()) return
         val lines = garbage.sum()
-        offsetStack(lines)
-        var currY = solidGarbageRow
-
         var prevX = 0
         if (uniqueHoles) {
             prevX = if (content[0].any { it.square.pieceType == PieceType.Garbage }) {
-                content[0].find { !it.filled }?.y ?: 0
+                content[0].find { !it.filled }?.x ?: 0
             } else {
                 MathUtils.random(config.width - 1)
             }
         }
+        offsetStack(lines)
+        var currY = solidGarbageRow
 
         for (i in garbage.size - 1 downTo 0) {
             var numLines = garbage[i]
@@ -644,6 +643,18 @@ class Tetris(
             if (maxY + lines >= config.height + 1) piece.move(0, config.height + 2 - maxY)
             else piece.move(0, lines)
         }
+    }
+
+    private fun garbageHeight(): Int {
+        var height = 0
+        for (y in 0 until config.height - 1) {
+            if (content[y].any { it.square.pieceType == PieceType.Garbage }) {
+                height++
+            } else {
+                break
+            }
+        }
+        return height
     }
 
     private fun addToBag() {

@@ -63,9 +63,9 @@ class TetrisScreen(game: TetreaGame) : BaseScreen(game), TetrisStateManager {
             Actions.run {
                 transition = Transition.None
                 game.musicManager.startBattleMusic()
-                scene.startCountdown()
             }
         ))
+        scene.startCountdown()
     }
 
     override fun update(dt: Float) {
