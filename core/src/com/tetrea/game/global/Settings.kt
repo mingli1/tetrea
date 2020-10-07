@@ -43,9 +43,9 @@ data class Settings(
         TetrisInputType.Hold to RelativePosition(RelativeValue(-100f, RelativeTo.StageWidth), RelativeValue(66f, RelativeTo.YZero)),
         TetrisInputType.Pause to RelativePosition(RelativeValue(-50f, RelativeTo.StageWidth), RelativeValue(-100f, RelativeTo.StageHeight))
     ),
-    @Json(name = "das") var das: Float = 0.167f,
+    @Json(name = "das") var das: Float = 0.150f,
     @Json(name = "arr") var arr: Float = 0.033f,
-    @Json(name = "sds") var sds: Float = 0.045f,
+    @Json(name = "sds") var sds: Float = 0.025f,
     @Json(name = "showFps") var showFps: Boolean = false,
     @Json(name = "musicVolume") var musicVolume: Float = 0.5f,
     @Json(name = "soundVolume") var soundVolume: Float = 0.5f,
