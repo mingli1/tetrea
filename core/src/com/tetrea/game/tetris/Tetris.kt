@@ -224,7 +224,6 @@ class Tetris(
         }
         // top out
         if (solidGarbageRow >= config.height) gameOver(win = false, toppedOut = true)
-        if (!currPiece?.canMove(0, -1).default(true)) gameOver(win = false, toppedOut = true)
     }
 
     fun isWithinHeight(y: Int) = y < config.height * 2
