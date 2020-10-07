@@ -6,7 +6,7 @@ import com.tetrea.game.global.Player
 import com.tetrea.game.global.Settings
 
 private const val SAVE_EXTENSION = ".tetr"
-private const val SAVE_FILE_PATH = "save$SAVE_EXTENSION"
+private const val SAVE_FILE_PATH = "save/save$SAVE_EXTENSION"
 
 class SaveManager(res: Resources) {
 
