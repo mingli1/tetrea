@@ -9,6 +9,8 @@ Available for Windows, Mac, Linux, and Android.
 ## Downloads
 See the [releases](https://github.com/mingli1/tetrea/releases/tag/v1.0)
 
+Google Play: *pending*
+
 ## Screenshots
 <p float="left">
   <img src="https://user-images.githubusercontent.com/29984767/95409600-fe34a100-08ef-11eb-9159-7d394961e0c9.PNG" width=250/>
