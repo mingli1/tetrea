@@ -88,7 +88,7 @@ class SettingsScreen(game: TetreaGame) : BaseScreen(game) {
             setFillParent(true)
             isVisible = false
         }
-        aboutTable.add(aboutDialog).size(220f, 350f)
+        aboutTable.add(aboutDialog).size(220f, 310f)
         stage.addActor(aboutTable)
 
         Gdx.input.inputProcessor = multiplexer
