@@ -52,6 +52,48 @@ class Tetris(
         Piece(this, PieceType.O)
     )
 
+    // first four pieces for second pc
+    private val firstFour = listOf(
+        listOf(PieceType.T, PieceType.I, PieceType.O, PieceType.L),
+        listOf(PieceType.T, PieceType.I, PieceType.O, PieceType.J),
+
+        listOf(PieceType.I, PieceType.T, PieceType.L, PieceType.S),
+        listOf(PieceType.I, PieceType.T, PieceType.J, PieceType.Z),
+
+        listOf(PieceType.I, PieceType.T, PieceType.L, PieceType.Z),
+        listOf(PieceType.I, PieceType.T, PieceType.J, PieceType.S),
+
+        listOf(PieceType.O, PieceType.T, PieceType.L, PieceType.S),
+        listOf(PieceType.O, PieceType.T, PieceType.J, PieceType.Z),
+
+        listOf(PieceType.O, PieceType.T, PieceType.L, PieceType.Z),
+        listOf(PieceType.O, PieceType.T, PieceType.J, PieceType.S),
+
+        listOf(PieceType.T, PieceType.L, PieceType.S, PieceType.Z),
+        listOf(PieceType.T, PieceType.J, PieceType.S, PieceType.Z),
+
+        listOf(PieceType.I, PieceType.O, PieceType.L, PieceType.J),
+
+        listOf(PieceType.I, PieceType.O, PieceType.S, PieceType.Z),
+
+        listOf(PieceType.I, PieceType.O, PieceType.L, PieceType.S),
+        listOf(PieceType.I, PieceType.O, PieceType.J, PieceType.Z),
+
+        listOf(PieceType.I, PieceType.O, PieceType.L, PieceType.Z),
+        listOf(PieceType.I, PieceType.O, PieceType.J, PieceType.S),
+
+        listOf(PieceType.I, PieceType.J, PieceType.L, PieceType.S),
+        listOf(PieceType.I, PieceType.L, PieceType.J, PieceType.Z),
+
+        listOf(PieceType.I, PieceType.L, PieceType.S, PieceType.Z),
+        listOf(PieceType.I, PieceType.J, PieceType.S, PieceType.Z),
+
+        listOf(PieceType.O, PieceType.L, PieceType.Z, PieceType.S),
+        listOf(PieceType.O, PieceType.J, PieceType.S, PieceType.Z),
+
+        listOf(PieceType.L, PieceType.J, PieceType.S, PieceType.Z)
+    )
+
     var currPiece: Piece? = null
     val stats = TetrisStats()
 
@@ -433,6 +475,12 @@ class Tetris(
                     }
                 }
             }
+            addToBag()
+        } else if (gameMode == GameMode.SecondPC) {
+            val sequence = firstFour.random()
+            bag.addAll(sequence.map { Piece(this, it) })
+            bag.shuffle()
+
             addToBag()
         } else {
             repeat(2) { addToBag() }

@@ -4,5 +4,6 @@ enum class GameMode {
     Versus,
     Sprint,
     Ultra,
-    Cheese
+    Cheese,
+    SecondPC
 }

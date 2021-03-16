@@ -97,6 +97,18 @@ class ArcadeScreen(game: TetreaGame) : BaseScreen(game) {
                     game.musicManager.inBattle = true
                 }
             )).size(220f, 50f).padTop(16f).row()
+            add(game.res.getButtonWithImage(
+                text = "2ND PC",
+                ninePatchKey = "cheese_button",
+                imageKey = "cheese_button_icon",
+                colorUp = Color(196 / 255f, 234 / 255f, 219 / 255f, 1f),
+                onClick = {
+                    navigateTo(TETRIS_SCREEN, mapOf(ARG_GAME_MODE to GameMode.SecondPC))
+                    game.soundManager.onPrimaryButtonClicked()
+                    game.musicManager.fadeOutBackgroundMusic()
+                    game.musicManager.inBattle = true
+                }
+            )).size(220f, 50f).padTop(16f).row()
         }
         parentTable.add(bodyTable).top().padTop(24f).colspan(2).expandY()
 

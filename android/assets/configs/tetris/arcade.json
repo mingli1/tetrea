@@ -4,7 +4,7 @@
   "startDelay": 2,
   "bagSize": 7,
   "numPreviews": 5,
-  "gravity": 1.0,
+  "gravity": 5.0,
   "lockDelay1": 0.5,
   "lockDelay2": 5.0,
   "lockDelay3": 20.0,
